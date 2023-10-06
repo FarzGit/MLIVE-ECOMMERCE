@@ -1,0 +1,29 @@
+body {
+    background-color: #f4f4f4;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+/* REGISTRATION */
+
+
+.signup-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+}

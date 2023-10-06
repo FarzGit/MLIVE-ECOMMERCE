@@ -1,0 +1,33 @@
+{
+  "name": "view",
+  "version": "1.1.1",
+  "description": "A View engine",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bigcompany/view.git"
+  },
+  "keywords": [
+    "view",
+    "resource",
+    "resources"
+  ],
+  "scripts": {
+    "test": "tap test/*.*"
+  },
+  "main": "./index.js",
+  "dependencies": {
+    "cheerio": "0.19.x",
+    "colors": "*",
+    "highlight.js": "^8.7.0",
+    "hyperquest": "^1.2.0",
+    "marked": "^0.3.4",
+    "through2": "2.0.x"
+  },
+  "devDependencies": {
+    "tap": "0.4.x",
+    "supertest": "*",
+    "resource-http": "1.x.x"
+  },
+  "license": "MIT",
+  "author": "Marak Squires <support@marak.com>"
+}

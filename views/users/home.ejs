@@ -1,0 +1,50 @@
+<%- include('../layouts/header.ejs')%>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="signup-container">
+                <h2 class="text-center">Create an Account</h2>
+                <form action="" method="POST">
+                    <div class="form-group">
+                        <label for="name">Fisrt Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">last Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password:</label>
+                        <input type="password" class="form-control" id="confirm-password" name="confirm-password" required>
+                    </div>
+
+                  
+
+                    
+
+                    <div class="form-group text-center">
+                        <input type="submit" class="btn btn-primary" value="Sign Up">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../layouts/footer.ejs')%>
