@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema({
     },
     lastName:{
         type:String,
-        required:true
+        required:true 
     },
+
     email:{
         type:String,
         required:true
@@ -22,16 +23,18 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    is_admin:{
-        type:Number,
-        required:true
-    },
     is_verified:{
         type:Number,
         default:0
-    }
+    },
+    email_varified: {
+        type: Boolean,
+        default: false,
+      },
 
 
 })
+
+
 
 module.exports = mongoose.model('User',userSchema)

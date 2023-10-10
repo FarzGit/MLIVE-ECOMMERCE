@@ -1,0 +1,104 @@
+
+<%- include('../users/layouts/header.ejs')%>
+<!-- <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 90%;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .submit-button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            width: 80%;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>OTP Verification</h2>
+    <p>Please enter the OTP sent to your mobile number or email.</p>
+    <form action="#" method="POST">
+        <div class="form-group">
+            <label for="otp">OTP:</label>
+            <input type="text" id="otp" name="otp" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Verify OTP" class="submit-button">
+        </div>
+    </form>
+</div> -->
+
+
+
+
+<div class="full-page">
+    <div class="container">
+    <div class="text-center  center-div">
+        <div class="container col-6 py-5 p-4">
+            <div class="title pb-3">
+                <h1>OTP Verification</h1>
+                            <% 
+                            if(typeof message !== 'undefined'){
+                                %>
+                                <div id="invalid-msg" class="alert alert-danger text-danger text-center">
+                                    <h4><%- message %></h4>
+                                </div>
+                                <%
+                            }
+                            %>
+             </div>
+    
+            <form action="/userOtp" method="post">
+                <div class="form-group mt-3">
+                    <input type="text" class="form-control" name="otp" placeholder="Enter OTP" id="email">
+                    <br>
+                </div>
+                <br>
+                    <input type="submit" class="btn btn-primary rounded-pill" value="Verify & Proceed">
+    
+            </form>
+            <br>
+           
+    
+        </div>
+    </div>
+    </div>
+    </div>
+<%- include('../users/layouts/footer.ejs')%>
