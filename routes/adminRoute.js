@@ -23,6 +23,14 @@ adminRoute.set('views','./views/admin')
 adminRoute.get('/',adminController.loadAdminLogin)
 adminRoute.post('/',adminController.verifyAdminLogin)
 adminRoute.get('/home',adminController.loadAdminHome)
+adminRoute.get('/category',adminController.loadCategoryPage)
+adminRoute.get('/add_category',adminController.loadAddCategory)
+adminRoute.post('/add_category',adminController.addCategory)
+adminRoute.get('/edit_category',adminController.loadEditCategory)
+adminRoute.post('/edit_category',adminController.editCategory)
+
+adminRoute.get('/customer',adminController.loadCustomerPage)
+
 
 
 module.exports = adminRoute
