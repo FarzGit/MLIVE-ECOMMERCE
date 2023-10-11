@@ -33,7 +33,32 @@ const otpSend = async (email, otp) => {
       from: "farzinahammedabc@gmail.com",
       to: email,
       subject: "OTP Verification",
-      text: `Hi Your OTP is:${otp}`,
+      html: `
+      <html>
+        <head>
+          <style>
+            /* Add some basic styling to the email for a better user experience */
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+            }
+            .otp-container {
+              background-color: #f4f4f4;
+              padding: 20px;
+              border-radius: 10px;
+              display: inline-block;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>OTP Verification</h1>
+          <p>Your OTP is:</p>
+          <div class="otp-container">
+            <h2>${otp}</h2>
+          </div>
+        </body>
+      </html>
+    `,
     };
     // Send the email
     transporter.sendMail(mailOptions, (error, info) => {

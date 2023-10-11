@@ -28,8 +28,9 @@ adminRoute.get('/add_category',adminController.loadAddCategory)
 adminRoute.post('/add_category',adminController.addCategory)
 adminRoute.get('/edit_category',adminController.loadEditCategory)
 adminRoute.post('/edit_category',adminController.editCategory)
+adminRoute.get('/is_active',adminController.listOrNot)
 
-adminRoute.get('/customer',adminController.loadCustomerPage)
+adminRoute.get('/customer',adminController.loadCustomers)
 
 
 

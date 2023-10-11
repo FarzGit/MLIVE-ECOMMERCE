@@ -27,13 +27,17 @@ const userSchema = new mongoose.Schema({
         type:Number,
         default:0
     },
-    email_varified: {
+    
+      is_blocked: {
         type: Boolean,
         default: false,
       },
+    
 
 
-})
+},  {
+    timestamps:true
+  })
 
 
 

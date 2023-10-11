@@ -1,5 +1,6 @@
 const adminDb = require("../models/adminModel");
-const categoryDb = require('../models/categoryModel')
+const categoryDb = require("../models/categoryModel");
+const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
 const loadAdminLogin = async (req, res) => {
@@ -15,7 +16,6 @@ const verifyAdminLogin = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const adminData = await adminDb.findOne({ email: email });
-    console.log(adminData);
 
     if (adminData && adminData.email === email) {
       if (password == adminData.password) {
@@ -40,98 +40,127 @@ const loadAdminHome = async (req, res) => {
   }
 };
 
-const loadCategoryPage = async (req,res)=>{
+const loadCategoryPage = async (req, res) => {
+  try {
+    const categoryDetails = await categoryDb.find();
 
-  try{
-
-    const categoryDetails = await categoryDb.find()
-
-    res.render('Category',{categoryData:categoryDetails})
-
-  }catch(error){
+    res.render("Category", { categoryData: categoryDetails });
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
-const loadAddCategory = async(req,res)=>{
-  try{
-
-    res.render('addCategory')
-
-  }catch(error){
+const loadAddCategory = async (req, res) => {
+  try {
+    res.render("addCategory");
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
-
-const addCategory = async (req,res)=>{
-  try{
-
+const addCategory = async (req, res) => {
+  try {
     const name = req.body.name;
-    if(name.lenght == 0){
-      res.redirect('/admin/category')
-    }else{
+    if (name.trim().length == 0) {
+      res.redirect("/admin/category");
+    } else {
       const already = await categoryDb.findOne({
-        name:{$regex : name, $options: "i"}
-      })
-      if(already){
-        res.render('addCategory',{message:"The Catogory already exits"})
-      }else{
-        const categoryData = new categoryDb({name:name})
-        const addData = await categoryData.save()
+        name: { $regex: name, $options: "i" },
+      });
+      if (already) {
+        res.render("addCategory", { message: "The Catogory already exits" });
+      } else {
+        const categoryData = new categoryDb({ name: name });
+        const addData = await categoryData.save();
+        console.log(categoryData);
+        console.log(addData);
 
-        if(addData){
-          res.redirect("/admin/category")
-        }else{
-          res.render("addCategory",{message:"Something went Wrong"})
+        if (addData) {
+          res.redirect("/admin/category");
+        } else {
+          res.render("addCategory", { message: "Something went Wrong" });
         }
-
       }
     }
-
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
-const loadEditCategory = async (req,res)=>{
-  try{
+const loadEditCategory = async (req, res) => {
+  try {
+    const id = req.query.id;
+    console.log(id);
 
-    const id = req.query.id
+    const details = await categoryDb.findById({ _id: id });
 
-    const details = await categoryDb.findById({_id:id})
-    res.render('editCategory',{data:details})
-
-  }catch(error){
+    res.render("editCategory", { data: details });
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
+const editCategory = async (req, res) => {
+  try {
+    const name = req.body.name;
 
-const editCategory = async (req,res)=>{
-  try{
-    const name = req.body.name
-
-    if(name.lenght == 0){
-      res.redirect('/admin/category')
-    }else{
-      await categoryDb.findByIdAndUpdate({_d:req.query.id},{$set:{name: req.body.name}})
-      
+    if (name.trim().lenght == 0) {
+      res.redirect("/admin/category");
+    } else {
+      await categoryDb.findByIdAndUpdate(
+        { _id: req.query.id },
+        { $set: { name: req.body.name } }
+      );
     }
-    res.redirect('/admin/category')
-    
-  }catch(error){
+    res.redirect("/admin/category");
+  } catch (error) {
     console.log(error);
   }
+};
+
+const listOrNot = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const categoryData = await categoryDb.findOne({ _id: id });
+    if (categoryData.is_active == true) {
+      const List = await categoryDb.updateOne(
+        { _id: id },
+        { $set: { is_active: false } }
+      );
+
+      if (List) {
+        req.session.category_id = false;
+      }
+      res.redirect("/admin/category");
+    }
+    if (categoryData.is_active == false) {
+      await categoryDb.updateOne({ _id: id }, { $set: { is_active: true } });
+
+      res.redirect("/admin/category");
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const loadCustomers = async (req, res) => {
+  try {
+    
+    let userData= await getAllUserData() 
+    res.render("Customers",{data:userData});
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllUserData = async (req,res)=>{
+  return new Promise(async(resolve,reject)=>{
+    let userData = await User.find({})
+    resolve(userData)
+  })
 }
 
-const loadCustomerPage = async (req,res)=>{
-  try{
-      res.render('Customers')
-  }catch(error){
-    console.log(error);
-  }
-}
+
 
 module.exports = {
   loadAdminLogin,
@@ -139,8 +168,10 @@ module.exports = {
   loadAdminHome,
   loadCategoryPage,
   loadAddCategory,
-  loadCustomerPage,
+  loadCustomers,
   addCategory,
   loadEditCategory,
-  editCategory
+  editCategory,
+  listOrNot,
+  
 };
