@@ -145,22 +145,44 @@ const listOrNot = async (req, res) => {
 
 const loadCustomers = async (req, res) => {
   try {
-    
-    let userData= await getAllUserData() 
-    res.render("Customers",{data:userData});
+    let userData = await getAllUserData();
+    res.render("Customers", { data: userData });
   } catch (error) {
     console.log(error);
   }
 };
 
-const getAllUserData = async (req,res)=>{
-  return new Promise(async(resolve,reject)=>{
-    let userData = await User.find({})
-    resolve(userData)
-  })
-}
+const getAllUserData = async (req, res) => {
+  return new Promise(async (resolve, reject) => {
+    let userData = await User.find({});
+    resolve(userData);
+  });
+};
 
+const blockUnblock = async (req, res) => {
+  try {
+    const id = req.query.id;
 
+    const userData = await User.findById({ _id: id });
+
+    if (userData.is_blocked === true) {
+      await User.updateOne({ _id: id }, { $set: { is_blocked: false } });
+    }
+    if (userData.is_blocked === false) {
+      let block = await User.updateOne(
+        { _id: id },
+        { $set: { is_blocked: true } }
+      );
+      // res.redirect("/admin/customer")
+      if (block) {
+        req.session.category_id = false;
+      }
+    }
+    res.redirect("/admin/customer");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   loadAdminLogin,
@@ -173,5 +195,5 @@ module.exports = {
   loadEditCategory,
   editCategory,
   listOrNot,
-  
+  blockUnblock,
 };

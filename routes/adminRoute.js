@@ -1,37 +1,72 @@
-const express = require("express")
-const adminRoute = express()
-const session = require('express-session')
-const  config = require('../config/config')
-const adminController = require('../controller/adminController')
+const express = require("express");
+const adminRoute = express();
+const session = require("express-session");
+const config = require("../config/config");
+const adminController = require("../controller/adminController");
+const productController = require("../controller/productController");
+const path = require("path");
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../public/adminAssets/images"));
+  },
+  filename: function (req, file, cb) {
+    const name = Date.now() + "-" + file.originalname;
+    cb(null, name);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg" ||
+      file.mimetype == "image/webp"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg .webp format allowed!"));
+    }
+  },
+});
 
 
-adminRoute.use(express.json())
-adminRoute.use(express.urlencoded({extended:true}))
+
+
+adminRoute.use(express.json());
+adminRoute.use(express.urlencoded({ extended: true }));
 
 adminRoute.use(
-    session({
-      secret: config.sessionSecret,
-      resave: false,
-      saveUninitialized: true,
-    })
-  );
+  session({
+    secret: config.sessionSecret,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
-adminRoute.set('view engine','ejs')
-adminRoute.set('views','./views/admin')
+adminRoute.set("view engine", "ejs");
+adminRoute.set("views", "./views/admin");
 
+adminRoute.get("/", adminController.loadAdminLogin);
+adminRoute.post("/", adminController.verifyAdminLogin);
+adminRoute.get("/home", adminController.loadAdminHome);
+adminRoute.get("/category", adminController.loadCategoryPage);
+adminRoute.get("/add_category", adminController.loadAddCategory);
+adminRoute.post("/add_category", adminController.addCategory);
+adminRoute.get("/edit_category", adminController.loadEditCategory);
+adminRoute.post("/edit_category", adminController.editCategory);
+adminRoute.get("/is_active", adminController.listOrNot);
+adminRoute.get("/customer", adminController.loadCustomers);
+adminRoute.get("/is_blockedUser", adminController.blockUnblock);
 
-adminRoute.get('/',adminController.loadAdminLogin)
-adminRoute.post('/',adminController.verifyAdminLogin)
-adminRoute.get('/home',adminController.loadAdminHome)
-adminRoute.get('/category',adminController.loadCategoryPage)
-adminRoute.get('/add_category',adminController.loadAddCategory)
-adminRoute.post('/add_category',adminController.addCategory)
-adminRoute.get('/edit_category',adminController.loadEditCategory)
-adminRoute.post('/edit_category',adminController.editCategory)
-adminRoute.get('/is_active',adminController.listOrNot)
+adminRoute.get("/Product", productController.loadProducts);
+adminRoute.get("/addProduct", productController.loadAddProducts);
+adminRoute.post('/addProduct',upload.array("image",2),productController.addProduct)
+adminRoute.get('/editProduct',productController.loadEditProduct)
+adminRoute.post("/editProduct",upload.array("image",2),productController.editProduct)
+adminRoute.get("/is_activeProduct",productController.productListorUnlist)
 
-adminRoute.get('/customer',adminController.loadCustomers)
-
-
-
-module.exports = adminRoute
+module.exports = adminRoute;

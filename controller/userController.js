@@ -169,11 +169,30 @@ const loadlogin = async (req, res) => {
   }
 };
 
-const verifyLogin = async (req,res)=>{
-  try{
 
-  }catch(error){
-    console.log(error);
+
+  const verifyLogin=async(req,res)=>{
+    try {
+      const email = req.body.email
+      const password = req.body.password
+      const userData = await User.findOne({ email: email })
+      console.log("userdata " + userData);
+      if (userData) {
+          const passwordMatch = await bcrypt.compare(password, userData.password)
+          if (passwordMatch) {
+              console.log('password matched');
+              res.redirect('/home')
+          } else {
+              console.log('password is not matched');
+              res.render('login', { message: "password is incorrect" })
+          }
+      } else {
+          console.log('email is not matched');
+          res.render('login', { message: "incorrect your email address" })
+      }
+
+  } catch (error) {
+      console.log(error.message);
   }
 }
 

@@ -1,0 +1,89 @@
+
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+
+<body class="g-sidenav-show  bg-gray-200">
+  <%- include("../admin/layouts/adminSideBar.ejs") %>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+      <!-- Navbar -->
+      <%- include("../admin/layouts/adminNavBar.ejs") %>
+      <!-- End Navbar -->
+      <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12 , elemDesign">
+            <div class="card my-4">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                  <a href="/admin/addProduct">
+                    <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
+                  </a>
+                  <h6 class="text-white text-capitalize ps-3">PRODUCT</h6>
+                </div>
+              </div>
+              <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                  <table class="table table-dark">
+                    <input type="hidden" name="id" value="<%=product._id%>">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Image</th>
+                        <th class="text-center">Product Name</th>
+                        <th class="text-center">Category</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">edit</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for (let i = 0; i < product.length; i++) { %>
+                        <tr>
+                          <td class="text-center">
+                            <img class="rounded product-img-preview"
+                            src="/public/adminAssets/images/<%= product[i].image[0]%>" alt="pImage">
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= product[i].productName %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= product[i].category %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= product[i].price %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= product[i].quantity %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= product[i].description %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= product[i].status %>
+                          </td>
+                          <td><a href= "/admin/editProduct?id=<%= product[i]._id%>"><button type="button" class="btn btn-primary btn-sm" style="color: rgb(255, 255, 255);">Edit</button></a></td>
+                          <td>
+                           <% if( product.is_active === true){ %>
+                             <a href="/admin/is_activeProduct?id=<%= product._id %>">
+                           <button type="button" class="btn btn-success btn-md">List</button></a>
+                             <% }else{ %>
+                               <a href="/admin/is_activeProduct?id=<%= product._id %>">
+                                 <button type="button" class="btn btn-outline-secondary btn-md">Unlist</button></a>
+                               <%}%>
+                          </td>
+                        </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </main>
+    </main>
+
+    <%- include("../admin/layouts/adminFooter.ejs") %>

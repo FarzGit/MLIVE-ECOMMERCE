@@ -14,9 +14,9 @@
             <div class="card my-4">
              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <a href="">
+                    <!-- <a href="">
                         <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
-                      </a>
+                      </a> -->
                   <h6 class="text-white text-capitalize ps-3">CUSTOMERS</h6>
                 </div>
               </div>
@@ -30,7 +30,7 @@
                           <th> Full Name </th>
                           <th> Email </th>
                           <th> Mobile No.</th>
-                          <th> Status </th>
+                          
                           <th> Joined On</th>
                           <th> Action</th>
                       </tr>
@@ -43,22 +43,29 @@
                           <td> <%= data[i].email %> </td>
                           <td> <%= data[i].mobile %> </td>
 
-                         <td>
-                               <% if(data[i].isVerified==false){ %>
+                         <!-- <td> -->
+                               <!-- <% if(data[i].isVerified==false){ %>
                                <span class="pl-2 text-danger">Not verified</span>
                                <% } else{ %> 
                                   <span class="pl-2 text-success">verified</span>
-                               <% }%>   
-                          </td>
+                               <% }%>    -->
+                          <!-- </td> -->
                           
                           
                           <td> <%= new Date(data[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })%> </td>
                           <td>
                               
-                                <% if (data[i].isBlock == false) { %>
-                                  <button data-id="<%= data[i]._id %>" onclick="blockButton('<%= data[i]._id %>')" class="btn btn-inverse-danger">unBlock</button>
+                            <% if(data[i].is_blocked === true ){ %>
+                                <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
+                                  <!-- <button data-id="<%= data[i]._id %>" onclick="blockButton('<%= data[i]._id %>')" class="btn btn-inverse-danger">unBlock</button> -->
+                                  <button type="button" class="btn btn-inverse-danger btn-fw">Blocked</button>
+                                </a>
                                 <% } else { %>
-                                  <button data-id="<%= data[i]._id %>" onclick="blockButton('<%= data[i]._id %>')" class="btn btn-success">block</button>
+                                  <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
+                                  <!-- <button data-id="<%= data[i]._id %>" onclick="blockButton('<%= data[i]._id %>')" class="btn btn-success">block</button> -->
+                                  <button type="button" class="btn btn-success btn-fw"> Unblocked</button>
+
+                                </a>
                                 <% } %>
                           </td>
                           

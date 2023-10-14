@@ -23,9 +23,9 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    is_verified:{
-        type:Number,
-        default:0
+    isVerified:{
+        type:Boolean,
+        required:true
     },
     
       is_blocked: {

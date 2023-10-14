@@ -48,5 +48,36 @@
     
       </div>
     </main>
+
+
+
+    <script>
+
+
+
+      const category = document.getElementById('category');
+          const  form  = document.getElementById('form')
+          const errorElement = document.getElementById("error")
+      
+          form.addEventListener('submit',(e)=>{
+          let messages = []
+          if(  category.value =="" || category.value == null){
+            messages.push('Please add a input')
+          }
+      
+          if( category.value.length > 20 ){
+               messages.push("Category name less than 20 characters only!")
+          }
+      
+          if( messages.length > 0  ){
+            e.preventDefault()
+            errorElement.innerText = messages.join(' & ')
+            
+          }
+      
+          })
+          
+          
+      </script>
    
     <%- include("../admin/layouts/adminFooter.ejs") %>

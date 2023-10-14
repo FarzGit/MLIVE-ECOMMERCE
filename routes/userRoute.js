@@ -2,6 +2,7 @@ const express = require("express")
 const userRoute = express()
 const session = require('express-session')
 const  config = require('../config/config')
+const userAuth = require('../middleware/userAuth')
 
 userRoute.use(
     session({
@@ -26,7 +27,8 @@ userRoute.get("/register",userController.loadResgister)
 userRoute.post('/register',userController.verifyOtp);
 userRoute.get('/userOtp',userController.loadOtp);
 userRoute.post('/userOtp',userController.insertUser)
-userRoute.get("/home",userController.loadHome)
+userRoute.get("/",userController.loadHome)
+userRoute.post("/login",userController.verifyLogin);
 
 
 

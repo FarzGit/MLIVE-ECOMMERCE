@@ -1,0 +1,100 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+<body class="g-sidenav-show bg-gray-200">
+  <%- include("../admin/layouts/adminSideBar.ejs") %>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 elemDesign">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <!-- <a href="">
+                  <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
+                </a> -->
+                <h6 class="text-white text-capitalize ps-3">PRODUCT</h6>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive p-0">
+                <form class="forms-sample" action="/admin/editProduct" method="post" enctype="multipart/form-data">
+
+                  <input type="hidden" name="id" value="<%=product._id%>">
+
+                  <div class="form-group row">
+                    <div class="col-6 text-light">
+                      <label for="exampleInputName1">Product Name</label>
+                      <input type="text" class="form-control text-dark" name="productName" id="exampleInputName1"
+                        placeholder="Name" value="<%=product.productName%>" required>
+                    </div>
+                    <div class="col-6">
+                      <label for="exampleInputName1">Price</label>
+                      <input type="number" class="form-control text-light" id="exampleInputName1" name="price"
+                        placeholder="price" value="<%=product.price%>" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <div class="col-sm-12">
+                          <label class="col-sm-3 col-form-label">Category</label>
+                          <select name="category" class="form-control text-light" required>
+                            <option value="<%=product.category%>" disabled selected>Select Category</option>
+                            <% for(let i=0;i< cartData.length;i++){ %>
+                            <option>
+                              <%= cartData[i].name %>
+                            </option>
+                            <% } %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <label for="exampleInputName1">status</label>
+                    <input type="text" class="form-control text-dark" id="exampleInputName1" name="status"
+                      placeholder="status" value="<%=product.status%>" required>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <div class="col-sm-12">
+                          <label class="col-sm-3 col-form-label">quantity</label>
+                          <input type="number" class="form-control text-light" id="exampleInputName1" name="quantity"
+                            placeholder="Enter quantity" value="<%=product.quantity%>" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mt-2">
+                    <label for="exampleTextarea1">Description</label>
+                    <textarea name="description" class="form-control text-light" id="exampleTextarea1" rows="4" required></textarea>
+                  </div>
+                  <div class="rounded product-img-preview">
+                    <!-- <label class="col-sm-3 col-form-label">Images</label> -->
+                    <div class="row d-flex justify-content-center">
+                      <!-- Image preview elements go here -->
+                      <div class="col-lg-3 col-md-6 rounded-image-preview">
+                        <label class="upload__btn ms-3" >
+                          <p>Upload images</p>
+                          <input type="file" id="formFile" name="image"
+                          multiple data-max_length="20" class="upload__inputfile">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                 
+                  <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add product</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</main>
