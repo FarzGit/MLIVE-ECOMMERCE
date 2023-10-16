@@ -1,39 +1,108 @@
 <%- include('../users/layouts/header.ejs')%>
 
-<div class="container">
-  <div class="row justify-content-center">
-      <div class="col-md-6">
-          <div class="login-container">
-              <h2>Login</h2>
-              <% if(typeof message !=='undefined' ){%>
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    
+    
+}
+
+.container {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 20px;
+    width: 300px;
+    height: 370px;
+}
+
+.login-box {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+.input-container {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #EC7E3B;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 250px;
+    height: 40px;
+    margin-top: 15px;
+    
+}
+
+button:hover {
+    background-color: #d2631e;
+}
+.forgot-password{
+   margin-top: 15px;
+   
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h1>Login</h1>
+            <% if(typeof message !=='undefined' ){%>
                 <p style="color: red; font-size: large; font-weight: 300;">
-                  <%= message %>
+                    <%= message %>
                 </p>
                 <% } %>
-              <form action="" method="post">
-                  <div class="form-group">
-                      <label for="username">Email:</label>
-                      <input type="text" class="form-control" id="username" name="email" required>
-                  </div>
+            
+            
+            <form action="/login" method="POST" id="form">
+                <div class="input-container">
+                    <label for="username">Enter email</label>
+                    <input type="text" id="email" name="email" required>
+                </div>
+                <div class="input-container">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+               
+                <button type="submit">Login</button>
+                <div class="forgot-password">
+                    <a href="/forgot-password">Forgot Password?</a>
+                </div>
+                <div class="text-center">
+                    <p>Not registered? <a href="/register">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
 
-                  <div class="form-group">
-                      <label for="password">Password:</label>
-                      <input type="password" class="form-control" id="password" name="password" required>
-                  </div>
-
-                  <div class="form-group text-center">
-                      <button type="submit" class="btn btn-primary">Login</button>
-                  </div>
-              </form>
-              <div class="text-center">
-                  Not registered? <a href="/register">Sign up</a>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
+    <%- include('../users/layouts/footer.ejs')%>
 
 
-
-
-<%- include('../users//layouts/footer.ejs')%>

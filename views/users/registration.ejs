@@ -1,109 +1,192 @@
 
 <%- include('../users/layouts/header.ejs')%>
-<!-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="signup-container">
-                <h2 class="text-center">Create an Account</h2>
-                <form action="/register" method="POST">
-                    <div class="form-group">
-                        <label for="fname">First Name:</label>
-                        <input type="text" class="form-control" id="fname" name="fname" required>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="fname">Last Name:</label>
-                        <input type="text" class="form-control" id="fname" name="lname" required>
-                    </div>
-                    
 
-                    <div class="form-group">
-                        <label for="email">Email Address:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    
+    .container {
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        padding: 20px;
+        max-width: 100%;
+        width: 450px;
+    }
+    
+    .login-box {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    .input-container {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+    
+    label {
+        display: block;
+        font-weight: bold;
+    }
+    
+    input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    button {
+        background-color: #EC7E3B;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        width: 100%;
+        height: 40px;
+        margin-top: 15px;
+    }
+    
+    button:hover {
+        background-color: #d2631e;
+    }
 
-                    <div class="form-group">
-                        <label for="phone">Phone Number:</label>
-                        <input type="text" class="form-control" id="phone" name="mobile" required>
-                    </div>
+    @media (max-width: 768px) {
+        .container {
+            width: 90%;
+        }
+    }
 
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
+    @media (max-width: 576px) {
+        .container {
+            width: 100%;
+            padding: 10px;
+        }
+        .input-container {
+            margin-bottom: 5px;
+        }
+        button {
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="login-box">
+        <h1>Registration</h1>
+        <div id="error" style="color: red;"></div>
+        <% if(typeof message !== 'undefined') { %>
+            <p style="color: red; font-size: large; font-weight: 300;">
+                <%= message %>
+            </p>
+        <% } %>
 
-                    <div class="form-group">
-                        <label for="confirm-password">Confirm Password:</label>
-                        <input type="password" class="form-control" id="cpassword" name="cpassword" required>
-                        <div id="password-mismatch" class="text-danger text-center" style="display: none;" >Password Don't Match</div>
-                    </div>
-
-                    <div class="form-group text-center">
-                        <input type="submit" class="btn btn-primary" value="Sign Up">
-                    </div>
-                </form>
-                <div class="text-center">
-                    Already have an account? <a href="/login">Sign in</a>
-                </div>
+        <form action="/register" method="POST" id="form">
+            <div class="input-container">
+                <input type="text" id="Fname" name="Fname" placeholder="First Name" required>
             </div>
-        </div>
+            <div class="input-container">
+                <input type="text" id="Lname" name="Lname" placeholder="Last Name" required>
+            </div>
+            <div class="input-container">
+                <input type="email" id="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-container">
+                <input type="text" id="mobile" name="mobile" placeholder="Mobile" required>
+            </div>
+            <div class="input-container">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <div class="input-container">
+                <input type="password" id="Cpassword" name="Cpassword" placeholder="Confirm Password" required>
+            </div>
+
+            <button type="submit">Register</button>
+
+            <div class="text-center">
+                <p>Already Have an Account <a href="/login">Sign in</a></p>
+            </div>
+        </form>
     </div>
-</div> -->
+</div>
 
 
 
-<div class="full-page">
-    <div class="container">
-    <div class="text-center  center-div">
-        <div class="container col-6 py-5 p-4">
-            <div class="title pb-3">
-                <h2>Create a new account</h2>
-                            <!-- <% 
-                            if(typeof message !== 'undefined'){
-                                %>
-                                <div id="invalid-msg" class="alert alert-danger  text-center">
-                                    <h4><%- message %></h4>
-                                </div>
-                                <%
-                            }
-                            %> -->
-             </div>
-    
-            <form action="/register" method="post">
-                <div class="form-group mt-3">
-                    <input type="text" class="form-control" name="Fname" placeholder="Fist Name" required>
-                    <br>
-                    <input type="text" class="form-control" name="Lname" placeholder="Last Name" required>
-                    <br>
-                    <input type="email" class="form-control" name="email" placeholder="Enter email" id="email">
-                    <!-- <p id="email-error" class="error-message"></p> -->
-                    <br>
-                
-                    <input type="text" class="form-control" name="mobile" placeholder="Mobile No" required>
-                    <br>
-                    <input type="password" class="form-control" name="password" placeholder="Enter password" id="password">
-                    <!-- <p id="password-error" class="error-message"></p> -->
-                    <br>
-                    
-                    <input type="password" class="form-control" name="Cpassword" placeholder="Enter password" id="Cpassword">
-                    <!-- <p id="password-error" class="error-message"></p> -->
-                    <p id="password-mismatch" class="alert  text-danger mt-2" style="display: none;">
-                        Passwords do not match. Please try again.
-                    </p>
-                    <br>
-    
-                </div>
-                <br>
-                    <input type="submit" class="btn btn-success rounded-pill" value="Sign Up">
-    
-            </form>
-            <br>
-            <p>Alredy have an account? <a href="/login">Login</a></p>
-    
-        </div>
-    </div>
-    </div>
-    </div>
+<script>
+   
+   const Fname = document.getElementById('Fname')
+   const Lname = document.getElementById('Lname')
+   const email = document.getElementById('email')
+   const mobile = document.getElementById('mobile')
+   const password = document.getElementById('password')
+   const Cpassword = document.getElementById('Cpassword')
+   const from = document.getElementById('form')
+   const errorElement= document.getElementById('error')
+
+
+   from.addEventListener('submit',(e)=>{
+     let messages =[]
+     if(Fname.value === "" || Fname.value === null){
+        messages.push('First name is required')
+     }
+
+     if(Lname.value === "" || Lname.value === null){
+        messages.push('Last name is required')
+     }
+
+     if(password.value.length <=4){
+        messages.push('Password must be longer than 4')
+     }
+
+     if(password.value.length > 8){
+        messages.push('Password must be contain 8 characters')
+     }
+
+     if(mobile.value.length >10|| mobile.value.length< 10){
+        messages.push('Please add valid mobile number')
+     }
+
+     if(email.value.length === "" || email.value.length === null){
+        messages.push("Email is required")
+     }
+
+     if(password.value  != Cpassword.value){
+        message.push('Confirm password and password must be same')
+     }
+
+     if(mobile.value.trim().match( /^[a-zA-Z]+$/ )){
+        messages.push('Mobile number only contains numerical')
+     }
+
+     if(messages.length >0){
+        e.preventDefault()
+        errorElement.innerText = messages.join(', ')
+     }else{
+        messages = []
+     }
+     
+   })
+
+
+</script>
+
+
     
 
 

@@ -1,104 +1,146 @@
 
 <%- include('../users/layouts/header.ejs')%>
-<!-- <style>
+<style>
+    
     body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-
-    .container {
-        text-align: center;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
-        width: 90%;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    input[type="text"] {
-        padding: 10px;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    .submit-button {
-        background-color: #007BFF;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-        .container {
-            width: 80%;
-        }
-    }
-</style>
-</head>
-<body>
-<div class="container">
-    <h2>OTP Verification</h2>
-    <p>Please enter the OTP sent to your mobile number or email.</p>
-    <form action="#" method="POST">
-        <div class="form-group">
-            <label for="otp">OTP:</label>
-            <input type="text" id="otp" name="otp" required>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Verify OTP" class="submit-button">
-        </div>
-    </form>
-</div> -->
-
-
-
-
-<div class="full-page">
-    <div class="container">
-    <div class="text-center  center-div">
-        <div class="container col-6 py-5 p-4">
-            <div class="title pb-3">
-                <h1>OTP Verification</h1>
-                            <% 
-                            if(typeof message !== 'undefined'){
-                                %>
-                                <div id="invalid-msg" class="alert alert-danger text-danger text-center">
-                                    <h4><%- message %></h4>
-                                </div>
-                                <%
-                            }
-                            %>
-             </div>
+     font-family: Arial, sans-serif;
+     background-color: #f0f0f0;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     margin: 0;
+     
+     
+ }
+ 
+ .container {
+     background-color: #f1f1f1;
+     border-radius: 5px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+     text-align: center;
+     padding: 20px;
+     width: 356px;
+     height: 237px;
+ }
+ 
+ .login-box {
+     max-width: 300px;
+     margin: 0 auto;
+ }
+ 
+ h1 {
+     font-size: 24px;
+ }
+ 
+ .input-container {
+     text-align: left;
+     margin-bottom: 10px;
+ }
+ 
+ label {
+     display: block;
+     font-weight: bold;
+ }
+ 
+ input {
+     width: 100%;
+     padding: 10px;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+ }
+ 
+ button {
+     background-color: #EC7E3B;
+     color: #fff;
+     border: none;
+     border-radius: 5px;
+     padding: 10px 20px;
+     cursor: pointer;
+     width: 250px;
+     height: 40px;
+     margin-top: 15px;
+     
+ }
+ 
+ button:hover {
+     background-color: #d2631e;
+ }
+ .timer{
+    margin-top: 15px;
     
-            <form action="/userOtp" method="post">
-                <div class="form-group mt-3">
-                    <input type="text" class="form-control" name="otp" placeholder="Enter OTP" id="email">
-                    <br>
-                </div>
-                <br>
-                    <input type="submit" class="btn btn-primary rounded-pill" value="Verify & Proceed">
+ }
+ </style>
+ </head>
+ <body>
+     <div class="container">
+         <div class="login-box">
+             <h1> Otp Verification</h1>
+            
+             <% 
+             if(typeof message !== 'undefined'){
+                 %>
+                 <div id="invalid-msg" class="alert alert-danger text-danger text-center">
+                     <h4><%- message %></h4>
+                 </div>
+                 <%
+             }
+             %>
+             
+             <form action="/userOtp" method="POST">
+                 <div class="input-container">
+                     <label for="username">Verify Otp</label>
+                     <input type="text" id="otp" name="otp" placeholder="Otp" required>
+                 </div>
+                 
+                 <button type="submit">Verify & Proceed</button>
+                 <p class="text-primary mt-3">Time left: <span id="timer">30</span> seconds</p>
+                 <button class="btn btn-dander" id="resendButton" onclick="resendOTP()"><a href="/resend-otp">Resend OTP</a></button>
+                 
+             </form>
+         </div>
+     </div>
+
+
+
     
-            </form>
-            <br>
-           
-    
-        </div>
-    </div>
-    </div>
-    </div>
+
+
+      <script>
+  let countdown = 30; // Initial countdown value in seconds
+  let timerElement = document.getElementById('timer');
+  let resendButton = document.getElementById('resendButton');
+  let countdownInterval;
+
+  // Function to update the countdown timer
+  function updateTimer() {
+      timerElement.textContent = countdown + ' seconds';
+      countdown--;
+      resendButton.disabled = true;
+      if (countdown < 0) {
+          clearInterval(countdownInterval);
+          timerElement.textContent = '0 seconds';
+          resendButton.disabled = false;
+      }
+  }
+
+  // Function to resend OTP
+  function resendOTP() {
+      // Simulate OTP resend logic here
+      // For example, you can make an API call to send a new OTP
+
+      // Reset the timer
+      countdown = 30;
+      timerElement.textContent = countdown + ' seconds';
+      resendButton.disabled = true;
+
+      // Start the countdown again
+      countdownInterval = setInterval(updateTimer, 1000);
+  }
+
+  // Initial countdown start
+  countdownInterval = setInterval(updateTimer, 1000);
+</script>
+
+      
 <%- include('../users/layouts/footer.ejs')%>

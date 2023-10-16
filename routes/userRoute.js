@@ -21,14 +21,19 @@ userRoute.set("views", "./views/users");
 userRoute.use(express.json());
 userRoute.use(express.urlencoded({ extended: true }));
 
-userRoute.get("/login",userController.loadlogin)
-userRoute.get("/login",userController.loadlogin)
-userRoute.get("/register",userController.loadResgister)
+userRoute.get("/login",userAuth.isLogout,userController.loadlogin)
+userRoute.get("/register",userAuth.isLogout,userController.loadResgister)
 userRoute.post('/register',userController.verifyOtp);
-userRoute.get('/userOtp',userController.loadOtp);
+userRoute.get('/userOtp',userAuth.isLogout,userController.loadOtp);
 userRoute.post('/userOtp',userController.insertUser)
-userRoute.get("/",userController.loadHome)
+userRoute.get('/resend-otp',userController.resendOtp)
+userRoute.get("/",userAuth.isLogout,userController.loadHome)
 userRoute.post("/login",userController.verifyLogin);
+userRoute.get('/forgot-password',userController.loadForgotPassword)
+userRoute.post('/forgot-password',userController.ForgotPassword)
+userRoute.get('/reset-password',userController.resetLoad)
+userRoute.post('/reset-password',userController.resetPassword)
+userRoute.get("/logout",userAuth.isLogin,userController.userLogout)
 
 
 
