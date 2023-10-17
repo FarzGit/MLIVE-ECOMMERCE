@@ -59,23 +59,23 @@ adminRoute.use(
 adminRoute.set("view engine", "ejs");
 adminRoute.set("views", "./views/admin");
 
-adminRoute.get("/",adminAuth.isLogout, adminController.loadAdminLogin);
+adminRoute.get("/", adminController.loadAdminLogin);
 adminRoute.post("/", adminController.verifyAdminLogin);
-adminRoute.get("/home",adminAuth.isLogin, adminController.loadAdminHome);
-adminRoute.get("/category", adminAuth.isLogin,adminController.loadCategoryPage);
-adminRoute.get("/add_category", adminAuth.isLogin,adminController.loadAddCategory);
-adminRoute.post("/add_category", adminAuth.isLogin,adminController.addCategory);
-adminRoute.get("/edit_category", adminAuth.isLogin,adminController.loadEditCategory);
-adminRoute.post("/edit_category", adminAuth.isLogin,adminController.editCategory);
-adminRoute.get("/is_active", adminAuth.isLogin,adminController.listOrNot);
-adminRoute.get("/customer", adminAuth.isLogin,adminController.loadCustomers);
-adminRoute.get("/is_blockedUser", adminAuth.isLogin,adminController.blockUnblock);
+adminRoute.get("/home", adminController.loadAdminHome);
+adminRoute.get("/category",adminController.loadCategoryPage);
+adminRoute.get("/add_category",adminController.loadAddCategory);
+adminRoute.post("/add_category",adminController.addCategory);
+adminRoute.get("/edit_category",adminController.loadEditCategory);
+adminRoute.post("/edit_category",adminController.editCategory);
+adminRoute.get("/is_active",adminController.listOrNot);
+adminRoute.get("/customer",adminController.loadCustomers);
+adminRoute.get("/is_blockedUser",adminController.blockUnblock);
 
-adminRoute.get("/Product",adminAuth.isLogin, productController.loadProducts);
-adminRoute.get("/addProduct",adminAuth.isLogin, productController.loadAddProducts);
-adminRoute.post('/addProduct',adminAuth.isLogin,upload.array("image",2),productController.addProduct)
-adminRoute.get('/editProduct',adminAuth.isLogin,productController.loadEditProduct)
-adminRoute.post("/editProduct",adminAuth.isLogin,upload.array("image",2),productController.editProduct)
-adminRoute.get("/is_activeProduct",adminAuth.isLogin,productController.productListorUnlist)
+adminRoute.get("/Product", productController.loadProducts);
+adminRoute.get("/addProduct", productController.loadAddProducts);
+adminRoute.post('/addProduct',upload.array("image",2),productController.addProduct)
+adminRoute.get('/editProduct',productController.loadEditProduct)
+adminRoute.post("/editProduct",upload.array("image",2),productController.editProduct)
+adminRoute.get("/is_activeProduct",productController.productListorUnlist)
 
 module.exports = adminRoute;

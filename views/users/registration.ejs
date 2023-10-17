@@ -100,25 +100,29 @@
         <form action="/register" method="POST" id="form">
             <div class="input-container">
                 <input type="text" id="Fname" name="Fname" placeholder="First Name" required>
+                <span class="error-message"></span>
             </div>
             <div class="input-container">
                 <input type="text" id="Lname" name="Lname" placeholder="Last Name" required>
+                <span class="error-message"></span>
             </div>
             <div class="input-container">
                 <input type="email" id="email" name="email" placeholder="Email" required>
+                <span class="error-message"></span>
             </div>
             <div class="input-container">
                 <input type="text" id="mobile" name="mobile" placeholder="Mobile" required>
+                <span class="error-message"></span>
             </div>
             <div class="input-container">
                 <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="error-message"></span>
             </div>
             <div class="input-container">
                 <input type="password" id="Cpassword" name="Cpassword" placeholder="Confirm Password" required>
+                <span class="error-message"></span>
             </div>
-
             <button type="submit">Register</button>
-
             <div class="text-center">
                 <p>Already Have an Account <a href="/login">Sign in</a></p>
             </div>
@@ -128,8 +132,10 @@
 
 
 
-<script>
-   
+<!-- <script>
+
+    
+   const form = document.getElementById('form')
    const Fname = document.getElementById('Fname')
    const Lname = document.getElementById('Lname')
    const email = document.getElementById('email')
@@ -184,6 +190,90 @@
    })
 
 
+</script> -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('form');
+        const fnameInput = document.getElementById('Fname');
+        const lnameInput = document.getElementById('Lname');
+        const emailInput = document.getElementById('email');
+        const mobileInput = document.getElementById('mobile');
+        const passwordInput = document.getElementById('password');
+        const cpasswordInput = document.getElementById('Cpassword');
+        const errorMessages = document.querySelectorAll('.error-message');
+        
+        form.addEventListener('submit', function (event) {
+            let isValid = true;
+            errorMessages.forEach(function (element) {
+                element.innerText = '';
+            });
+            
+            if (fnameInput.value.trim() === '') {
+                errorMessages[0].innerText = 'First Name is required.';
+                isValid = false;
+            }
+            
+            if (lnameInput.value.trim() === '') {
+                errorMessages[1].innerText = 'Last Name is required.';
+                isValid = false;
+            }
+            
+            if (emailInput.value.trim() === '') {
+                errorMessages[2].innerText = 'Email is required.';
+                isValid = false;
+            }
+            
+            if (mobileInput.value.trim() === '') {
+                errorMessages[3].innerText = 'Mobile is required.';
+                isValid = false;
+            }
+            
+            if (passwordInput.value === '') {
+                errorMessages[4].innerText = 'Password is required.';
+                isValid = false;
+            }
+            
+            if (cpasswordInput.value === '') {
+                errorMessages[5].innerText = 'Confirm Password is required.';
+                isValid = false;
+            }
+            
+            if (passwordInput.value !== cpasswordInput.value) {
+                errorMessages[4].innerText = 'Passwords do not match.';
+                errorMessages[5].innerText = 'Passwords do not match.';
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+        
+        // Real-time validation (optional)
+        fnameInput.addEventListener('input', function () {
+            errorMessages[0].innerText = '';
+        });
+        
+        lnameInput.addEventListener('input', function () {
+            errorMessages[1].innerText = '';
+        });
+        
+        emailInput.addEventListener('input', function () {
+            errorMessages[2].innerText = '';
+        });
+        
+        mobileInput.addEventListener('input', function () {
+            errorMessages[3].innerText = '';
+        });
+        
+        passwordInput.addEventListener('input', function () {
+            errorMessages[4].innerText = '';
+        });
+        
+        cpasswordInput.addEventListener('input', function () {
+            errorMessages[5].innerText = '';
+        });
+    });
 </script>
 
 

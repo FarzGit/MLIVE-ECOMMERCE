@@ -36,6 +36,9 @@ userRoute.get('/reset-password',userController.resetLoad)
 userRoute.post('/reset-password',userController.resetPassword)
 userRoute.get("/logout",userController.userLogout)
 
+userRoute.get('/shop',userController.loadShop)
+userRoute.get("/productDetails",userController.loadProductDetails)
+
 
 
 

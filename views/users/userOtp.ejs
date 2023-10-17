@@ -85,21 +85,21 @@
     <body>
         <div class="container">
             <div class="login-box">
-                <h1> Otp Verification</h1>
+                <h1> OTP VERIFICATION</h1>
                 <% if(typeof message !=='undefined' ){ %>
-                    <div id="invalid-msg" class="alert alert-danger text-danger text-center">
-                        <h4><%- message %></h4>
+                    <div id="invalid-msg" class="alert  text-danger text-center">
+                        <h5><%- message %></h5>
                     </div>
                     <% } %>
                         <form action="/userOtp" method="POST">
                             <div class="input-container">
                                 <label for="username">Verify Otp</label>
-                                <input type="text" id="otp" name="otp" placeholder="Otp" required>
+                                <input type="text" id="otp" name="otp" placeholder="Enter Otp" required>
                             </div>
 
                             <button type="submit">Verify & Proceed</button>
                             <p class="text-primary mt-3">Time left: <span id="timer">30</span> seconds</p>
-                            <button class="btn btn-danger" id="resendButton" onclick="resendOTP()"><a
+                            <button class="btn " id="resendButton" onclick="resendOTP()"><a
                                     href="/resend-otp">Resend OTP</a></button>
 
                         </form>
@@ -146,6 +146,17 @@
 
         // Initial countdown start
         countdownInterval = setInterval(updateTimer, 1000);
+
+
+        // This code will execute after the HTML has been rendered.
+  setTimeout(function () {
+    // Your code to hide the message after a delay goes here
+    var invalidMsg = document.getElementById("invalid-msg");
+    if (invalidMsg) {
+      invalidMsg.style.display = "none";
+    }
+  }, 3000); // 3000 milliseconds (3 seconds) delay
+
     </script>
 
 

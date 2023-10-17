@@ -7,6 +7,8 @@ const config = require("./config/config");
 const session =require("express-session")
 const dotenv = require('dotenv')
 
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
 dotenv.config()
 mongoose.connect(process.env.MONGO_DB);

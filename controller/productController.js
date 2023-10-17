@@ -1,3 +1,4 @@
+
 const productDb = require('../models/productModel')
 const User = require('../models/userModel')
 const categoryDb = require('../models/categoryModel')
@@ -5,7 +6,8 @@ const adminDb = require('../models/adminModel')
 const sharp = require('sharp')
 const path = require("path");
 const { log } = require('console')
-// const {ObjectId} = require('mongodb')
+
+const {ObjectId} = require('mongodb')
 
 
 
@@ -15,7 +17,7 @@ const loadProducts = async (req, res) => {
    
       const products = await productDb.find({});
   
-     
+     console.log('products'+products);
       res.render('Products', { product : products});
     } catch (error) {
       console.error(error);
@@ -67,6 +69,7 @@ const loadProducts = async (req, res) => {
       
    
       const result = await newProduct.save()
+      console.log('result'+result);
       console.log(result);
       res.redirect('/admin/addProduct')
 
@@ -137,9 +140,17 @@ const editProduct = async (req,res)=>{
 
 const productListorUnlist = async (req,res)=>{
   try{
-    const id = req.body.id;
+
+    console.log("hallo");
+    const id = req.query.id;
+    
+
+    console.log(id);
+
+    
 
     const productData = await productDb.findById({ _id: id });
+    console.log(productData);
 
     if (productData.is_active === true) {
       const List= await productDb.updateOne(
@@ -150,7 +161,7 @@ const productListorUnlist = async (req,res)=>{
       if(List){
         req.session.product_id = false;
       }
-      res,redirect("/admin/Product")
+      res.redirect("/admin/Product")
     }
     if(productData.is_active===false){
       await productDb.updateOne(

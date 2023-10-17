@@ -15,33 +15,33 @@
                 <!-- <a href="">
                   <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
                 </a> -->
-                <h6 class="text-white text-capitalize ps-3">PRODUCT</h6>
+                <h6 class="text-white text-capitalize ps-3"> EDIT PRODUCT</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
               <div class="table-responsive p-0">
-                <form class="forms-sample" action="/admin/editProduct" method="post" enctype="multipart/form-data">
+                <form class="forms-sample" action="/admin/editProduct" method="post" enctype="multipart/form-data" style="background-color: #344767;">
 
                   <input type="hidden" name="id" value="<%=product._id%>">
 
                   <div class="form-group row">
-                    <div class="col-6 text-light">
-                      <label for="exampleInputName1">Product Name</label>
-                      <input type="text" class="form-control text-dark" name="productName" id="exampleInputName1"
-                        placeholder="Name" value="<%=product.productName%>" required>
+                    <div class="col-6 ">
+                      <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #ffffff;">Product Name</label>
+                      <input type="text" class="form-control text-white" name="productName" id="exampleInputName1"
+                        placeholder="Name" value="<%=product.productName%>" style="background-color: rgb(13, 30, 59);" required>
                     </div>
                     <div class="col-6">
-                      <label for="exampleInputName1">Price</label>
-                      <input type="number" class="form-control text-light" id="exampleInputName1" name="price"
-                        placeholder="price" value="<%=product.price%>" required>
+                      <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #ffffff;">Price</label>
+                      <input type="number" class="form-control text-white" id="exampleInputName1" name="price"
+                        placeholder="price" value="<%=product.price%>" style="background-color: rgb(13, 30, 59);" required>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
                         <div class="col-sm-12">
-                          <label class="col-sm-3 col-form-label">Category</label>
-                          <select name="category" class="form-control text-light" required>
+                          <label class="col-sm-3 col-form-label" class="font-weight-bold pl-3" style="color: #ffffff;">Category</label>
+                          <select name="category" class="form-control text-white" style="background-color: rgb(13, 30, 59);" required>
                             <option value="<%=product.category%>" disabled selected>Select Category</option>
                             <% for(let i=0;i< cartData.length;i++){ %>
                             <option>
@@ -54,24 +54,24 @@
                     </div>
                   </div>
                   <div class="col-6">
-                    <label for="exampleInputName1">status</label>
-                    <input type="text" class="form-control text-dark" id="exampleInputName1" name="status"
-                      placeholder="status" value="<%=product.status%>" required>
+                    <label for="exampleInputName1" class="font-weight-bold pl-1" style="color: #ffffff;">status</label>
+                    <input type="text" class="form-control text-white " id="exampleInputName1" name="status"
+                      placeholder="status" value="<%=product.status%>" style="background-color: rgb(13, 30, 59);" required>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
                         <div class="col-sm-12">
-                          <label class="col-sm-3 col-form-label">quantity</label>
-                          <input type="number" class="form-control text-light" id="exampleInputName1" name="quantity"
-                            placeholder="Enter quantity" value="<%=product.quantity%>" required>
+                          <label class="col-sm-3 col-form-label" class="font-weight-bold pl-3" style="color: #ffffff;">quantity</label>
+                          <input type="number" class="form-control text-white" id="exampleInputName1" name="quantity"
+                            placeholder="Enter quantity" value="<%=product.quantity%>" style="background-color: rgb(13, 30, 59);" required>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="form-group mt-2">
-                    <label for="exampleTextarea1">Description</label>
-                    <textarea name="description" class="form-control text-light" id="exampleTextarea1" rows="4" required></textarea>
+                    <label for="exampleTextarea1" class="font-weight-bold pl-3 " style="color: #ffffff;">Description</label>
+                    <textarea name="description" class="form-control text-white " id="exampleTextarea1" rows="4" style="background-color: rgb(13, 30, 59);" required></textarea>
                   </div>
                   <div class="rounded product-img-preview">
                     <!-- <label class="col-sm-3 col-form-label">Images</label> -->
@@ -87,7 +87,7 @@
                     </div>
                   </div>
                  
-                  <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add product</button>
+                  <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Update product</button>
                 </form>
               </div>
             </div>

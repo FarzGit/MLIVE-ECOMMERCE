@@ -4,6 +4,9 @@ const nodemailer = require("nodemailer");
 const randomstring = require("randomstring");
 const config = require("../config/config");
 const otpGenerator = require("otp-generator");
+const productDb = require('../models/productModel')
+const categoryDb = require('../models/categoryModel');
+const { AwsInstance } = require("twilio/lib/rest/accounts/v1/credential/aws");
 
 // require("dotenv").config();
 // ==============================================================SECURING THE PASSWORD================================================================
@@ -255,16 +258,7 @@ const verifyLogin = async (req, res) => {
   }
 };
 
-// ==============================================================LOADING THE HOME PAGE ================================================================
 
-
-const loadHome = async (req, res) => {
-  try {
-    res.render("home");
-  } catch (error) {
-    console.log(error.message);
-  }
-};
 
 // ==============================================================USER LOGOUT========================================================================
 
@@ -395,6 +389,70 @@ const resetPassword = async (req, res) => {
   }
 };
 
+
+
+// ==============================================================LOADING THE HOME PAGE ================================================================
+
+
+const loadHome = async (req, res) => {
+  try {
+
+ 
+   
+    res.render('home')
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
+
+// ==============================================================load Shop Details==================================================================
+
+
+const loadShop = async(req,res)=>{
+  try{
+    
+  
+    const categoryDetails = await categoryDb.find({})
+    const products = await productDb.find({is_active:true})
+
+    res.render('shop',{catData:categoryDetails,product:products})
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+
+
+// ==============================================================load ProductDetails================================================================
+
+const loadProductDetails = async(req,res)=>{
+  try{
+      console.log("haloo");
+    const id = req.query.id
+    console.log(id);
+    const products = await productDb.findById({_id:id})
+
+    res.render('productDetails',{product:products})
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+
+
+
+
+
+
+
+
 module.exports = {
   loadlogin,
   loadResgister,
@@ -410,4 +468,6 @@ module.exports = {
   userLogout,
   resetLoad,
   resetPassword,
+  loadProductDetails,
+  loadShop
 };

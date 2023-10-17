@@ -41,8 +41,8 @@
                       <% for (let i = 0; i < product.length; i++) { %>
                         <tr>
                           <td class="text-center">
-                            <img class="rounded product-img-preview"
-                            src="/public/adminAssets/images/<%=product[0].image%>" alt="pImage">
+                            <img style="height: 70px; width: 70px ; border-radius: 0%;"
+                            src="/static/adminAssets/images/<%= product[i].image[0] %>" alt="">
                           </td>
                           <td style="color: aliceblue;" class="text-center">
                             <%= product[i].productName %>
@@ -64,11 +64,11 @@
                           </td>
                           <td><a href= "/admin/editProduct?id=<%= product[i]._id%>"><button type="button" class="btn btn-primary btn-sm" style="color: rgb(255, 255, 255);">Edit</button></a></td>
                           <td>
-                           <% if( product.is_active === true){ %>
-                             <a href="/admin/is_activeProduct?id=<%= product._id %>">
+                           <% if( product[i].is_active === true){ %>
+                             <a href="/admin/is_activeProduct?id=<%= product[i]._id %>">
                            <button type="button" class="btn btn-success btn-md">List</button></a>
                              <% }else{ %>
-                               <a href="/admin/is_activeProduct?id=<%= product._id %>">
+                               <a href="/admin/is_activeProduct?id=<%= product[i]._id %>">
                                  <button type="button" class="btn btn-outline-secondary btn-md">Unlist</button></a>
                                <%}%>
                           </td>
