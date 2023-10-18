@@ -1460,8 +1460,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   background-color: rgba(0,0,0,0.9);
 }
 
-.prev-slick3 {left: -98px;}
-.next-slick3 {right: 110px;}
+.prev-slick3 {left: 7px;}
+.next-slick3 {right: 7px;}
 
 /*---------------------------------------------*/
 .wrap-slick3-dots {

@@ -79,10 +79,12 @@
         .input-container {
             margin-bottom: 5px;
         }
-        button {
+        .button {
             width: 100%;
             margin-top: 10px;
         }
+    
+        
     }
 </style>
 </head>
@@ -99,28 +101,28 @@
 
         <form action="/register" method="POST" id="form">
             <div class="input-container">
-                <input type="text" id="Fname" name="Fname" placeholder="First Name" required>
-                <span class="error-message"></span>
+                <input type="text" id="Fname" name="Fname" placeholder="First Name" >
+                <span class="error-message" style="color: red;"></span>
             </div>
             <div class="input-container">
-                <input type="text" id="Lname" name="Lname" placeholder="Last Name" required>
-                <span class="error-message"></span>
+                <input type="text" id="Lname" name="Lname" placeholder="Last Name" >
+                <span class="error-message" style="color: red;"></span>
             </div>
             <div class="input-container">
-                <input type="email" id="email" name="email" placeholder="Email" required>
-                <span class="error-message"></span>
+                <input type="email" id="email" name="email" placeholder="Email" >
+                <span class="error-message" style="color: red;" ></span>
             </div>
             <div class="input-container">
-                <input type="text" id="mobile" name="mobile" placeholder="Mobile" required>
-                <span class="error-message"></span>
+                <input type="text" id="mobile" name="mobile" placeholder="Mobile" >
+                <span class="error-message" style="color: red;"></span>
             </div>
             <div class="input-container">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <span class="error-message"></span>
+                <input type="password" id="password" name="password" placeholder="Password" >
+                <span class="error-message" style="color: red;"></span>
             </div>
             <div class="input-container">
-                <input type="password" id="Cpassword" name="Cpassword" placeholder="Confirm Password" required>
-                <span class="error-message"></span>
+                <input type="password" id="Cpassword" name="Cpassword" placeholder="Confirm Password" >
+                <span class="error-message" style="color: red;"></span>
             </div>
             <button type="submit">Register</button>
             <div class="text-center">
@@ -131,66 +133,6 @@
 </div>
 
 
-
-<!-- <script>
-
-    
-   const form = document.getElementById('form')
-   const Fname = document.getElementById('Fname')
-   const Lname = document.getElementById('Lname')
-   const email = document.getElementById('email')
-   const mobile = document.getElementById('mobile')
-   const password = document.getElementById('password')
-   const Cpassword = document.getElementById('Cpassword')
-   const from = document.getElementById('form')
-   const errorElement= document.getElementById('error')
-
-
-   from.addEventListener('submit',(e)=>{
-     let messages =[]
-     if(Fname.value === "" || Fname.value === null){
-        messages.push('First name is required')
-     }
-
-     if(Lname.value === "" || Lname.value === null){
-        messages.push('Last name is required')
-     }
-
-     if(password.value.length <=4){
-        messages.push('Password must be longer than 4')
-     }
-
-     if(password.value.length > 8){
-        messages.push('Password must be contain 8 characters')
-     }
-
-     if(mobile.value.length >10|| mobile.value.length< 10){
-        messages.push('Please add valid mobile number')
-     }
-
-     if(email.value.length === "" || email.value.length === null){
-        messages.push("Email is required")
-     }
-
-     if(password.value  != Cpassword.value){
-        message.push('Confirm password and password must be same')
-     }
-
-     if(mobile.value.trim().match( /^[a-zA-Z]+$/ )){
-        messages.push('Mobile number only contains numerical')
-     }
-
-     if(messages.length >0){
-        e.preventDefault()
-        errorElement.innerText = messages.join(', ')
-     }else{
-        messages = []
-     }
-     
-   })
-
-
-</script> -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('form');
@@ -203,51 +145,56 @@
         const errorMessages = document.querySelectorAll('.error-message');
         
         form.addEventListener('submit', function (event) {
-            let isValid = true;
-            errorMessages.forEach(function (element) {
-                element.innerText = '';
-            });
-            
-            if (fnameInput.value.trim() === '') {
-                errorMessages[0].innerText = 'First Name is required.';
-                isValid = false;
-            }
-            
-            if (lnameInput.value.trim() === '') {
-                errorMessages[1].innerText = 'Last Name is required.';
-                isValid = false;
-            }
-            
-            if (emailInput.value.trim() === '') {
-                errorMessages[2].innerText = 'Email is required.';
-                isValid = false;
-            }
-            
-            if (mobileInput.value.trim() === '') {
-                errorMessages[3].innerText = 'Mobile is required.';
-                isValid = false;
-            }
-            
-            if (passwordInput.value === '') {
-                errorMessages[4].innerText = 'Password is required.';
-                isValid = false;
-            }
-            
-            if (cpasswordInput.value === '') {
-                errorMessages[5].innerText = 'Confirm Password is required.';
-                isValid = false;
-            }
-            
-            if (passwordInput.value !== cpasswordInput.value) {
-                errorMessages[4].innerText = 'Passwords do not match.';
-                errorMessages[5].innerText = 'Passwords do not match.';
-                isValid = false;
-            }
-            
-            if (!isValid) {
-                event.preventDefault(); // Prevent form submission
-            }
+    event.preventDefault(); // Prevent form submission initially
+
+    setTimeout(function () {
+        let isValid = true;
+        errorMessages.forEach(function (element) {
+            element.innerText = '';
         });
+
+        if (fnameInput.value.trim() === '') {
+            errorMessages[0].innerText = 'First Name is required.';
+            isValid = false;
+        }
+
+        if (lnameInput.value.trim() === '') {
+            errorMessages[1].innerText = 'Last Name is required.';
+            isValid = false;
+        }
+
+        if (emailInput.value.trim() === '') {
+            errorMessages[2].innerText = 'Email is required.';
+            isValid = false;
+        }
+
+        if (mobileInput.value.trim() === '') {
+            errorMessages[3].innerText = 'Mobile is required.';
+            isValid = false;
+        }
+
+        if (passwordInput.value === '') {
+            errorMessages[4].innerText = 'Password is required.';
+            isValid = false;
+        }
+
+        if (cpasswordInput.value === '') {
+            errorMessages[5].innerText = 'Confirm Password is required.';
+            isValid = false;
+        }
+
+        if (passwordInput.value !== cpasswordInput.value) {
+            errorMessages[4].innerText = 'Passwords do not match.';
+            errorMessages[5].innerText = 'Passwords do not match.';
+            isValid = false;
+        }
+
+        if (isValid) {
+            // If everything is valid after the delay, submit the form
+            form.submit();
+        }
+    }, 5000); // 5000 milliseconds = 5 seconds
+});
         
         // Real-time validation (optional)
         fnameInput.addEventListener('input', function () {

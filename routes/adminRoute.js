@@ -73,9 +73,9 @@ adminRoute.get("/is_blockedUser",adminController.blockUnblock);
 
 adminRoute.get("/Product", productController.loadProducts);
 adminRoute.get("/addProduct", productController.loadAddProducts);
-adminRoute.post('/addProduct',upload.array("image",2),productController.addProduct)
+adminRoute.post('/addProduct',upload.array("image",4),productController.addProduct)
 adminRoute.get('/editProduct',productController.loadEditProduct)
-adminRoute.post("/editProduct",upload.array("image",2),productController.editProduct)
+adminRoute.post("/editProduct",upload.array("image",4),productController.editProduct)
 adminRoute.get("/is_activeProduct",productController.productListorUnlist)
 
 module.exports = adminRoute;

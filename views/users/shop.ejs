@@ -2,6 +2,7 @@
 <%- include('../users/mainLayout/mainHeader.ejs')%>
 
 
+
 <section class="bg0 p-t-23 p-b-130">
     <div class="container">
         <div class="p-b-10">
@@ -153,73 +154,7 @@
                         </ul>
                     </div>
     
-                    <!-- <div class="filter-col3 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Color
-                        </div>
-    
-                        <ul>
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #222;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-    
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Black
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-    
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Blue
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-    
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Grey
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-    
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Green
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-    
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Red
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
-                                    <i class="zmdi zmdi-circle-o"></i>
-                                </span>
-    
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    White
-                                </a>
-                            </li>
-                        </ul>
-                    </div> -->
+                    
     
                     <div class="filter-col4 p-b-27">
                         <div class="mtext-102 cl2 p-b-15">
@@ -259,7 +194,7 @@
                     
                         <div class="block2-pic hov-img0 d-flex align-items-center " style=" height: 323px; background-color: #F7F7F7;" >
                        
-                            <img style="width: 300px; height: 150px;" src="/static/adminAssets/images/<%= product.image[0] %>" alt="IMG-PRODUCT">
+                            <img style="width: 300px; height: 319px;" src="/static/adminAssets/images/<%= product.image[0] %>" alt="IMG-PRODUCT">
                     
                             <a href="/productDetails?id=<%= product._id %>" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                 Quick View
@@ -268,13 +203,16 @@
                     
                         <div class="block2-txt flex-w flex-t p-t-14">
                             <div class="block2-txt-child1 flex-col-l">
+                                <span class="stext-105 cl3">
+                                    <%= product.brand %>
+                                </span>
                                 <a href="" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                     <%= product.productName %>
                                      
                                 </a>
                     
                                 <span class="stext-105 cl3">
-                                    <%= product.price %>
+                                    <span>&#8377 </span><%= product.price %>
                                 </span>
                             </div>
                     
@@ -294,6 +232,27 @@
         </div>
     
         <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" style="justify-content: center;">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Pagination End -->
         
     </div>
     </section>

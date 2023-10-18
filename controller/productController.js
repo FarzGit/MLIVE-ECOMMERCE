@@ -48,6 +48,7 @@ const loadProducts = async (req, res) => {
       const price = req.body.price
       const status = req.body.status
       const quantity = req.body.quantity
+      const brand = req.body.brand
 
       const image =[]
 
@@ -62,6 +63,7 @@ const loadProducts = async (req, res) => {
         price:price,
         status:status,
         quantity:quantity,
+        brand:brand,
         image:image
 
       })
@@ -109,6 +111,7 @@ const editProduct = async (req,res)=>{
       const price = req.body.price
       const status = req.body.status
       const quantity = req.body.quantity
+      const brand = req.body.brand
 
       const image =[]
 
@@ -123,6 +126,7 @@ const editProduct = async (req,res)=>{
           price:price,
           status:status,
           quantity:quantity,
+          brand:brand,
           image:image
         }})
 

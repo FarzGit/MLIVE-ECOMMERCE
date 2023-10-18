@@ -437,7 +437,9 @@ const loadProductDetails = async(req,res)=>{
     console.log(id);
     const products = await productDb.findById({_id:id})
 
+    console.log(products);
     res.render('productDetails',{product:products})
+    
 
   }catch(error){
     console.log(error);
