@@ -58,7 +58,7 @@
                           <td style="color: aliceblue;" class="text-center">
                             <%= product[i].quantity %>
                           </td>
-                          <td style="color: aliceblue;" class="text-center">
+                          <td style="color: aliceblue; " class="text-center">
                             <%= product[i].description %>
                           </td>
                           <td style="color: aliceblue;" class="text-center">
@@ -78,6 +78,30 @@
                       <% } %>
                     </tbody>
                   </table>
+                  <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+              <a class="page-link" href="/Product?page=<%= currentPage - 1 %>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <% for (let i = 1; i <= pages; i++) { %>
+              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="/Product?page=<%= i %>"><%= i %></a>
+              </li>
+            <% } %>
+            <li class="page-item <%= currentPage === pages ? 'disabled' : '' %>">
+              <a class="page-link" href="/Product?page=<%= currentPage + 1 %>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Pagination End -->
                 </div>
               </div>
             </div>

@@ -13,16 +13,36 @@ const {ObjectId} = require('mongodb')
 
 
 const loadProducts = async (req, res) => {
-    try {
-   
-      const products = await productDb.find({});
-  
-     console.log('products'+products);
-      res.render('Products', { product : products});
-    } catch (error) {
-      console.error(error);
+  try {
+    const perPage = 8; // Number of products per page
+    let page = parseInt(req.query.page) || 1;
+    const totalProducts = await productDb.countDocuments({});
+    const totalPages = Math.ceil(totalProducts / perPage);
+
+    if (page < 1) {
+      page = 1;
+    } else if (page > totalPages) {
+      page = totalPages;
     }
-  };
+
+    const products = await productDb
+      .find({})
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    console.log('products', products);
+
+    res.render('Products', {
+      product: products,
+      currentPage: page,
+      pages: totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 
 
   const loadAddProducts =async(req,res)=>{

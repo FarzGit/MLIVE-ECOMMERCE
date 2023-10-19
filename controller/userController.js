@@ -428,7 +428,7 @@ const loadShop = async (req, res) => {
     }
 
     const products = await productDb
-      .find({ is_active: true })
+      .find({})
       .skip((page - 1) * perPage)
       .limit(perPage);
 

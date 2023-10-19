@@ -143,85 +143,92 @@
         const passwordInput = document.getElementById('password');
         const cpasswordInput = document.getElementById('Cpassword');
         const errorMessages = document.querySelectorAll('.error-message');
-        
+    
         form.addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form submission initially
-
-    setTimeout(function () {
-        let isValid = true;
-        errorMessages.forEach(function (element) {
-            element.innerText = '';
+            event.preventDefault(); // Prevent form submission initially
+    
+            setTimeout(function () {
+                let isValid = true;
+                errorMessages.forEach(function (element) {
+                    element.innerText = '';
+                });
+    
+                if (fnameInput.value.trim() === '') {
+                    errorMessages[0].innerText = 'First Name is required.';
+                    isValid = false;
+                }
+    
+                if (lnameInput.value.trim() === '') {
+                    errorMessages[1].innerText = 'Last Name is required.';
+                    isValid = false;
+                }
+    
+                if (emailInput.value.trim() === '') {
+                    errorMessages[2].innerText = 'Email is required.';
+                    isValid = false;
+                }
+    
+                if (mobileInput.value.trim() === '') {
+                    errorMessages[3].innerText = 'Mobile is required.';
+                    isValid = false;
+                } else if (!/^\d+$/.test(mobileInput.value.trim())) {
+                    errorMessages[3].innerText = 'Mobile must contain only numbers.';
+                    isValid = false;
+                }
+    
+                if (passwordInput.value.length < 5) {
+                    errorMessages[4].innerText = 'Password must be at least 5 characters long.';
+                    isValid = false;
+                } else if (!/[^a-zA-Z0-9]/.test(passwordInput.value)) {
+                    errorMessages[4].innerText = 'Password must contain at least one special character.';
+                    isValid = false;
+                }
+    
+                if (cpasswordInput.value === '') {
+                    errorMessages[5].innerText = 'Confirm Password is required.';
+                    isValid = false;
+                }
+    
+                if (passwordInput.value !== cpasswordInput.value) {
+                    errorMessages[4].innerText = 'Passwords do not match.';
+                    errorMessages[5].innerText = 'Passwords do not match.';
+                    isValid = false;
+                }
+    
+                if (isValid) {
+                    // If everything is valid after the delay, submit the form
+                    form.submit();
+                }
+            }, ); // 5000 milliseconds = 5 seconds
         });
-
-        if (fnameInput.value.trim() === '') {
-            errorMessages[0].innerText = 'First Name is required.';
-            isValid = false;
-        }
-
-        if (lnameInput.value.trim() === '') {
-            errorMessages[1].innerText = 'Last Name is required.';
-            isValid = false;
-        }
-
-        if (emailInput.value.trim() === '') {
-            errorMessages[2].innerText = 'Email is required.';
-            isValid = false;
-        }
-
-        if (mobileInput.value.trim() === '') {
-            errorMessages[3].innerText = 'Mobile is required.';
-            isValid = false;
-        }
-
-        if (passwordInput.value === '') {
-            errorMessages[4].innerText = 'Password is required.';
-            isValid = false;
-        }
-
-        if (cpasswordInput.value === '') {
-            errorMessages[5].innerText = 'Confirm Password is required.';
-            isValid = false;
-        }
-
-        if (passwordInput.value !== cpasswordInput.value) {
-            errorMessages[4].innerText = 'Passwords do not match.';
-            errorMessages[5].innerText = 'Passwords do not match.';
-            isValid = false;
-        }
-
-        if (isValid) {
-            // If everything is valid after the delay, submit the form
-            form.submit();
-        }
-    }, 5000); // 5000 milliseconds = 5 seconds
-});
-        
+    
         // Real-time validation (optional)
         fnameInput.addEventListener('input', function () {
             errorMessages[0].innerText = '';
         });
-        
+    
         lnameInput.addEventListener('input', function () {
             errorMessages[1].innerText = '';
         });
-        
+    
         emailInput.addEventListener('input', function () {
             errorMessages[2].innerText = '';
         });
-        
+    
         mobileInput.addEventListener('input', function () {
             errorMessages[3].innerText = '';
         });
-        
+    
         passwordInput.addEventListener('input', function () {
             errorMessages[4].innerText = '';
         });
-        
+    
         cpasswordInput.addEventListener('input', function () {
             errorMessages[5].innerText = '';
         });
     });
-</script>
+    </script>
+    
 
 
     
