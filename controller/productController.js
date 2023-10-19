@@ -73,7 +73,7 @@ const loadProducts = async (req, res) => {
       const result = await newProduct.save()
       console.log('result'+result);
       console.log(result);
-      res.redirect('/admin/addProduct')
+      res.redirect('/admin/Product')
 
   }catch(error){
     console.log(error);
@@ -102,8 +102,9 @@ const loadEditProduct = async (req, res) => {
 
 const editProduct = async (req,res)=>{
   try{
-
+           console.log(req.body);
      const id = req.body.id
+     console.log(id);
     
     const productName = req.body.productName
       const category = req.body.category
@@ -129,6 +130,7 @@ const editProduct = async (req,res)=>{
           brand:brand,
           image:image
         }})
+        console.log(req.body);
 
         if(result){
           res.redirect('/admin/Product')

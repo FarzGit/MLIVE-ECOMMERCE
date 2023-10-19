@@ -1,5 +1,12 @@
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
+<style>
+    .custom-input {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+</style>
 
 
 <div class="container-fluid">
@@ -8,16 +15,22 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="text-center">Admin Login</h3>
-                </div>
+                    <!-- <div id="error" style="color: red;"></div> -->
+                    <% if (typeof message !== 'undefined') { %>
+                        <p id="errorMessage" style="color: red; font-size: large; font-weight: 300; text-align: center; display: block; margin: 0 auto;">
+                            <%= message %>
+                        </p>
+                    <% } %>
+                <!-- </div> -->
                 <div class="card-body">
                     <form action="/admin" method="post">
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" name="email" required>
+                            <label for="email" style="color: black;">Email</label>
+                            <input type="text" class="form-control custom-input" id="email" name="email" placeholder="Enter email" required>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <label for="password" style="color: black;">Password</label>
+                            <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter password" required>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
@@ -26,6 +39,21 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+   
+    let errorMessage = document.getElementById('errorMessage');
+    if (errorMessage) {
+        
+        setTimeout(function () {
+            errorMessage.style.display = 'none'; 
+        }, 5000); 
+    }
+</script>
+
+
 
 
 <%- include("../admin/layouts/adminFooter.ejs") %>

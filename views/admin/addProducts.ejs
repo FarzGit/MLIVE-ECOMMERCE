@@ -1,189 +1,207 @@
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
+<style>
+  .form-style {
+    width: 550px;
+    height: 42px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 15px;
+  }
+</style>
 
-  <body class="g-sidenav-show  bg-gray-200">
-    <%- include("../admin/layouts/adminSideBar.ejs") %>
-      <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-        <!-- Navbar -->
-        <%- include("../admin/layouts/adminNavBar.ejs") %>
-          <!-- End Navbar -->
-          <div class="container-fluid py-4">
-            <div class="row">
-              <div class="col-12 , elemDesign">
-                <div class="card my-4">
-                  <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
-                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-
-                      <h6 class="text-white text-capitalize ps-3">ADD PRODUCT</h6>
-                    </div>
-                  </div>
-                  <div class="card-body px-0 pb-2 ">
-
-                      <form class="forms-sample " action="/admin/addproduct" method="post"
-                        enctype="multipart/form-data" style="background-color: #344767;">
-
-                        <div class="form-group  row">
-                          <div class="col-6  text-dark">
-                            <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #ffffff;">Product Name</label>
-                            <input type="text" class="form-control  " name="productName" id="exampleInputName1"
-                              placeholder="Name"  style="background-color: rgb(13, 30, 59);padding-left: 15px;" required>
-                          </div>
-                          <div class="col-6">
-                            <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #ffffff;">Price</label>
-                            <input type="number" class="form-control " id="exampleInputName1" name="price"
-                              placeholder="price" style="background-color: rgb(13, 30, 59);" required>
-                          </div>
-
-                        </div>
-                        <div class="col-6  text-dark">
-                          <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #ffffff;">Brand</label>
-                          <input type="text" class="form-control  " name="brand" id="exampleInputName1"
-                            placeholder="brand"  style="background-color: rgb(13, 30, 59);padding-left: 15px;" required>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <div class="col-sm-12">
-                                <label class="col-sm-3 col-form-label" class="font-weight-bold pl-3" style="color: #ffffff;">Category</label>
-                                <select name="category" class="form-control" style="background-color: rgb(13, 30, 59);" required>
-                                  <option value="" disabled selected  >Select Category</option>
-                                  <% for(let i=0;i< cartData.length;i++){ %>
-                                    <option>
-                                      <%= cartData[i].name %>
-                                    </option>
-                                    <% } %>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-
-                        <div class="col-6">
-                          <label for="exampleInputName1" class="font-weight-bold pl-1" style="color: #ffffff;">status</label>
-                          <input type="text" class="form-control text-dark" id="exampleInputName1" name="status"
-                            placeholder="status"  style="background-color: rgb(13, 30, 59);" required>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <div class="col-sm-12">
-                                <label class="col-sm-3 col-form-label" class="font-weight-bold pl-3" style="color: #ffffff;">quantity</label>
-                                <input type="number" class="form-control text-light" id="exampleInputName1"
-                                  name="quantity" placeholder="Enter Stock"  style="background-color: rgb(13, 30, 59);"required>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="form-group mt-2">
-                          <label for="exampleTextarea1" class="font-weight-bold pl-3 " style="color: #ffffff;">Description</label>
-                          <textarea name="description" class="form-control text-light" id="exampleTextarea1" rows="4"  style="background-color: rgb(13, 30, 59);"
-                            required></textarea>
-                        </div>
-                        <div class="">
-                          <!-- <label class="col-sm-3 col-form-label">Images</label> -->
-                          <div class="row d-flex justify-content-center ">
-
-                            <!-- <div class="row d-flex justify-content-between "> -->
-
-                            <div class="col-lg-3 col-md-6 rounded-image-preview">
-                              <label class="upload__btn ms-3">
-                                <p class="font-weight-bold pl-1" style="color: #ffffff;">Upload images</p>
-                                <input type="file" id="formFile" name="image" multiple data-max_length="20"
-                                  class="upload__inputfile">
-                              </label>
-                            </div>
-
-                          </div>
-
-
-
-
-                        </div>
-
-
-                        <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add product</button>
-                      </form>
-
-
-
-
-                    
-                  </div>
-                </div>
+<body class="g-sidenav-show bg-gray-200">
+  <%- include("../admin/layouts/adminSideBar.ejs") %>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 elemDesign">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-capitalize ps-3">ADD PRODUCT</h6>
               </div>
             </div>
+            <div class="card-body px-0 pb-2">
+              <form class="forms-sample" action="/admin/addproduct" method="post" enctype="multipart/form-data" style="background-color: #efefef;" id="productForm">
 
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="productName" class="font-weight-bold pl-3" style="color: #000000;">Product Name</label>
+                      <input type="text" class="form-control form-style" name="productName" id="productName" placeholder="Name">
+                      <span class="error" style="color: red;"></span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="price" class="font-weight-bold pl-3" style="color: #080000;">Price</label>
+                      <input type="number" class="form-control form-style" id="price" name="price" placeholder="price" >
+                      <span class="error" style="color: red;"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="brand" class="font-weight-bold pl-3" style="color: #000000;">Brand</label>
+                      <input type="text" class="form-control form-style" name="brand" id="brand" placeholder="brand" >
+                      <span class="error" style="color: red;"></span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
+                      <select name="category" class="form-control form-style" >
+                        <option value="" disabled selected>Select Category</option>
+                        <span class="error" style="color: red;"></span>
+                        <% for(let i=0;i< cartData.length;i++){ %>
+                        <option>
+                          <%= cartData[i].name %>
+                        </option>
+                        <% } %>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="status" class="font-weight-bold pl-3" style="color: #000000;">Status</label>
+                      <input type="text" class="form-control form-style" id="status" name="status" placeholder="status" >
+                      <span class="error" style="color: red;"></span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="font-weight-bold pl-3" style="color: #000000;">Quantity</label>
+                      <input type="number" class="form-control form-style" id="quantity" name="quantity" placeholder="Enter Stock" >
+                      <span class="error" style="color: red;"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group mt-2">
+                  <label for="description" class="font-weight-bold pl-3 " style="color: #000000;">Description</label>
+                  <div class="row">
+                    <div class="col-6">
+                      <textarea name="description" class="form-control  form-style" id="description" rows="4" ></textarea>
+                      <span class="error" style="color: red;"></span>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        
+                        <div class="col-lg-12 col-md-6 rounded-image-preview">
+                          <label class="upload__btn ms-3">
+                            <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
+                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
+                            <span class="error" style="color: red;"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>  
+
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add Product</button>
+                </div>
+              </form>
+            </div>
           </div>
-      </main>
-      </main>
+        </div>
+      </div>
+    </div>
+  </main>
 
-      <!-- <script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.querySelector('.forms-sample');
+      form.addEventListener('submit', function (event) {
+        let isValid = true;
   
-
- 
-
-        const name = document.getElementById('exampleInputName1')
-        const brand = document.getElementById('exampleInputBrand1')
-        const price = document.getElementById('exampleInputprice3')
-        const image = document.getElementById('image')
-        const category = document.getElementById('exampleInputUsername1')
-        const stock = document.getElementById('exampleInputstock4')
-        const quantity = document.getElementById('exampleInputquantity4')
-        const description = document.getElementById('exampleTextarea1')
-        const form = document.getElementById('form');
-        const errorElement = document.getElementById('error')
-        form.addEventListener('submit',(e)=>{
-          let messages =[]
-      
-          if( name.value.trim() == "" || name.value.trim() ==null  ){
-            messages.push("Product name required!")
-          }
-           if( name.value.trim().length > 15){
-            messages.push("Product name only containe 15 words!")
-          }
+        // Reset error messages
+        const errorElements = document.querySelectorAll('.error');
+        errorElements.forEach(function (errorElement) {
+          errorElement.textContent = '';
+        });
+  
+        // Product Name Validation
+        const productName = document.getElementById('productName');
+        if (productName.value.trim() === '') {
+          isValid = false;
+          productName.nextElementSibling.textContent = 'Product Name is required';
           
-          if( brand.value == "" || brand.value ==null ){
-            messages.push("Brand required!")
-          }
-      
-          if( price.value == "" || price.value ==null ){
-            messages.push("Price required!")
-          }
-      
-          // if( image. ){
-          //   messages.push("Images required!")
-          // }
-      
-          if( category.value == "" || category.value ==null ){
-            messages.push("=Category required!")
-          }
-      
-          if( stock.value == "" || stock.value ==null ){
-            messages.push("Stock required!")
-          }
-      
-          if( quantity.value == "" || quantity.value ==null ){
-            messages.push("Quantity required!")
-          }
-      
-      
-          if( description.value == "" || description.value ==null ){
-            messages.push("Description required!")
-          }
-      
-          if( description.value.length > 200 ){
-            messages.push("Description only contain less than 100 words")
-          }
-      
-           if( messages.length > 0){
-             e.preventDefault()
-             errorElement.innerText = messages.join('&')
-           }
-        })
+        }
+  
+        // Price Validation
+        const price = document.getElementById('price');
+        if (price.value.trim() === '' || isNaN(price.value)) {
+          isValid = false;
+          price.nextElementSibling.textContent = 'Price must be a number';
+         
+        }
+  
+        // Brand Validation
+        const brand = document.getElementById('brand');
+        if (brand.value.trim() === '') {
+          isValid = false;
+          brand.nextElementSibling.textContent = 'Brand is required';
         
-      </script> -->
-
+        }
+  
+        // Category Validation
+        const category = document.querySelector('select[name="category"]');
+        if (category.value === '') {
+          isValid = false;
+          category.nextElementSibling.textContent = 'Category is required';
+          
+        }
+  
+        // Status Validation
+        const status = document.getElementById('status');
+        if (status.value.trim() === '') {
+          isValid = false;
+          status.nextElementSibling.textContent = 'Status is required';
+          
+        }
+  
+        // Quantity Validation
+        const quantity = document.getElementById('quantity');
+        if (quantity.value.trim() === '' || isNaN(quantity.value)) {
+          isValid = false;
+          quantity.nextElementSibling.textContent = 'Quantity must be a number';
+          
+        }
+  
+        // Description Validation
+        const description = document.getElementById('description');
+        if (description.value.trim() === '') {
+          isValid = false;
+          description.nextElementSibling.textContent = 'Description is required';
+          
+        }
+  
+        // Image Validation
+        const image = document.querySelector('input[name="image"]');
+        if (image.files.length === 0) {
+          isValid = false;
+          image.parentElement.nextElementSibling.textContent = 'Image is required';
+        }
+  
+        if (!isValid) {
+          event.preventDefault(); // Prevent form submission if there are errors
+        }
+      });
+    });
+  </script>
+    
       <%- include("../admin/layouts/adminFooter.ejs") %>

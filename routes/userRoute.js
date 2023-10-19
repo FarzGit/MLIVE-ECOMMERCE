@@ -26,7 +26,7 @@ userRoute.get("/register",userController.loadResgister)
 userRoute.post('/register',userController.insertUser);
 userRoute.get('/userOtp',userController.loadOtp);
 userRoute.post('/userOtp',userController.verifyOtp);
-// userRoute.post('/userOtp',userController.insertUser)
+
 userRoute.get('/resend-otp',userController.resendOtp)
 userRoute.get("/",userController.loadHome)
 userRoute.post("/login",userController.verifyLogin);

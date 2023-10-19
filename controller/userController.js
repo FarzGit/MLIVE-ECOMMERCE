@@ -246,6 +246,7 @@ const verifyLogin = async (req, res) => {
     if (userData) {
       const passwordMatch = await bcrypt.compare(password, userData.password);
       if (passwordMatch) {
+        
         console.log("password matched");
         res.redirect("/");
       } else {
@@ -411,19 +412,36 @@ const loadHome = async (req, res) => {
 // ==============================================================load Shop Details==================================================================
 
 
-const loadShop = async(req,res)=>{
-  try{
-    
-  
-    const categoryDetails = await categoryDb.find({})
-    const products = await productDb.find({is_active:true})
+const loadShop = async (req, res) => {
+  try {
+    const perPage = 12; // Number of products per page
+    let page = parseInt(req.query.page) || 1; // Get the page from the request query and parse it as an integer
+    const categoryDetails = await categoryDb.find({});
+    const totalProducts = await productDb.countDocuments({ is_active: true });
+    const totalPages = Math.ceil(totalProducts / perPage);
 
-    res.render('shop',{catData:categoryDetails,product:products})
+    // Ensure that the page is within valid bounds
+    if (page < 1) {
+      page = 1;
+    } else if (page > totalPages) {
+      page = totalPages;
+    }
 
-  }catch(error){
+    const products = await productDb
+      .find({ is_active: true })
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    res.render('shop', {
+      catData: categoryDetails,
+      product: products,
+      currentPage: page,
+      pages: totalPages,
+    });
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
 
 
