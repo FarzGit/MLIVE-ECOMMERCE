@@ -1,33 +1,13 @@
-<form action="/register" method="post">
-    <div class="form-group mt-3">
-        <input type="text" class="form-control" name="Fname" placeholder="Fist Name" required>
-        <br>
-        <input type="text" class="form-control" name="Lname" placeholder="Last Name" required>
-        <br>
-        <input type="email" class="form-control" name="email" placeholder="Enter email" id="email">
-        
-        <br>
-    
-        <input type="text" class="form-control" name="mobile" placeholder="Mobile No" required>
-        <br>
-        <input type="password" class="form-control" name="password" placeholder="Enter password" id="password">
-        
-        <br>
-        
-        <input type="password" class="form-control" name="Cpassword" placeholder="Enter password" id="Cpassword">
+<div class="product__details__slider__content">
+    <div class="product__details__pic__slider owl-carousel">
+        <% pdt.image.forEach(item=>{ %>
+            <div class="main-image-<%= pdt.image.indexOf(item) %>" >
+                
+                <img id="main-img-<%= pdt.image.indexOf(item) %>"  src="/static/Product_Images/<%= item.filename %>">
 
-        <p id="password-mismatch" class="alert  text-danger mt-2" style="display: none;">
-            Passwords do not match. Please try again.
-        </p>
-        <br>
-
+            </div>
+           
+        <%})%>
     </div>
-    <br>
-        <input type="submit" class="btn btn-success rounded-pill" value="Sign Up">
-
-</form>
-<br>
-<p>Alredy have an account? <a href="/login">Login</a></p>
-
 </div>
 </div>

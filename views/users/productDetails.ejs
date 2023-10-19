@@ -312,18 +312,17 @@
 							<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 
 							<div class="slick3 gallery-lb">
-                                <% product.image.forEach((data) => { %>
+								<% product.image.forEach((data) => { %>
 								<div class="item-slick3" data-thumb="/static/adminAssets/images/<%= data %>">
-									<div class="wrap-pic-w pos-relative">
-										<img src="/static/adminAssets/images/<%= data %>" alt="IMG-PRODUCT">
-
+									<div class="wrap-pic-w pos-relative main-image-<%= product.image.indexOf(data) %>">
+										<img id="main-img-<%= product.image.indexOf(data) %>" src="/static/adminAssets/images/<%= data %>" alt="IMG-PRODUCT">
+							
 										<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="/static/adminAssets/images/<%= data %>">
 											<i class="fa fa-expand"></i>
 										</a>
 									</div>
 								</div>
-                           <% }) %>
-								
+								<% }) %>
 							</div>
 						</div>
 					</div>
@@ -615,9 +614,9 @@
 	</section>
 
 
-	
+	<script src="/static/userAssets/js/zoom.js"></script>
 		
-
+	
 	
 
 	
