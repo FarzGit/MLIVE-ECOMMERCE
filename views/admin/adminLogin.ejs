@@ -26,14 +26,17 @@
                     <form action="/admin" method="post">
                         <div class="form-group">
                             <label for="email" style="color: black;">Email</label>
-                            <input type="text" class="form-control custom-input" id="email" name="email" placeholder="Enter email" required>
+                            <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Enter email" >
+                            <span id="email-error" style="color: red;"></span>
                         </div>
                         <div class="form-group">
                             <label for="password" style="color: black;">Password</label>
-                            <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter password" required>
+                            <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter password" >
+                            <span id="password-error" style="color: red;"></span>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -53,6 +56,35 @@
     }
 </script>
 
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        let emailError = document.getElementById('email-error');
+        let passwordError = document.getElementById('password-error');
+
+       
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+        
+        if (!isValidEmail(email)) {
+            emailError.textContent = 'Please enter a valid email address.';
+            event.preventDefault();
+        }
+
+        
+        if (password.length < 8) {
+            passwordError.textContent = 'Password must be at least 8 characters long.';
+            event.preventDefault();
+        }
+    });
+
+    function isValidEmail(email) {
+        
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+</script>
 
 
 

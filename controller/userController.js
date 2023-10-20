@@ -182,7 +182,7 @@ const insertUser = async (req, res) => {
 
     const userCheck = await User.findOne({ email: req.body.email });
     if (userCheck) {
-      res.send("user already exist");
+      res.render("registration",{message:"user already exist"});
     } else {
       const spassword = await securePassword(req.body.password);
       req.session.Fname = req.body.Fname;
@@ -251,7 +251,7 @@ const verifyLogin = async (req, res) => {
         res.redirect("/");
       } else {
         console.log("password is not matched");
-        res.render("login", { message: "incorrect your email address" });
+        res.render("login", { message:" email or password incorrect"});
       }
     }
   } catch (error) {

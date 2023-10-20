@@ -72,6 +72,7 @@ adminRoute.post("/edit_category",adminController.editCategory);
 adminRoute.get("/is_active",adminAuth.isLogin,adminController.listOrNot);
 adminRoute.get("/customer",adminAuth.isLogin,adminController.loadCustomers);
 adminRoute.get("/is_blockedUser",adminAuth.isLogin,adminController.blockUnblock);
+adminRoute.get("/logout",adminAuth.isLogin,adminController.adminLogout)
 
 adminRoute.get("/Product",adminAuth.isLogin, productController.loadProducts);
 adminRoute.get("/addProduct",adminAuth.isLogin, productController.loadAddProducts);

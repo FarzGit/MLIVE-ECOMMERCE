@@ -28,7 +28,8 @@ const loadProducts = async (req, res) => {
     const products = await productDb
       .find({})
       .skip((page - 1) * perPage)
-      .limit(perPage);
+      .limit(perPage)
+      .sort({brand:1})
 
     console.log('products', products);
 

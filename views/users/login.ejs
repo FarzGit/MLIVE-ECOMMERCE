@@ -1,97 +1,105 @@
 <%- include('../users/layouts/header.ejs')%>
 
 <style>
-   body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    
-    
-}
-
-.container {
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    padding: 20px;
-    width: 300px;
-    height: 370px;
-}
-
-.login-box {
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-h1 {
-    font-size: 24px;
-}
-
-.input-container {
-    text-align: left;
-    margin-bottom: 10px;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    background-color: #EC7E3B;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 250px;
-    height: 40px;
-    margin-top: 15px;
-    
-}
-
-button:hover {
-    background-color: #d2631e;
-}
-.forgot-password{
-   margin-top: 15px;
-   
-}
-</style>
-</head>
+    body {
+     font-family: Arial, sans-serif;
+     background-color: #f0f0f0;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     margin: 0;
+ }
+ 
+ .container {
+     background-color: #f1f1f1;
+     border-radius: 5px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+     text-align: center;
+     padding: 20px;
+     max-width: 100%;
+     width: 300px;
+ }
+ 
+ .login-box {
+     max-width: 300px;
+     margin: 0 auto;
+ }
+ 
+ h1 {
+     font-size: 24px;
+ }
+ 
+ .input-container {
+     text-align: left;
+     margin-bottom: 10px;
+ }
+ 
+ label {
+     display: block;
+     font-weight: bold;
+ }
+ 
+ input {
+     width: 100%;
+     padding: 10px;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+ }
+ 
+ button {
+     background-color: #EC7E3B;
+     color: #fff;
+     border: none;
+     border-radius: 5px;
+     padding: 10px 20px;
+     cursor: pointer;
+     width: 100%;
+     margin-top: 15px;
+ }
+ 
+ button:hover {
+     background-color: #d2631e;
+ }
+ 
+ .forgot-password {
+     margin-top: 15px;
+ }
+ 
+ /* Media Query for smaller screens */
+ @media (max-width: 768px) {
+     .container {
+         width: 90%;
+     }
+ 
+     button {
+         width: 100%;
+     }
+ }
+ </style>
+</head>                     
 <body>
     <div class="container">
         <div class="login-box">
             <h1>Login</h1>
-            <% if(typeof message !=='undefined' ){%>
-                <p style="color: red; font-size: large; font-weight: 300;">
+            <% if(typeof message !== 'undefined' ){%>
+                <p id="errorMessage" style="color: red; font-size: large; font-weight: 300;">
                     <%= message %>
                 </p>
-                <% } %>
-            
-            
+            <% } %>
+
             <form action="/login" method="POST" id="form">
                 <div class="input-container">
-                    <label for="username">Enter email</label>
-                    <input type="text" id="email" name="email" required>
+                    <label for="email">Enter email</label>
+                    <input type="text" id="email" name="email">
+                    <span class="error text-danger" id="email-error"></span>
                 </div>
                 <div class="input-container">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password">
+                    <span class="error text-danger" id="password-error"></span>
                 </div>
-               
+
                 <button type="submit">Login</button>
                 <div class="forgot-password">
                     <a href="/forgot-password">Forgot Password?</a>
@@ -102,6 +110,62 @@ button:hover {
             </form>
         </div>
     </div>
+
+<!-- =========================================================================input field valiation========================================================== -->
+
+<script>
+    const form = document.getElementById("form");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const emailError = document.getElementById("email-error");
+    const passwordError = document.getElementById("password-error");
+
+    form.addEventListener("submit", function (event) {
+        let valid = true;
+
+        // Email validation
+        const emailValue = emailInput.value.trim();
+        if (!emailValue) {
+            emailError.textContent = "Email is required.";
+            valid = false;
+        } else {
+            emailError.textContent = "";
+        }
+
+        // Password validation
+        const passwordValue = passwordInput.value;
+        if (!passwordValue) {
+            passwordError.textContent = "Password is required.";
+            valid = false;
+        } else {
+            passwordError.textContent = "";
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Prevent form submission if there are errors
+        }
+    });
+    emailInput.addEventListener("input", function () {
+        emailError.textContent = "";
+    });
+    passwordInput.addEventListener("input", function () {
+        passwordError.textContent = "";
+    });
+</script>
+
+<!-- =========================================================================setTimeout error========================================================== -->
+
+
+<script>
+setTimeout(function() {
+    var errorMessageElement = document.getElementById('errorMessage');
+    if (errorMessageElement) {
+      errorMessageElement.style.display = 'none';
+    }
+  }, 5000); // 5000 milliseconds = 5 seconds
+</script>
+
+
 
     <%- include('../users/layouts/footer.ejs')%>
 

@@ -209,6 +209,15 @@ const blockUnblock = async (req, res) => {
   }
 };
 
+const adminLogout = async (req, res) => {
+  try {
+    req.session.destroy();
+    res.redirect("/admin");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   loadAdminLogin,
   verifyAdminLogin,
@@ -221,4 +230,5 @@ module.exports = {
   editCategory,
   listOrNot,
   blockUnblock,
+  adminLogout
 };
