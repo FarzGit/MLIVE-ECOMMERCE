@@ -29,7 +29,7 @@ const loadProducts = async (req, res) => {
       .find({})
       .skip((page - 1) * perPage)
       .limit(perPage)
-      .sort({brand:1})
+      
 
     console.log('products', products);
 

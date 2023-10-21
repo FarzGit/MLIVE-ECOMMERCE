@@ -55,12 +55,14 @@
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
                       <select name="category" class="form-control form-style" required>
-                        <option value="" disabled selected>Select Category</option>
-                        <% for(let i=0;i< cartData.length;i++){ %>
-                        <option>
-                          <%= cartData[i].name %>
-                        </option>
-                        <% } %>
+                        <% for(i in cartData){%>
+                          <option <% if(product.category==cartData[i].name ){%>selected<%}%>
+                              <% if(cartData[i].is_active==false) {%>
+                                disabled
+                                <%}%>
+                                  ><%= cartData[i].name %>
+                          </option>
+                          <%}%>
                       </select>
                     </div>
                   </div>
@@ -85,8 +87,10 @@
                   <label for="exampleTextarea1" class="font-weight-bold pl-3 " style="color: #000000;">Description</label>
                   <div class="row">
                     <div class="col-6">
-                      <textarea name="description" class="form-control  form-style" id="exampleTextarea1" rows="4" value="<%=product.description%>" required></textarea>
-                    </div>
+                      <textarea name="description" class="form-control  form-style" id="exampleTextarea1" rows="6" required>
+                        <%= product.description || "Enter description here" %>
+                      </textarea>
+                    </div>                    
                     <div class="col-6">
                       <div class="form-group">
                         
@@ -96,6 +100,15 @@
                             <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
                           </label>
                         </div>
+                        <div class="old-image-preview">
+                          <!-- Display the old image if it exists -->
+                          <% if (product.image) { %>
+                           <% for(let i=0;i<product.image.length;i++){%>
+                            <img style="width: 100px; height: 150px;" src="/static/adminAssets/images/<%=product.image[i] %>" alt="Old Image">
+                            <%}%>
+                          <% } %>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>

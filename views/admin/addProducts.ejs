@@ -58,7 +58,7 @@
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
                       <select name="category" class="form-control form-style" >
-                        <option value="" disabled selected>Select Category</option>
+                        <option   selected>Select Category</option>
                         <span class="error" style="color: red;"></span>
                         <% for(let i=0;i< cartData.length;i++){ %>
                         <option>
@@ -139,56 +139,88 @@
         if (productName.value.trim() === '') {
           isValid = false;
           productName.nextElementSibling.textContent = 'Product Name is required';
-          
         }
+  
+        productName.addEventListener('input', function () {
+          productName.nextElementSibling.textContent = '';
+        });
   
         // Price Validation
         const price = document.getElementById('price');
-        if (price.value.trim() === '' || isNaN(price.value)) {
+        const priceValue = parseFloat(price.value);
+        if (price.value.trim() === '') {
           isValid = false;
-          price.nextElementSibling.textContent = 'Price must be a number';
-         
+          price.nextElementSibling.textContent = 'Price is required';
+        } else if (isNaN(priceValue) || priceValue <= 0) {
+          isValid = false;
+          price.nextElementSibling.textContent = 'Price must be a number greater than zero';
         }
+  
+        price.addEventListener('input', function () {
+          price.nextElementSibling.textContent = '';
+        });
   
         // Brand Validation
         const brand = document.getElementById('brand');
         if (brand.value.trim() === '') {
           isValid = false;
           brand.nextElementSibling.textContent = 'Brand is required';
-        
+        } else if (brand.value !== brand.value.toUpperCase()) {
+          isValid = false;
+          brand.nextElementSibling.textContent = 'Brand must be in uppercase';
         }
+  
+        brand.addEventListener('input', function () {
+          brand.nextElementSibling.textContent = '';
+        });
   
         // Category Validation
         const category = document.querySelector('select[name="category"]');
         if (category.value === '') {
           isValid = false;
           category.nextElementSibling.textContent = 'Category is required';
-          
         }
+  
+        category.addEventListener('change', function () {
+          category.nextElementSibling.textContent = '';
+        });
   
         // Status Validation
         const status = document.getElementById('status');
         if (status.value.trim() === '') {
           isValid = false;
           status.nextElementSibling.textContent = 'Status is required';
-          
         }
+  
+        status.addEventListener('input', function () {
+          status.nextElementSibling.textContent = '';
+        });
   
         // Quantity Validation
         const quantity = document.getElementById('quantity');
-        if (quantity.value.trim() === '' || isNaN(quantity.value)) {
+        const quantityValue = parseFloat(quantity.value);
+        if (quantity.value.trim() === '') {
           isValid = false;
-          quantity.nextElementSibling.textContent = 'Quantity must be a number';
-          
+          quantity.nextElementSibling.textContent = 'Quantity is required';
+        } else if (isNaN(quantityValue) || quantityValue <= 0) {
+          isValid = false;
+          quantity.nextElementSibling.textContent = 'Quantity must be a positive number';
         }
   
+        quantity.addEventListener('input', function () {
+          quantity.nextElementSibling.textContent = '';
+        });
+  
         // Description Validation
-        const description = document.getElementById('description');
-        if (description.value.trim() === '') {
-          isValid = false;
-          description.nextElementSibling.textContent = 'Description is required';
-          
-        }
+      const description = document.getElementById('description');
+      if (description.value.trim() === '') {
+        isValid = false;
+        description.nextElementSibling.textContent = 'Description is required';
+      }
+
+      description.addEventListener('input', function () {
+        description.nextElementSibling.textContent = '';
+      });
   
         // Image Validation
         const image = document.querySelector('input[name="image"]');
@@ -197,11 +229,16 @@
           image.parentElement.nextElementSibling.textContent = 'Image is required';
         }
   
+        image.addEventListener('change', function () {
+          image.parentElement.nextElementSibling.textContent = '';
+        });
+  
         if (!isValid) {
-          event.preventDefault(); 
+          event.preventDefault();
         }
       });
     });
   </script>
+  
     
       <%- include("../admin/layouts/adminFooter.ejs") %>

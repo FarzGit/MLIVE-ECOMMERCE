@@ -36,17 +36,7 @@
                       <td><%= data[i].mobile %></td>
                       <td><%= new Date(data[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
                       <td>
-                        <!-- <% if (data[i].is_blocked === true) { %>
-                        <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
-                          <button type="button" class="btn btn-inverse-danger btn-fw">Blocked</button>
-                        </a>
-                        <% } else { %>
-                        <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
-                          <button type="button" class="btn btn-success btn-fw">Unblocked</button>
-                        </a>
-                        <% } %> -->
-
-                        <!-- Modify the "Block" button part in your table -->
+                        
                         <% if (data[i].is_blocked === true) { %>
                           <button type="button" class="btn btn-inverse-danger btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'block')">Unblock</button>
                         <% } else { %>
@@ -68,29 +58,11 @@
   </main>
 
 
-<!-- MODAL
-
-<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to block this user?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a id="blockUserLink" href="#" class="btn btn-danger">Block</a>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 
 
 
+<!-- ==========================================Sweet allert script==================================================================================== -->
 
 <script>
   function showConfirmation(userId, action) {
@@ -98,11 +70,11 @@
     let confirmationTitle;
 
     if (action === 'block') {
-      confirmationText = 'Are you sure you want to block this user?';
-      confirmationTitle = 'Block User';
-    } else if (action === 'unblock') {
-      confirmationText = 'Are you sure you want to unblock this user?';
+      confirmationText = 'Are you sure you want to Unblock this user?';
       confirmationTitle = 'Unblock User';
+    } else if (action === 'unblock') {
+      confirmationText = 'Are you sure you want to Block this user?';
+      confirmationTitle = 'Block User';
     }
 
     Swal.fire({
@@ -116,7 +88,7 @@
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        // User clicked "Yes, block it!" or "Yes, unblock it!" - perform the action here
+        
         window.location.href = `/admin/is_blockedUser?id=${userId}`;
       }
     });
