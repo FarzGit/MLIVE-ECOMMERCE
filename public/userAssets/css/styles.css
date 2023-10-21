@@ -1,4 +1,4 @@
-body {
+/* body {
     background-color: #f4f4f4;
 }
 
@@ -22,8 +22,14 @@ body {
 /* REGISTRATION */
 
 
-.signup-container {
+/* .signup-container {
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 5px;
+} */
+ 
+/* ==============================================================wishList button================================================================== */
+
+.red-wishlist-button {
+    color: red !important;
 }

@@ -6,6 +6,7 @@ const config = require("../config/config");
 const otpGenerator = require("otp-generator");
 const productDb = require('../models/productModel')
 const categoryDb = require('../models/categoryModel');
+const Swal = require('sweetalert2')
 const { AwsInstance } = require("twilio/lib/rest/accounts/v1/credential/aws");
 
 // require("dotenv").config();
@@ -104,6 +105,7 @@ const loadOtp = async (req, res) => {
 
 // ==============================================================VERIFYING THE OTP ================================================================
 
+
 const verifyOtp = async (req, res) => {
   try {
     const currentTime = Date.now() / 1000;
@@ -122,7 +124,9 @@ const verifyOtp = async (req, res) => {
         isVerified: 1,
       });
       const result = await user.save();
-      res.redirect("/login");
+      
+        res.redirect("/login");
+      
     } else {
       res.render("userOtp", { message: "Invalid OTP" });
     }
@@ -130,6 +134,7 @@ const verifyOtp = async (req, res) => {
     console.log(error);
   }
 };
+
 
 // ==============================================================RESEND THE OTP AFTER THE TIME================================================================
 
@@ -342,11 +347,11 @@ const ForgotPassword = async (req, res) => {
         console.log(updatedData);
         sendResetPasswordMail(userData.name, userData.email, randomString);
         res.render("forgotPassword", {
-          message: "Please check your mail to reset your password",
+          messages: "Please check your mail to reset your password",
         });
       }
     } else {
-      res.render("forgotPassword", { message: "Please enter correct email" });
+      res.render("forgotPassword", { message: "Email is not existing" });
     }
   } catch (error) {
     console.log(error);

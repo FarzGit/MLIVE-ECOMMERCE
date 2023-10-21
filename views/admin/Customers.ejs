@@ -1,91 +1,131 @@
 
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
-
-<body class="g-sidenav-show  bg-gray-200">
+<body class="g-sidenav-show bg-gray-200">
   <%- include("../admin/layouts/adminSideBar.ejs") %>
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-      <!-- Navbar -->
-      <%- include("../admin/layouts/adminNavBar.ejs") %>
-      <!-- End Navbar -->
-      <div class="container-fluid py-4">
-        <div class="row">
-          <div class="col-12 , elemDesign">
-            <div class="card my-4">
-             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
-                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <!-- <a href="">
-                        <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
-                      </a> -->
-                  <h6 class="text-white text-capitalize ps-3">CUSTOMERS</h6>
-                </div>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 elemDesign">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-capitalize ps-3">CUSTOMERS</h6>
               </div>
-              <div class="card-body px-0 pb-2">
-                <div class="table-responsive p-0">
-                  <table class="table table-dark">
-                    
-                    <thead>
-                      <tr>
-
-                          <th> Full Name </th>
-                          <th> Email </th>
-                          <th> Mobile No.</th>
-                          
-                          <th> Joined On</th>
-                          <th> Action</th>
-                      </tr>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table table-dark">
+                  <thead>
+                    <tr>
+                      <th>Full Name</th>
+                      <th>Email</th>
+                      <th>Mobile No.</th>
+                      <th>Joined On</th>
+                      <th>Action</th>
+                    </tr>
                   </thead>
                   <tbody>
                     <% for (var i = 0; i < data.length; i++) { %>
-                      <tr>
-                          <!-- list -->
-                          <td> <%= data[i].firstName+ ' '+data[i].lastName %> </td>
-                          <td> <%= data[i].email %> </td>
-                          <td> <%= data[i].mobile %> </td>
+                    <tr>
+                      <td><%= data[i].firstName + ' ' + data[i].lastName %></td>
+                      <td><%= data[i].email %></td>
+                      <td><%= data[i].mobile %></td>
+                      <td><%= new Date(data[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                      <td>
+                        <!-- <% if (data[i].is_blocked === true) { %>
+                        <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
+                          <button type="button" class="btn btn-inverse-danger btn-fw">Blocked</button>
+                        </a>
+                        <% } else { %>
+                        <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
+                          <button type="button" class="btn btn-success btn-fw">Unblocked</button>
+                        </a>
+                        <% } %> -->
 
-                         <!-- <td> -->
-                               <!-- <% if(data[i].isVerified==false){ %>
-                               <span class="pl-2 text-danger">Not verified</span>
-                               <% } else{ %> 
-                                  <span class="pl-2 text-success">verified</span>
-                               <% }%>    -->
-                          <!-- </td> -->
-                          
-                          
-                          <td> <%= new Date(data[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })%> </td>
-                          <td>
-                              
-                            <% if(data[i].is_blocked === true ){ %>
-                                <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
-                                  <!-- <button data-id="<%= data[i]._id %>" onclick="blockButton('<%= data[i]._id %>')" class="btn btn-inverse-danger">unBlock</button> -->
-                                  <button type="button" class="btn btn-inverse-danger btn-fw">Blocked</button>
-                                </a>
-                                <% } else { %>
-                                  <a href="/admin/is_blockedUser?id=<%= data[i]._id %>">
-                                  <!-- <button data-id="<%= data[i]._id %>" onclick="blockButton('<%= data[i]._id %>')" class="btn btn-success">block</button> -->
-                                  <button type="button" class="btn btn-success btn-fw"> Unblocked</button>
+                        <!-- Modify the "Block" button part in your table -->
+                        <% if (data[i].is_blocked === true) { %>
+                          <button type="button" class="btn btn-inverse-danger btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'block')">Unblock</button>
+                        <% } else { %>
+                          <button type="button" class="btn btn-success btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'unblock')">Block</button>
+                        <% } %>
 
-                                </a>
-                                <% } %>
-                          </td>
-                          
-                          
-                          
-                          
-                      </tr>
-                  <% } %>
 
+                      </td>
+                    </tr>
+                    <% } %>
                   </tbody>
-                  </table>
-                  
-                </div>
+                </table>
               </div>
             </div>
           </div>
         </div>
-    
       </div>
-    </main>
-    </main>
+    </div>
+  </main>
+
+
+<!-- MODAL
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to block this user?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a id="blockUserLink" href="#" class="btn btn-danger">Block</a>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+
+<script>
+  function showConfirmation(userId, action) {
+    let confirmationText;
+    let confirmationTitle;
+
+    if (action === 'block') {
+      confirmationText = 'Are you sure you want to block this user?';
+      confirmationTitle = 'Block User';
+    } else if (action === 'unblock') {
+      confirmationText = 'Are you sure you want to unblock this user?';
+      confirmationTitle = 'Unblock User';
+    }
+
+    Swal.fire({
+      title: confirmationTitle,
+      text: confirmationText,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: `Yes, ${action} it!`,
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User clicked "Yes, block it!" or "Yes, unblock it!" - perform the action here
+        window.location.href = `/admin/is_blockedUser?id=${userId}`;
+      }
+    });
+  }
+</script>
+
+
+
+
+
 
     <%- include("../admin/layouts/adminFooter.ejs") %>
