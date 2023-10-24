@@ -5,11 +5,11 @@
 
 <section class="bg0 p-t-23 p-b-130">
     <div class="container">
-        <div class="p-b-10">
+        <!-- <div class="p-b-10">
             <h3 class="ltext-103 cl5">
                 Product Overview
             </h3>
-        </div>
+        </div> -->
     
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
@@ -219,7 +219,7 @@
                             
                     
                             <div>
-                                <a id="cart-button" >
+                                <a onclick="addToCart('<%= product._id %>')" class="add-cart"  >
                                     <button><img src="static/userAssets/img/326700_cart_shopping_icon.png" style="height: 19px; padding-right: 6px; width: 26px; margin-bottom: 6px;"></button>
                                     
                                 </a>
@@ -295,26 +295,51 @@
         const cartButtons = document.querySelectorAll('#cart-button');
     
         
-        cartButtons.forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
+        // cartButtons.forEach(button => {
+        //     button.addEventListener('click', function (event) {
+        //         event.preventDefault();
     
                 
                 
     
                 
-                Swal.fire({
-                    title: 'Item added to your Cart!',
-                    icon: 'success',
-                });
-            });
-        });
+        //         Swal.fire({
+        //             title: 'Item added to your Cart!',
+        //             icon: 'success',
+        //         });
+        //     });
+        // });
 
+
+        function addToCart(id) {
+            console.log("addToCart function called with id: " + id);
+                $.ajax({
+                  url: "/addTocart",
+                  method: "post",
+                  encoded: true,
+                  data: {
+                    id: id
+                  },
+                }).done((data) => {
+                    
+                  if (data) {
+                   
+                    console.log(data);
+                   
+                    swal("Added!", "Item has been added to Cart!", "success");
+                  }else{
+                    swal("fail to add")
+                  }
+                })
+              }
+              
 
 
 
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>

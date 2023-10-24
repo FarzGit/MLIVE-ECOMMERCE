@@ -4,6 +4,7 @@ const session = require('express-session')
 const  config = require('../config/config')
 const userAuth = require('../middleware/userAuth')
 
+
 userRoute.use(
     session({
       secret: config.sessionSecret,
@@ -13,6 +14,7 @@ userRoute.use(
   );
 
 const userController = require("../controller/userController")
+const cartController = require("../controller/cartController")
 
 userRoute.set("view engine", "ejs");
 userRoute.set("views", "./views/users");
@@ -38,6 +40,12 @@ userRoute.get("/logout",userController.userLogout)
 
 userRoute.get('/shop',userController.loadShop)
 userRoute.get("/productDetails",userController.loadProductDetails)
+
+userRoute.get('/profile',userController.loadProfile)
+
+
+userRoute.get('/cart',cartController.loadCart)
+userRoute.post('/addTocart',cartController.addToCart)
 
 
 

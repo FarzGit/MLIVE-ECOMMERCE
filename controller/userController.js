@@ -249,15 +249,26 @@ const verifyLogin = async (req, res) => {
     const userData = await User.findOne({ email: email });
     console.log("userdata " + userData);
     if (userData) {
-      const passwordMatch = await bcrypt.compare(password, userData.password);
-      if (passwordMatch) {
-        
-        console.log("password matched");
-        res.redirect("/");
+      if (userData.is_blocked == false) {
+        const passwordMatch = await bcrypt.compare(password, userData.password);
+
+        if (passwordMatch) {
+          if (userData.isVerified == false) {
+            req.session.user_id = userData._id;
+            res.render("login", { message: "please verify your mail" });
+          } else {
+            req.session.user_id = userData._id;
+
+            res.redirect("/");
+          }
+        } else {
+          res.render("login", { message: "Email and  password is incorrect" });
+        }
       } else {
-        console.log("password is not matched");
-        res.render("login", { message:" email or password incorrect"});
+        res.render("login", { message: "This User is blocked" });
       }
+    } else {
+      res.render("login", { message: "Email and  password is incorrect" });
     }
   } catch (error) {
     console.log(error.message);
@@ -402,12 +413,21 @@ const resetPassword = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
+    console.log("user");
+    console.log(req.session.user_id);
+    
 
+    if(req.session.user_id){
+      console.log("user entered");
+      res.render('home',{user:req.session.user_id})
+    }else{
+      res.render('home',{message:"user logged"})
+    }
  
    
-    res.render('home')
+   
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
@@ -470,7 +490,18 @@ const loadProductDetails = async(req,res)=>{
 }
 
 
+// ==============================================================load Profile=======================================================================
 
+
+const loadProfile = async (req,res)=>{
+  try{
+
+    res.render('profile')
+
+  }catch(error){
+    console.log(error);
+  }
+}
 
 
 
@@ -494,5 +525,6 @@ module.exports = {
   resetLoad,
   resetPassword,
   loadProductDetails,
-  loadShop
+  loadShop,
+  loadProfile
 };

@@ -61,9 +61,13 @@
                           <td style="color: aliceblue; " class="text-center">
                             <%= product[i].description %>
                           </td>
-                          <td style="color: aliceblue;" class="text-center">
-                            <%= product[i].status %>
-                          </td>
+                          <td>
+                            <% if( product[i].quantity <=0 ) {%>
+                                <span class="text-danger text-center">Out Of Stock </span>
+                                <%}else{%>
+                                    <span class="text-success text-center">In Stock </span>
+                                    <%}%>
+                        </td>
                           <td><a href="/admin/editProduct?id=<%= product[i]._id%>"><button type="button" class="btn btn-primary btn-sm" style="color: rgb(255, 255, 255);">Edit</button></a></td>
                           <td>
                            <% if( product[i].is_active === true){ %>
