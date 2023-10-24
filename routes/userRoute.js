@@ -23,13 +23,13 @@ userRoute.set("views", "./views/users");
 userRoute.use(express.json());
 userRoute.use(express.urlencoded({ extended: true }));
 
-userRoute.get("/login",userController.loadlogin)
-userRoute.get("/register",userController.loadResgister)
-userRoute.post('/register',userController.insertUser);
-userRoute.get('/userOtp',userController.loadOtp);
-userRoute.post('/userOtp',userController.verifyOtp);
+userRoute.get("/login",userAuth.isLogout,userController.loadlogin)
+userRoute.get("/register",userAuth.isLogout,userController.loadResgister)
+userRoute.post('/register',userAuth.isLogout,userController.insertUser);
+userRoute.get('/userOtp',userAuth.isLogout,userController.loadOtp);
+userRoute.post('/userOtp',userAuth.isLogout,userController.verifyOtp);
 
-userRoute.get('/resend-otp',userController.resendOtp)
+userRoute.get('/resend-otp',userAuth.isLogout,userController.resendOtp)
 userRoute.get("/",userController.loadHome)
 userRoute.post("/login",userController.verifyLogin);
 userRoute.get('/forgot-password',userController.loadForgotPassword)
@@ -38,14 +38,16 @@ userRoute.get('/reset-password',userController.resetLoad)
 userRoute.post('/reset-password',userController.resetPassword)
 userRoute.get("/logout",userController.userLogout)
 
-userRoute.get('/shop',userController.loadShop)
-userRoute.get("/productDetails",userController.loadProductDetails)
+userRoute.get('/shop',userAuth.isLogout,userController.loadShop)
+userRoute.get("/productDetails",userAuth.isLogout,userController.loadProductDetails)
 
-userRoute.get('/profile',userController.loadProfile)
+userRoute.get('/profile',userAuth.isLogin,userController.loadProfile)
 
 
-userRoute.get('/cart',cartController.loadCart)
-userRoute.post('/addTocart',cartController.addToCart)
+userRoute.get('/cart',userAuth.isLogin,cartController.loadCart)
+userRoute.post('/addTocart',userAuth.isLogin,cartController.addToCart)
+userRoute.post('/cart-quantity',userAuth.isLogin,cartController.cartQuantity)
+userRoute.post('/remove-product',userAuth.isLogin,cartController.removeProduct)
 
 
 
