@@ -14,13 +14,13 @@ dotenv.config()
 mongoose.connect(process.env.MONGO_DB);
 
 
-app.use(
-    session({
-      secret: config.sessionSecret,
-      resave: false,
-      saveUninitialized: true,
-    })
-  );
+// app.use(
+//     session({
+//       secret: config.sessionSecret,
+//       resave: false,
+//       saveUninitialized: true,
+//     })
+//   );
 
 
 

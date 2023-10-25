@@ -4,7 +4,7 @@
 
 
 
-<!-- breadcrumb -->
+<!-- breadcrumb
 <div class="container">
     <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
         <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
@@ -16,116 +16,165 @@
             Shoping Cart
         </span>
     </div>
-</div>
+</div> -->
     
 
-<!-- Shoping Cart -->
-<form class="bg0 p-t-75 p-b-85">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
-                <div class="m-l-25 m-r--38 m-lr-0-xl">
-                    <div class="wrap-table-shopping-cart">
-                        <table class="table table-shopping-cart">
-                            <tr class="table_head">
-                                <th class="column-1">Product</th>
-                                <th class="column-2"></th>
-                                <th class="column-3">Price</th>
-                                <th class="column-4">Quantity</th>
-                                <th class="column-5">Total</th>
-                            </tr>
-                            <% if (cart && cart.length > 0) { %>
-                                <% cart.forEach((data) => { %>
-                                    <tr class="table_row">
-                                        <td class="column-1">
-                                            <div class="how-itemcart1">
-                                                <img src="/static/adminAssets/images/<%= data.productId.image[0] %>" alt="IMG">
+
+
+
+
+<main class="main">
+    
+         <!-- <div class="container">
+            <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+        </div> -->
+    
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+            </ol>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <div class="cart">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <table class="table table-cart table-mobile">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <!-- <th>Total</th> -->
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <% if (cart && cart.length > 0) { %>
+                                    <% cart.forEach((data) => { %>
+                                <tr>
+                                    <td class="product-col">
+                                        <div class="product">
+                                            <figure class="product-media">
+                                                <a href="#">
+                                                    <img src="/static/adminAssets/images/<%= data.productId.image[0] %>" alt="Product image">
+                                                </a>
+                                            </figure>
+
+                                            <h3 class="product-title">
+                                                <a href="#"><%= data.productId.productName %></a>
+                                            </h3><!-- End .product-title -->
+                                        </div><!-- End .product -->
+                                    </td>
+                                    <td class="price-col"><%= data.productId.price %></td>
+                                    <td class="quantity-col">
+                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                               
+                                            <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
+                                    <span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>"><%=data.quantity%></span>
+                                    <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a>
+                                            
+                                        </div> 
+                                    </td>
+                                    <!-- <td class="total-col"><%= total %></td> -->
+                                    <td class="remove-col"><button class="btn-remove" onclick="removeProduct('<%=data.productId._id%>')"><i class="icon-close"></i></button></td>
+                                </tr>
+                                <% }); %>
+                                <% }else{%>
+                                    <tr>cart is empty</tr>
+                                <%}%>
+                                
+                            </tbody>
+                        </table>
+
+                        <div class="cart-bottom">
+                            <div class="cart-discount">
+                                <form action="#">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" required placeholder="coupon code">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
+                        </div>
+                    </div>
+                    <aside class="col-lg-3">
+                        <div class="summary summary-cart">
+                            <h3 class="summary-title">Cart Total</h3>
+
+                            <table class="table table-summary">
+                                <tbody>
+                                    <tr class="summary-subtotal">
+                                        <td>Subtotal:</td>
+                                        <td><%= total %></td>
+                                    </tr>
+                                    <!-- <tr class="summary-shipping">
+                                        <td>Shipping:</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+
+                                    <tr class="summary-shipping-row">
+                                        <td>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+                                                <label class="custom-control-label" for="free-shipping">Free Shipping</label>
                                             </div>
                                         </td>
-                                        <td class="column-2"><%= data.productId.productName %></td>
-                                        <td class="column-3"><%= data.productId.price %></td>
-                                        <td class="column-4">
-                                             <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                               
-                                                <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
-                                        <span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>"><%=data.quantity%></span>
-                                        <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a>
-                                                
-                                            </div> 
-                                            
-
-                                        </td>
-                                        <td class="column-5">
-                                            <%= total %>
-                                        </td>
-                                        <td class="column-5">
-                                            <a class=" btn btn-danger text-white " onclick="removeProduct('<%=data.productId._id%>')">Remove</a>
-                                        </td>
+                                        <td>$0.00</td>
                                     </tr>
-                                <% }); %>
-                            <% }else{%>
-                                <tr>cart is empty</tr>
-                            <%}%>
-                        </table>
-                    </div>
 
-                    <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                        <div class="flex-w flex-m m-r-20 m-tb-5">
-                            <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text" name="coupon" placeholder="Coupon Code">
-                            
-                            <div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
-                                Apply coupon
-                            </div>
+                                    <tr class="summary-shipping-row">
+                                        <td>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
+                                                <label class="custom-control-label" for="standart-shipping">Standart:</label>
+                                            </div>
+                                        </td>
+                                        <td>$10.00</td>
+                                    </tr>
+
+                                    <tr class="summary-shipping-row">
+                                        <td>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
+                                                <label class="custom-control-label" for="express-shipping">Express:</label>
+                                            </div>
+                                        </td>
+                                        <td>$20.00</td>
+                                    </tr>
+
+                                    <tr class="summary-shipping-estimate">
+                                        <td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
+                                        <td>&nbsp;</td>
+                                    </tr> -->
+
+                                    <tr class="summary-total">
+                                        <td>Total:</td>
+                                        <td><%= total %></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
                         </div>
 
-                        <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                            Update Cart
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-7 col-xl-5 m-lr-auto m-b-50">
-                <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
-                    <h4 class="mtext-109 cl2 p-b-30">
-                        Cart Totals
-                    </h4>
-
-                    <div class="flex-w flex-t bor12 p-b-13">
-                        <div class="size-208">
-                            <span class="stext-110 cl2">
-                                Subtotal:
-                            </span>
-                        </div>
-
-                        <div class="size-209">
-                            <span class="mtext-110 cl2">
-                                <%= total %>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="flex-w flex-t p-t-27 p-b-33">
-                        <div class="size-208">
-                            <span class="mtext-101 cl2">
-                                Total:
-                            </span>
-                        </div>
-
-                        <div class="size-209 p-t-1">
-                            <span class="mtext-110 cl2">
-                                $79.65
-                            </span>
-                        </div>
-                    </div>
-
-                    <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                        Proceed to Checkout
-                    </button>
+                        <a href="/shop" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+                    </aside>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</main>
 
 <script>
       function removeProduct(productId){
@@ -141,6 +190,8 @@
             
             swal('Item removed')
             location.reload()
+
+        
             }else{
                 res.json({action:failed})
             }

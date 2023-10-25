@@ -38,8 +38,8 @@ userRoute.get('/reset-password',userController.resetLoad)
 userRoute.post('/reset-password',userController.resetPassword)
 userRoute.get("/logout",userController.userLogout)
 
-userRoute.get('/shop',userAuth.isLogout,userController.loadShop)
-userRoute.get("/productDetails",userAuth.isLogout,userController.loadProductDetails)
+userRoute.get('/shop',userAuth.isLogin,userController.loadShop)
+userRoute.get("/productDetails",userAuth.isLogin,userController.loadProductDetails)
 
 userRoute.get('/profile',userAuth.isLogin,userController.loadProfile)
 
@@ -48,6 +48,13 @@ userRoute.get('/cart',userAuth.isLogin,cartController.loadCart)
 userRoute.post('/addTocart',userAuth.isLogin,cartController.addToCart)
 userRoute.post('/cart-quantity',userAuth.isLogin,cartController.cartQuantity)
 userRoute.post('/remove-product',userAuth.isLogin,cartController.removeProduct)
+
+
+userRoute.get('/address',userAuth.isLogin,userController.loadAddress)
+userRoute.post('/address',userAuth.isLogin,userController.addAddress)
+
+
+userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
 
 
 

@@ -1,0 +1,78 @@
+<%- include('../users/mainLayout/mainHeader.ejs')%>
+<style>
+    /* Center the button horizontally */
+    .center-align {
+        text-align: center;
+    }
+
+    /* Style the submit button */
+    .blue-button {
+        background-color: blue;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <form action="" method="post">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <h2 class="checkout-title">Billing Details</h2>
+                    <div class="form-group">
+                        <label for="company-name">Full Name</label>
+                        <input type="text" class="form-control" id="FullName" name="fullName" required>
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                        <label for="country">Country *</label>
+                        <input type="text" class="form-control" id="country" name="country" required>
+                    </div>
+
+                   
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="town-city"> City *</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="state-county">State  *</label>
+                                <input type="text" class="form-control" id="state" name="state" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="postcode">Pin Code*</label>
+                                <input type="text" class="form-control" id="pinCode" name="pincode" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="phone">Mobile *</label>
+                                <input type="tel" class="form-control" id="phone" name="mobile" required>
+                            </div>
+                        </div>
+
+                        <button type="submit">Register</button>
+                    </div>
+
+                </div>
+
+                
+            </div>
+        </div>
+    </form>
+
+
+<%- include('../users/mainLayout/mainFooter.ejs')%>

@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema({
     type:Array,
     required:true
 },
-  quantity: {
+  z: {
     type: String,
     required: true,
   },

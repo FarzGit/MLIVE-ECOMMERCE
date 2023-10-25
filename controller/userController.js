@@ -6,8 +6,10 @@ const config = require("../config/config");
 const otpGenerator = require("otp-generator");
 const productDb = require('../models/productModel')
 const categoryDb = require('../models/categoryModel');
+const addressDb = require('../models/userAddressModel')
 const Swal = require('sweetalert2')
 const { AwsInstance } = require("twilio/lib/rest/accounts/v1/credential/aws");
+
 
 // require("dotenv").config();
 // ==============================================================SECURING THE PASSWORD================================================================
@@ -496,12 +498,110 @@ const loadProductDetails = async(req,res)=>{
 const loadProfile = async (req,res)=>{
   try{
 
-    res.render('profile')
+    const userId = req.session.user_id
+
+    const userData = await  User.findById({_id:userId})
+    console.log(userData);
+
+    res.render('profile',{user:userData})
 
   }catch(error){
     console.log(error);
   }
 }
+
+
+// ===================================================================loadCheckout==================================================================
+
+
+const loadCheckout = async(req,res)=>{
+  try{
+
+    res.render('checkout')
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+// ===================================================================loaduserAddress==================================================================
+
+const loadAddress = async(req,res)=>{
+  try{
+
+    const userId = req.session.user_id
+        
+    res.render('address',{user:userId})
+
+  }catch(error){
+    console.log(error);
+  }
+
+}
+
+
+
+// ===================================================================addAddress In users==================================================================
+
+
+
+const addAddress = async(req,res)=>{
+  try {
+    const alreadyAddress = await addressDb.findOne({
+      userId: req.session.user_id,
+    });
+    if (alreadyAddress) {
+      const updatedAddress = await addressDb.updateOne(
+        { userId: req.session.user_id },
+        {
+          $push: {
+            addresses: [
+              {
+                fullName: req.body.fullName,
+                mobile: req.body.mobile,
+                country: req.body.country,
+                city: req.body.city,
+                state: req.body.state,
+                pincode: req.body.pincode,
+              },
+            ],
+          },
+        }
+      );
+      if (updatedAddress) {
+        res.redirect("/profile");
+      }
+    } else {
+      const newAddress = new addressDb({
+        userId: req.session.user_id,
+        addresses: [
+          {
+            fullName: req.body.fullName,
+            mobile: req.body.mobile,
+            country: req.body.country,
+            city: req.body.city,
+            state: req.body.state,
+            pincode: req.body.pincode,
+          },
+        ],
+      });
+     
+      const savedAddress = await newAddress.save();
+  
+      if (savedAddress) {
+        res.redirect("/profile");
+      } else {
+      }
+    }
+  } catch (error) {
+    console.log(error.message);
+  
+  }
+}
+
+
+
+
 
 
 
@@ -526,5 +626,8 @@ module.exports = {
   resetPassword,
   loadProductDetails,
   loadShop,
-  loadProfile
+  loadProfile,
+  loadCheckout,
+  loadAddress,
+  addAddress
 };

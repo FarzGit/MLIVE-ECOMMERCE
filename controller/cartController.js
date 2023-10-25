@@ -26,7 +26,7 @@ const addToCart = async (req, res) => {
 
                     const [{ quantity: quantity }] = cartData.products
 
-                    if (productData.status <= quantity) {
+                    if (productData.quantity <= quantity) {
                         res.json({ outofstock: true })
                     } else {
                         await cartDb.findOneAndUpdate({ user: userId, "products.productId": productId },
@@ -121,11 +121,8 @@ const addToCart = async (req, res) => {
         try{
 
             const userId = req.body.user
-            console.log(userId);
             const productId = req.body.product
-            console.log(productId);
             const count = parseInt(req.body.count)
-            console.log(count);
 
             const cartData = await cartDb.findOne({user:new ObjectId(userId),"products.productId":new ObjectId(productId)},{"products.productId.$":1 , "products.quantity":1})
             console.log(cartData);
@@ -135,12 +132,12 @@ const addToCart = async (req, res) => {
             const stockAvailale = await productDb.find({_id:new ObjectId(productId)})
             console.log(stockAvailale);
             
-            if(stockAvailale.status < quantity + count){
+            if(stockAvailale.quantity < quantity + count){
                 res.json({changeSuccess:false})
             }else{
                 await cartDb.updateOne(
                     {user:userId, "products.productId" : productId},
-                    {$inc : {"product.$.quantity" : count}})
+                    {$inc : {"products.$.quantity" : count}})
                     res.json({changeSuccess:true})
             }
 
