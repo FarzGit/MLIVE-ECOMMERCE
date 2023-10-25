@@ -53,6 +53,8 @@ userRoute.post('/remove-product',userAuth.isLogin,cartController.removeProduct)
 userRoute.get('/address',userAuth.isLogin,userController.loadAddress)
 userRoute.post('/address',userAuth.isLogin,userController.addAddress)
 
+userRoute.get('/editAddress',userAuth.isLogin,userController.loadEditAddress)
+
 
 userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
 

@@ -1,0 +1,80 @@
+<%- include('../users/mainLayout/mainHeader.ejs')%>
+  
+<main class="main">
+    <div class="page-header text-center " style="background-image: url('/user/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title text-white">Edit Address</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">My Account</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <body>
+        <form action="/editAddress" method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h2 class="checkout-title">Billing Details</h2>
+                        <div class="form-group">
+                            <label for="company-name">Full Name</label>
+                            <input type="text" class="form-control" id="FullName" name="fullName" value="<%=addresses.fullName%>" required>
+                        </div>
+    
+                        
+    
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <input type="text" class="form-control" id="country" name="country" value="<%=addresses.country%>" required>
+                        </div>
+    
+                       
+    
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="town-city"> City *</label>
+                                    <input type="text" class="form-control" id="city" name="city" value="<%=addresses.city%>" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="state-county">State  *</label>
+                                    <input type="text" class="form-control" id="state" name="state" value="<%=addresses.state%>" required>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="postcode">Pin Code*</label>
+                                    <input type="text" class="form-control" id="pinCode" name="pincode" value="<%=addresses.pincode%>" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="phone">Mobile *</label>
+                                    <input type="tel" class="form-control" id="phone" name="mobile" value="<%=addresses.mobile%>" required>
+                                </div>
+                            </div>
+    
+                            <button type="submit">Update</button>
+                        </div>
+    
+                    </div>
+    
+                    
+                </div>
+            </div>
+        </form>
+</main><!-- End .main -->
+
+
+
+<%- include('../users/mainLayout/mainFooter.ejs')%>

@@ -498,12 +498,15 @@ const loadProductDetails = async(req,res)=>{
 const loadProfile = async (req,res)=>{
   try{
 
-    const userId = req.session.user_id
+    const id = req.session.user_id
+    const userData = await  User.findById({_id:id})
+    let userAddress = await addressDb.findOne({ userId: id })
+    console.log(userAddress);
 
-    const userData = await  User.findById({_id:userId})
+    
     console.log(userData);
 
-    res.render('profile',{user:userData})
+    res.render('profile',{user:userData,address: userAddress})
 
   }catch(error){
     console.log(error);
@@ -547,61 +550,67 @@ const loadAddress = async(req,res)=>{
 
 const addAddress = async(req,res)=>{
   try {
-    const alreadyAddress = await addressDb.findOne({
-      userId: req.session.user_id,
-    });
-    if (alreadyAddress) {
-      const updatedAddress = await addressDb.updateOne(
-        { userId: req.session.user_id },
-        {
-          $push: {
-            addresses: [
-              {
+    
+    // let addrData = req.body;
+    let userAddress = await addressDb.findOne({ userId: req.session.user_id });
+    if (!userAddress) {
+      userAddress = new addressDb({
+        userId: req.session.user_id,
+        addresses: [
+          {
                 fullName: req.body.fullName,
                 mobile: req.body.mobile,
                 country: req.body.country,
                 city: req.body.city,
                 state: req.body.state,
                 pincode: req.body.pincode,
-              },
-            ],
-          },
-        }
-      );
-      if (updatedAddress) {
-        res.redirect("/profile");
-      }
-    } else {
-      const newAddress = new addressDb({
-        userId: req.session.user_id,
-        addresses: [
-          {
-            fullName: req.body.fullName,
-            mobile: req.body.mobile,
-            country: req.body.country,
-            city: req.body.city,
-            state: req.body.state,
-            pincode: req.body.pincode,
           },
         ],
       });
-     
-      const savedAddress = await newAddress.save();
-  
-      if (savedAddress) {
-        res.redirect("/profile");
-      } else {
-      }
+    } else {
+      
+      userAddress.addresses.push({
+                fullName: req.body.fullName,
+                mobile: req.body.mobile,
+                country: req.body.country,
+                city: req.body.city,
+                state: req.body.state,
+                pincode: req.body.pincode,
+      });
     }
+
+    
+    let result = await userAddress.save();
+    
+    
+    res.redirect("/profile");
   } catch (error) {
     console.log(error.message);
-  
+  }
+};
+
+// ===================================================================Edit user Adderee From profile==================================================================
+
+
+const loadEditAddress = async(req,res)=>{
+  try{
+    console.log("hai");
+    const id = req.query.id
+    console.log(id);
+    const userId = req.session.user_id
+
+    let userAddress = await addressDb.findOne({ userId: userId  },{addresses:{$elemMatch:{_id:id}}})
+
+    const address= userAddress.addresses
+
+    res.render('editAddress',{user:userId,addresses:address[0]})
+
+    
+
+  }catch(error){
+    console.log(error);
   }
 }
-
-
-
-
 
 
 
@@ -629,5 +638,6 @@ module.exports = {
   loadProfile,
   loadCheckout,
   loadAddress,
-  addAddress
+  addAddress,
+  loadEditAddress
 };
