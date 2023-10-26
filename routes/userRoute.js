@@ -15,6 +15,7 @@ userRoute.use(
 
 const userController = require("../controller/userController")
 const cartController = require("../controller/cartController")
+const orderController =require("../controller/orderController")
 
 userRoute.set("view engine", "ejs");
 userRoute.set("views", "./views/users");
@@ -54,9 +55,12 @@ userRoute.get('/address',userAuth.isLogin,userController.loadAddress)
 userRoute.post('/address',userAuth.isLogin,userController.addAddress)
 
 userRoute.get('/editAddress',userAuth.isLogin,userController.loadEditAddress)
+userRoute.post('/editAddress',userAuth.isLogin,userController.updateUserAddress)
+userRoute.post('/deleteAddress',userAuth.isLogin,userController.deleteUserAddress)
 
 
-userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
+userRoute.get('/checkout',userAuth.isLogin,orderController.loadCheckOut)
+router.post('/checkout/paymentselection',userAuth.isLogin,orderController.selectPayment)
 
 
 

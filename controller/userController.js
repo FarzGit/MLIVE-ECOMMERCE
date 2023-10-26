@@ -517,15 +517,6 @@ const loadProfile = async (req,res)=>{
 // ===================================================================loadCheckout==================================================================
 
 
-const loadCheckout = async(req,res)=>{
-  try{
-
-    res.render('checkout')
-
-  }catch(error){
-    console.log(error);
-  }
-}
 
 // ===================================================================loaduserAddress==================================================================
 
@@ -589,7 +580,7 @@ const addAddress = async(req,res)=>{
   }
 };
 
-// ===================================================================Edit user Adderee From profile==================================================================
+// ===================================================================load Edit user Adderes==================================================================
 
 
 const loadEditAddress = async(req,res)=>{
@@ -611,6 +602,75 @@ const loadEditAddress = async(req,res)=>{
     console.log(error);
   }
 }
+
+
+// ===================================================================postEditAddress==================================================================
+
+
+const updateUserAddress = async(req,res)=>{
+  try{
+     console.log("entere address edit");
+    const addressId =req.body.id
+    console.log("addressId :",addressId);
+    
+    const userId = req.session.user_id
+    console.log(userId);
+    
+
+
+    const pushAddress = await addressDb.updateOne(
+      { userId: userId , "addresses._id":addressId},
+      {
+        $set: {
+          
+           "addresses.$.fullName": req.body.fullName,
+           "addresses.$.mobile": req.body.mobile,
+           "addresses.$.country": req.body.country,
+           "addresses.$.city": req.body.city,
+           "addresses.$.state": req.body.state,
+           "addresses.$.pincode": req.body.pincode,
+          
+        },
+      }
+    );
+    console.log(pushAddress);
+    res.redirect("/profile");
+    
+
+  }catch(error){
+    console.log(error);
+  }
+
+}
+
+
+// ===================================================================deleteUserAddress==================================================================
+
+
+const deleteUserAddress = async(req,res)=>{
+  try{
+     console.log(" delete User Enter");
+    const id = req.body.id
+    console.log(id);
+    const userId = req.session.user_id
+    console.log(userId);
+    const deleteAddress = await addressDb.updateOne({userId:userId},{$pull:{addresses:{_id:id}}})
+    console.log(deleteAddress);
+
+    res.json({remove:true})
+
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+
+
+
+
+
 
 
 
@@ -636,8 +696,9 @@ module.exports = {
   loadProductDetails,
   loadShop,
   loadProfile,
-  loadCheckout,
   loadAddress,
   addAddress,
-  loadEditAddress
+  loadEditAddress,
+  updateUserAddress,
+  deleteUserAddress
 };

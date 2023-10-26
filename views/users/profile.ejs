@@ -129,7 +129,7 @@
                                         <div class="d-flex justify-content-end ">
                                            <a href="/editAddress?id=<%= address.addresses[i]._id %>"> <button class="text-dark" type="button" id="editBTN" data-bs-toggle="modal" data-bs-target="">Edit </button></a>
                                             <p class="mx-3" style="margin-top: 10px;">|</p>
-                                            <a href="#"><button class="text-danger" type="button"   data-bs-toggle="modal" data-bs-target="">Remove</button></a>
+                                           <button class="text-danger" type="button"   data-bs-toggle="modal" onclick="deleteAddress('<%= address.addresses[i]._id %>')">Remove</button>
                                             
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@
 
                           <% } %>
                         </div>
-
+                        
                             
                         
                             
@@ -207,6 +207,28 @@
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+
+
+
+
+<script>
+function deleteAddress(addressId){
+    $.ajax({
+     url:'/deleteAddress',
+     method:'post',
+     encoded:true,
+     data:{
+        addresses: addressId
+     }
+    }).done((data)=>{
+     if(data.remove){
+         swal('Item removed');
+     } else {
+         res.json({action: 'failed'});
+     }
+    });
+}
+</script>
 
 
 

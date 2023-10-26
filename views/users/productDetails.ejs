@@ -120,9 +120,9 @@
 										</div>
 									</div>
 
-									<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+									<a onclick="addToCart('<%= product._id %>')" ><button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
 										Add to cart
-									</button>
+									</button></a>
 								</div>
 							</div>	
 						</div>
@@ -342,7 +342,33 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		
 	
-	
+	<script>
+		function addToCart(id) {
+  console.log("addToCart function called with id: " + id);
+  $.ajax({
+    url: "/addTocart",
+    method: "post",
+    encoded: true,
+    data: {
+      id: id
+    },
+  }).done((data) => {
+    if (data) {
+      console.log(data);
+
+      Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'Item has been added to Cart!',
+  showConfirmButton: false,
+  timer: 1500
+})
+    } else {
+      swal("Fail to add");
+    }
+  });
+}
+	</script>
 
 	
 	
