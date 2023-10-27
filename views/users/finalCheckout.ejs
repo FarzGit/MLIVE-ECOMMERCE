@@ -1,0 +1,217 @@
+<%- include('../users/mainLayout/mainHeader.ejs')%>
+
+
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('/user/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title text-white">Checkout</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item " aria-current="page">Shopping Cart</li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content ">
+        <div class="cart mb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 cart-item-box">
+
+                        <div class=" py-4   mb-2 " style="border-radius: 10px; background: #F3F3F9;">
+                            <div class="form-check d-flex align-items-start flex-column mx-4 py-3">
+                                <div>
+                                    <h6>1. Delivery Address</h6>
+
+                                </div>
+                                <div class="form-check d-flex align-items-center flex-column co mx-4">
+
+                                    <div class="">
+                                        <p class="text-dark"><b>
+                                                <%= address.fullName %>
+                                            </b> , <%= address.city %>, <%= address.state %>.
+                                                    Contanct
+                                                    Number:
+                                                    <b style="color: #043a6c;">
+                                                        <span class="material-symbols-outlined"
+                                                            style="font-size: 13px;">smartphone</span>
+                                                        <%= address.mobileNumber %>
+                                                    </b>
+                                        </p>
+                                        <p>
+                                            <%= address.pincode %>, <%= address.country %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class=" py-4    " style="border-radius: 10px; background: #F3F3F9;">
+                            <div class="form-check d-flex align-items-center mx-4 ">
+                                <h6 class="pt-2">2. <b>
+                                        <%= payment %>
+                                    </b> Payment method choosed</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class=" py-4  mt-1  " style="border-radius: 10px; background: #F3F3F9;">
+                            <div class="form-check d-flex  flex-column mx-4 ">
+                                <!-- <hr> -->
+
+
+                                <div class="col-12 row d-flex justify-content-end ">
+                                    <div class="col-12">
+                                        <h5 class="mt-3">3. Items and delivery</h5>
+                                        <hr>
+                                    </div>
+                                    <% for(i=0;i<cartItems.products.length;i++){ %>
+                                        <div class="card col-9 m-1 p-2 d-flex bg-light"
+                                            style="border-radius: 7px; ">
+                                            <div class="row g-0 ">
+                                                <div class="col-4 d-flex align-items-center px-5">
+                                                    <img style="width: 15rem;  border-radius: 17px;"
+                                                        src="/products/images/<%= cartItems.products[i].product.images.image1%>"
+                                                        class="card-img-start" alt="...">
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title pt-2">
+                                                            <%= cartItems.products[i].product.productName %>
+                                                        </h6>
+                                                        <p class="card-text fs-1">₹<%=
+                                                                cartItems.products[i].product.price %>
+                                                        </p>
+                                                        <% const
+                                                            description=cartItems.products[i].product.description.split(' ').slice(0, 10).join(' ');
+                                                             %> <p class="card-text" id="productDescription"><%= description %>...</p>
+                                                        <p class="card-text">
+                                                            Qty: <%= cartItems.products[i].quantity %>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%}%>
+                                        <div class="col-12">
+                                            <hr>
+                                            <h5 class="mt-3">Order Summary</h5>
+                                            <p class="mt-1">Delivery Expect on  <b class="text-success">this deliveryDate</b></p>
+                                            <table class="table table-summary">
+                                                <tbody>
+
+                                                    <tr class="summary-subtotal">
+                                                        <td>Subtotal:</td>
+                                                        <td>₹<span id="subTotalDisplay">
+                                                                <%= total%>
+                                                            </span></td>
+                                                    </tr>
+
+                                                    <tr class="summary-shipping-row">
+                                                        <td>
+                                                            <label class=""
+                                                                for="standart-shipping">Discount:</label>
+                                                        </td>
+                                                        <td id="dicountDisplay2">0.00</td>
+                                                    </tr>
+
+                                                    <tr class="summary-total">
+                                                        <td>Total:</td>
+                                                        <td>₹<span id="totalDisplay2">
+                                                                <%=total%>
+                                                            </span></td>
+                                                    </tr><!-- End .summary-total -->
+                                                </tbody>
+                                            </table><!-- End .table table-summary -->
+                                            <hr>
+                                            <button 
+                                                                class="btn btn-outline-primary-2 mb-4 btn-block
+                                                                py-4 "
+                                                                style="background-color: #000; color: #fff;
+                                                                border-radius: 10px; font-size: 18px;"
+                                                                onMouseOver="this.style.background=' #575757'"
+                                                            onMouseOut="this.style.background='#000'"
+                                                            id="addressBtn">Place Order</button>
+
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                </div><!-- End .col-lg-9 -->
+                                
+
+                               
+                                    
+
+                            </div><!-- End .row -->
+                        </div><!-- End .container -->
+                    </div><!-- End .cart -->
+                </div><!-- End .page-content -->
+                <form id="addressForm">
+                    <input type="text" name="address" value="<%= address._id %>" id="addressInput" hidden>
+                    <input type="text" name="payment" value="<%=payment%>" hidden>
+                    <input id="couponPass" type="text" name="coupon" hidden>
+                    <button id="submitForm" type="submit" hidden></button>
+                </form>
+</main><!-- End .main -->
+
+<!-- <form id="paymentVerifyForm" action="/checkout/placeorder/verify-payment" method="post">
+    <input type="text" name="status" id="statusInput" hidden>
+    <button type="submit" hidden></button>
+</form> -->
+
+<script>
+    // let paymentVerifyForm = document.getElementById('paymentVerifyForm')
+    // let paymentstatusInput = document.getElementById('statusInput')
+
+    let addressBtn = document.getElementById('addressBtn')
+    addressBtn.addEventListener('click', () => {
+        submitForm.click()
+    })
+
+    
+</script>
+<script>
+    // Get references to the radio buttons and the submit button
+    const codRadio = document.getElementById('codRadio');
+    const onlineRadio = document.getElementById('onlineRadio');
+    const paymentBtn = document.getElementById('paymentBtn');
+
+    // Add event listeners to the radio buttons
+    codRadio.addEventListener('change', toggleButtonState);
+    onlineRadio.addEventListener('change', toggleButtonState);
+
+    // Function to toggle the button state based on the radio button selection
+    function toggleButtonState() {
+        if (codRadio.checked || onlineRadio.checked) {
+            paymentBtn.disabled = false; // Enable the button if a radio button is selected
+        } else {
+            paymentBtn.disabled = true; // Disable the button if no radio button is selected
+        }
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../users/mainLayout/mainFooter.ejs')%>
+

@@ -60,7 +60,8 @@ userRoute.post('/deleteAddress',userAuth.isLogin,userController.deleteUserAddres
 
 
 userRoute.get('/checkout',userAuth.isLogin,orderController.loadCheckOut)
-router.post('/checkout/paymentselection',userAuth.isLogin,orderController.selectPayment)
+userRoute.post('/checkout',userAuth.isLogin,orderController.useThisAddress)
+userRoute.post('/checkout/paymentselection',userAuth.isLogin,orderController.selectPayment)
 
 
 

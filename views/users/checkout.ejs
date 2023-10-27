@@ -36,7 +36,7 @@
                                             <div class="mx-5">
                                                 <p class="text-dark"><b><%= address[i].fullName %></b>,<%= address[i].state %> ,<%= address[i].city %>,  
                                                     
-                                                            Contanct
+                                                           
                                                             Number:
                                                             <b style="color: #043a6c;">
                                                                 <span class="material-symbols-outlined"
@@ -93,7 +93,7 @@
                     <aside class="col-lg-3">
                         <div class="summary summary-cart">
                             <% if(address !=0){ %>
-                            <button id="addressSubmitBtn" class="btn btn-outline-primary-2  btn-block py-3"
+                            <button id="useAddressButton" class="btn btn-outline-primary-2  btn-block py-3"
                                 style="background-color: #000; color: #fff; "
                                 onMouseOver="this.style.background='#575757'"
                                 onMouseOut="this.style.background='#000'">Use This
@@ -226,11 +226,16 @@
         $(this).addClass("checked");
     });
 
-    // form submit handil
-    document.getElementById("addressSubmitBtn").addEventListener("click",function(){
-        document.getElementById("addressForm").submit();
-    })
+   
 </script>
 
+
+<script>
+    // Add a click event listener to the "Use This Address" button
+    document.getElementById("useAddressButton").addEventListener("click", function () {
+        // Submit the form with id "addressForm"
+        document.getElementById("addressForm").submit();
+    });
+</script>
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>
