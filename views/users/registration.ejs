@@ -103,7 +103,7 @@
         <form action="/register" method="POST" id="form">
             <div class="input-container">
                 <input type="text" id="Fname" name="Fname" placeholder="First Name">
-                <span class="error-message" style="color: red;"></span>
+                <p class="error-message" style="color: red;"></p>
             </div>
             <div class="input-container">
                 <input type="text" id="Lname" name="Lname" placeholder="Last Name">
@@ -111,7 +111,7 @@
             </div>
             <div class="input-container">
                 <input type="email" id="email" name="email" placeholder="Email">
-                <span class="error-message" style="color: red;"></span>
+                <p class="error-message" style="color: red; "></p>
             </div>
             <div class="input-container">
                 <input type="text" id="mobile" name="mobile" placeholder="Mobile">
@@ -134,92 +134,101 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('form');
-        const fnameInput = document.getElementById('Fname');
-        const lnameInput = document.getElementById('Lname');
-        const emailInput = document.getElementById('email');
-        const mobileInput = document.getElementById('mobile');
-        const passwordInput = document.getElementById('password');
-        const cpasswordInput = document.getElementById('Cpassword');
-        const errorMessages = document.querySelectorAll('.error-message');
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('form');
+    const fnameInput = document.getElementById('Fname');
+    const lnameInput = document.getElementById('Lname');
+    const emailInput = document.getElementById('email');
+    const mobileInput = document.getElementById('mobile');
+    const passwordInput = document.getElementById('password');
+    const cpasswordInput = document.getElementById('Cpassword');
+    const errorMessages = document.querySelectorAll('.error-message');
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent form submission initially
+    // Email regex pattern
+    var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
-            let isValid = true;
-            errorMessages.forEach(function (element) {
-                element.innerText = '';
-            });
+    // Mobile number regex pattern
+    var phoneRegex = /^(?!^(\d)\1{9}$)\d{10}$/;
 
-            if (fnameInput.value.trim() === '') {
-                errorMessages[0].innerText = 'First Name is required.';
-                isValid = false;
-            }
+    form.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission initially
 
-            if (lnameInput.value.trim() === '') {
-                errorMessages[1].innerText = 'Last Name is required.';
-                isValid = false;
-            }
-
-            if (emailInput.value.trim() === '') {
-                errorMessages[2].innerText = 'Email is required.';
-                isValid = false;
-            }
-
-            if (mobileInput.value.trim() === '') {
-                errorMessages[3].innerText = 'Mobile is required.';
-                isValid = false;
-            } else if (!/^\d+$/.test(mobileInput.value.trim())) {
-                errorMessages[3].innerText = 'Mobile must contain only numbers.';
-                isValid = false;
-            }
-
-            if (passwordInput.value.length < 5) {
-                errorMessages[4].innerText = 'Password must be at least 5 characters long.';
-                isValid = false;
-            } else if (!/[^a-zA-Z0-9]/.test(passwordInput.value) || passwordInput.value.includes(' ')) {
-                errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
-                isValid = false;
-            }
-
-            if (cpasswordInput.value === '') {
-                errorMessages[5].innerText = 'Confirm Password is required.';
-                isValid = false;
-            }
-
-            if (passwordInput.value !== cpasswordInput.value) {
-                errorMessages[4].innerText = 'Passwords do not match.';
-                errorMessages[5].innerText = 'Passwords do not match.';
-                isValid = false;
-            }
-
-            if (isValid) {
-                // If everything is valid after the delay, submit the form
-                form.submit();
-            }
+        let isValid = true;
+        errorMessages.forEach(function (element) {
+            element.innerText = '';
+            element.style.fontSize = '10px'; // Set the font size to 10px
         });
 
-        // Real-time validation
-        const inputElements = [fnameInput, lnameInput, emailInput, mobileInput, passwordInput, cpasswordInput];
+        if (fnameInput.value.trim() === '') {
+            errorMessages[0].innerText = 'First Name is required.';
+            isValid = false;
+        }
 
-        inputElements.forEach((input, index) => {
-            input.addEventListener('input', function () {
-                errorMessages[index].innerText = '';
-            });
-        });
+        if (lnameInput.value.trim() === '') {
+            errorMessages[1].innerText = 'Last Name is required.';
+            isValid = false;
+        }
 
-        passwordInput.addEventListener('input', function () {
-            const passwordValue = passwordInput.value;
-            errorMessages[4].innerText = '';
+        if (emailInput.value.trim() === '') {
+            errorMessages[2].innerText = 'Email is required.';
+            isValid = false;
+        } else if (!emailRegex.test(emailInput.value.trim())) { // Check email format using regex
+            errorMessages[2].innerText = 'Email is not valid. (e.g., example@gmail.com)';
+            isValid = false;
+        }
 
-            if (passwordValue.length < 5) {
-                errorMessages[4].innerText = 'Password must be at least 5 characters long.';
-            } else if (!/[^a-zA-Z0-9]/.test(passwordValue) || passwordValue.includes(' ')) {
-                errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
-            }
+        if (mobileInput.value.trim() === '') {
+            errorMessages[3].innerText = 'Mobile is required.';
+            isValid = false;
+        } else if (!phoneRegex.test(mobileInput.value.trim())) { // Check mobile format using regex
+            errorMessages[3].innerText = 'Please enter a valid 10-digit mobile number.';
+            isValid = false;
+        }
+
+        if (passwordInput.value.length < 5) {
+            errorMessages[4].innerText = 'Password must be at least 5 characters long.';
+            isValid = false;
+        } else if (!/[^a-zA-Z0-9]/.test(passwordInput.value) || passwordInput.value.includes(' ')) {
+            errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
+            isValid = false;
+        }
+
+        if (cpasswordInput.value === '') {
+            errorMessages[5].innerText = 'Confirm Password is required.';
+            isValid = false;
+        } else if (cpasswordInput.value !== passwordInput.value) {
+            errorMessages[4].innerText = 'Passwords do not match.';
+            errorMessages[5].innerText = 'Passwords do not match.';
+            isValid = false;
+        }
+
+        if (isValid) {
+            // If everything is valid after the delay, submit the form
+            form.submit();
+        }
+    });
+
+    // Real-time validation
+    const inputElements = [fnameInput, lnameInput, emailInput, mobileInput, passwordInput, cpasswordInput];
+
+    inputElements.forEach((input, index) => {
+        input.addEventListener('input', function () {
+            errorMessages[index].innerText = '';
         });
     });
+
+    passwordInput.addEventListener('input', function () {
+        const passwordValue = passwordInput.value;
+        errorMessages[4].innerText = '';
+
+        if (passwordValue.length < 5) {
+            errorMessages[4].innerText = 'Password must be at least 5 characters long.';
+        } else if (!/[^a-zA-Z0-9]/.test(passwordValue) || passwordValue.includes(' ')) {
+            errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
+        }
+    });
+});
+
 </script>
     
 

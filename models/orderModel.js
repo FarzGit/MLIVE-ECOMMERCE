@@ -1,99 +1,81 @@
-const mongoose = require('mongoose')
-
-
+const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', 
-      required: true,
-    },
-    shippingAddress: {
-      country: {
+  deliveryDetails: {
+    type: String,
+    required: true,
+  },
+  user: {
+    type: mongoose.Types.ObjectId,
+  },
+  uniqueId: {
+    type: Number,
+  },
+  userId: {
+    type: String,
+    required: true,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  products: [
+    {
+      productId: {
         type: String,
         required: true,
+        ref: "product",
       },
-      fullName: {
-        type: String,
-        required: true,
-      },
-      mobile: {
+      count: {
         type: Number,
-        required: true,
+        default: 1,
       },
-      pincode: {
+      productPrice: {
         type: Number,
-        required: true,
+        // required: true,
       },
-      city: {
-        type: String,
-        required: true,
-      },
-      state: {
-        type: String,
+      totalPrice: {
+        type: Number,
         required: true,
       }
     },
-    products: [
-      {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'product', 
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        OrderStatus:{
-          type:String,
-          require:true
-        },
-        StatusLevel:{
-          type: Number,
-          required: true
-        },
-        paymentStatus:{
-          type:String,
-          require:true
-        },
-        returnOrderStatus:{
-          status:{
-            type:String
-          },
-          reason:{
-            type:String
-          }
-          
-        },
-        updatedAt:{
-          type:Date,
-          default:Date.now
-        }
-        
-      }
-    ],
-    orderDate: {
-      type: Date,
-      default: Date.now,
-    },
-    totalAmount: {
-      type: Number,
-      required: true,
-    },
-    paymentMethod:{
-      type:String,
-      require:true
-    },
-    coupon:{
-        type: String,
-        required: true
-    },
-    trackId:{
-      type:Number,
-      require:true
-    }
-  });
+  ],
+  
+  deliveryDate: {
+    type: Date,
+  },
+  cancelReason: {
+    type: String
+  },
+  returnReason: {
+    type: String
+  },
+  totalAmount: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: Date,
+  },
+  status: {
+    type: String,
+  },
+  statusLevel: {
+    type: Number,
+    default: 0
+  },
+  paymentMethod: {
+    type: String,
+  },
+  orderId: {
+    type: String,
+  },
+  paymentId: {
+    type: String
+  },
+  discount: {
+    type: String
+  }
+});
 
-
-  module.exports = mongoose.model('Order', orderSchema);
+module.exports = mongoose.model("order", orderSchema);

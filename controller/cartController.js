@@ -101,10 +101,10 @@ const addToCart = async (req, res) => {
                        
                         res.render('cart', { user: req.session.user_id, cart: cartData.products, userId: userId, total: Total });
                     }else{
-                        res.render('cart', { user: req.session.user_id, message: 'empty', cart: [],total:0 });
+                        res.render('cart', { user: req.session.user_id,  cart: [],total:0 });
                     }
                 }else {
-                    res.render('cart', { user: req.session.user, message: 'empty', cart: [] ,total: 0  });
+                    res.render('cart', { user: req.session.user, cart: [] ,total: 0  });
                 } 
             } else {
                 res.render('cart', { message: "User Logged", cart: [] ,total: 0 });

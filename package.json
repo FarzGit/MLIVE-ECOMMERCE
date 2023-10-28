@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^1.5.1",
     "bcrypt": "^5.1.1",
+    "bootstrap-icons": "^1.11.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "engine": "^1.0.0",

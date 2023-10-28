@@ -42,7 +42,7 @@
                                                     Number:
                                                     <b style="color: #043a6c;">
                                                         <span class="material-symbols-outlined"
-                                                            style="font-size: 13px;"><%= address.mobileNumber %></span>
+                                                            style="font-size: 13px;"><%= address.mobile %></span>
                                                         
                                                     </b>
                                         </p>
@@ -116,7 +116,7 @@
                                     <tr class="summary-subtotal">
                                         <td>Subtotal:</td>
                                         <td>₹<span id="subTotalDisplay">
-                                                <%=total%>
+                                            <%= total %>
                                             </span></td>
                                     </tr><!-- End .summary-subtotal -->
 
@@ -136,9 +136,7 @@
 
                                     <tr class="summary-total">
                                         <td>Total:</td>
-                                        <td>₹<span id="totalDisplay">
-                                                <%=total%>
-                                            </span></td>
+                                        <td>₹<span id="totalDisplay"><%= total %></span></td>
                                     </tr><!-- End .summary-total -->
                                 </tbody>
                             </table><!-- End .table table-summary -->

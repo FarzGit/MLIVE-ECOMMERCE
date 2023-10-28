@@ -3,239 +3,412 @@
 
 
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('user/images/page-header-bg.jpg')">
-        <div class="container">
-            <h1 class="page-title text-white">Checkout</h1>
-        </div><!-- End .container -->
-    </div><!-- End .page-header -->
-    <nav aria-label="breadcrumb" class="breadcrumb-nav">
-        <div class="container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item " aria-current="page">Shopping Cart</li>
-                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
-
-            </ol>
-        </div><!-- End .container -->
-    </nav><!-- End .breadcrumb-nav -->
-
-    <div class="page-content ">
-        <div class="cart mb-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9 cart-item-box">
-                        <h5 class="text-dark mb-3">1. &nbsp; Select a delivery address</h5>
-                        <%if(address !=0){%>
-                            <form action="/checkout" method="post" id="addressForm">
-                                <% for(i=address.length-1; i>=0; i--) { %>
-                                <label class="p-3 border rounded-4 m-2 custom-label">
-                                    <div class="form-check d-flex align-items-center mx-4">
-                                        <input class="form-check-input " type="radio" value="<%= address[i].id %>"
-                                            name="address" id="Radio<%=address[i]._id %>"  <% if(i==address.length-1) { %> checked <% } %> 
-                                            >
-                                            <div class="mx-5">
-                                                <p class="text-dark"><b><%= address[i].fullName %></b>,<%= address[i].state %> ,<%= address[i].city %>,  
-                                                    
-                                                           
-                                                            Number:
-                                                            <b style="color: #043a6c;">
-                                                                <span class="material-symbols-outlined"
-                                                                    style="font-size: 13px;"></b><%= address[i].mobile %> </p></span>
-                                                            
-                                                <p>
-                                                    <%= address[i].pincode %>,<%= address[i].country %>
-                                                </p>
-                                            </div>
-                                    </div>
-                                </label>
-                                <% } %>
-                                
-                                
-                            </form>
-
-                        <%}else{%>
-                            <div class=" text-center w-100 card">
-                                <h6 class="mt-2 ">You have no shipping Address</h6>
-                                <p class="">Kindly add a shipping address to proceed.</p>
-                                <button type="button"
-                                    class="btn btn-outline-primary-2 mx-auto  mt-1 "
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                    style="border-radius: 0px; font-size: 13px; width: 30rem;"> +
-                                    Add a new
-                                    address</button>
-                            </div>
-
-                       <% }%>
-                       <% if(address!=0) { %>
-
-                                        <button type="button" class="btn btn-outline-primary-2 mt-3"
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                        style="border-radius: 0px; font-size: 13px;"> + Add a new
-                                        address</button>
-                        <% } %>
-
-                                            <hr>
-
-                                            <div class=" py-4  mt-2  "
-                                                style="border-radius: 10px; background: #F3F3F9;">
-                                                <div class="form-check d-flex align-items-center mx-4 ">
-                                                    <h5>2. Payment method</h5>
-                                                </div>
-                                            </div>
-                                            <div class=" py-4  mt-1  "
-                                                style="border-radius: 10px; background: #F3F3F9;">
-                                                <div class="form-check d-flex align-items-center mx-4 ">
-                                                    <h5>3. Items and delivery</h5>
-                                                </div>
-                                            </div>
-
-                    </div><!-- End .col-lg-9 -->
-                    <aside class="col-lg-3">
-                        <div class="summary summary-cart">
-                            <% if(address !=0){ %>
-                            <button id="useAddressButton" class="btn btn-outline-primary-2  btn-block py-3"
-                                style="background-color: #000; color: #fff; "
-                                onMouseOver="this.style.background='#575757'"
-                                onMouseOut="this.style.background='#000'">Use This
-                                Address</button>
-                            <%}%>
-
-                            <h3 class="summary-title"></h3>
-
-                            <table class="table table-summary">
-                                <tbody>
-
-                                    <tr class="summary-subtotal">
-                                        <td>Subtotal:</td>
-                                        <td>₹<span id="subTotalDisplay">
-                                                <%= total %>
-                                            </span></td>
-                                    </tr><!-- End .summary-subtotal -->
-
-
-
-
-                                    <tr class="summary-shipping-row">
-                                        <td>
-                                            <label class="" for="standart-shipping">Discount:</label>
-                                        </td>
-                                        <td>0.00</td>
-                                    </tr><!-- End .summary-shipping-row -->
-
-
-
-
-
-                                    <tr class="summary-total">
-                                        <td>Total:</td>
-                                        <td>₹<span id="totalDisplay">
-                                            <%= total %>
-                                            </span></td>
-                                    </tr><!-- End .summary-total -->
-                                </tbody>
-                            </table><!-- End .table table-summary -->
-
-                            <!-- <button class="btn btn-outline-primary-2 btn-order btn-block ">Use This
-                                Address</button> -->
-                        </div><!-- End .summary -->
-                    </aside><!-- End .col-lg-3 -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-        </div><!-- End .cart -->
-    </div><!-- End .page-content -->
-</main><!-- End .main -->
-
-<!-- address adding model  -->
-
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-4">
-            <div class="modal-header">
-                <h5 class="" id="exampleModalLabel">Add New Address</h5>
-                <button type="button" class=" btn-dark " data-bs-dismiss="modal" aria-label="Close">x</button>
-            </div>
-            <form action="/shippingaddress" method="post">
-                <div class="modal-body p-4">
-                    <div class="mb-1">
-                        <label for="exampleFormControlInput1" class="form-label m-0">Country/Region
-                        </label>
-                        <input type="text" class="form-control address-input" id="exampleFormControlInput1"
-                            name="country" required>
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleFormControlInput1" class="form-label m-0">Full name (First and Last
-                            name)
-                        </label>
-                        <input type="text" class="form-control address-input" id="exampleFormControlInput1"
-                            name="fullName" required>
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleFormControlInput1" class="form-label m-0">Mobile number
-                        </label>
-                        <input type="number" class="form-control address-input" id="exampleFormControlInput1"
-                            name="mobileNumber" required>
-                    </div>
-                    <div class="mb-1">
-                        <label for="exampleFormControlInput1" class="form-label m-0">Area, Street, Sector,
-                            Village
-                        </label>
-                        <input type="text" class="form-control address-input" id="exampleFormControlInput1"
-                            name="city" required>
-                    </div>
-
-                    <div class=" row ">
-                        <div class=" col-6">
-                            <label for="exampleFormControlInput1" class="form-label m-0">State
-                            </label>
-                            <input type="text" class="form-control address-input" id="exampleFormControlInput1"
-                                name="state" required>
-                        </div>
-                        <div class=" col-6">
-                            <label for="exampleFormControlInput1" class="form-label m-0">Pincode
-                            </label>
-                            <input type="number" class="form-control address-input"
-                                id="exampleFormControlInput1" name="pincode" required>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <a class="btn btn-outline-primary-2" style="border-radius: 7px;"
-                        data-bs-dismiss="modal">Close</a>
-                    <button type="submit" class="btn btn-outline-primary-2"
-                        style="border-radius: 7px; background: #000; color: #fff;">Add
-                        now</button>
-                </div>
-            </form>
-        </div>
+    <div
+      class="page-header text-center"
+      style="background-image: url('assets/images/page-header-bg.jpg')"
+    >
+      <div class="container">
+        <h1 class="page-title">Checkout<span>Shop</span></h1>
+      </div>
+      <!-- End .container -->
     </div>
-</div>
-<!-- model end -->
+    <!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/cart">Cart</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+        </ol>
+      </div>
+      <!-- End .container -->
+    </nav>
+    <!-- End .breadcrumb-nav -->
+  
+    <div class="page-content">
+      <div class="checkout">
+        <div class="container">
+          <div class="">
+            <label for="checkout-discount-input" class="text-truncate"
+              >Have a coupon? <span>Enter your code below.</span></label
+            >
+          </div>
+          <div class="cart-discount">
+            
+              <div class="input-group mb-5">
+                <input
+                  type="text"
+                  class="form-control"
+                  required
+                  name="code"
+                  id="code"
+                  placeholder="coupon code"
+                  style="
+                    height: 40px;
+                    border: 1px dotted #000;
+                    padding-left: 10px;
+                  "
+                />
+  
+                <button
+                  class="btn btn-outline-dark"
+                  style="margin: 0; width: 70px; height: 40px"
+                  
+                >
+                  <i class="icon-long-arrow-right"></i>
+                </button>
+              </div>
+          </div>
+  
+          <form id="checkout-form">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 style="text-align: center;">Choose Billing Address</h5><br>
+                <% if(address.length> 0){ address.forEach((address)=>{ %>
+
+                    
+
+                
+                <div class="col-md-10">
+                  <div class="tabs-horizontal">
+                    <div class="card card-dashboard">
+                      <div class="card-body">
+                        <input
+                          class="form-check-input"
+                          required
+                          type="radio"
+                          name="address"
+                          id="flexRadioDefault1"
+                          value=" <%= address.fullName %>,<%= address.mobile %>,<%= address.country %>,<%= address.city %>,<%= address.state %>,<%= address.pincode %> "
+                        />
+                        <ul>
+                          <li>Full Name : <%= address.fullName %> </li>
+                          <li>Mobile :<%= address.mobile %> </li>
+                          <li>country : <%= address.country %> </li>
+                          <li>City :<%= address.city %> </li>
+                          <li>State : <%= address.state %> </li>
+                          <li>Pin Code :<%= address.pincode %> </li>
+                          <div class="card-body">
+                            <a
+                              href="/editAddress"
+                              class="btn btn-outline-dark btn-rounded"
+                              ><i class="icon-long-arrow-right">Edit </i></a
+                            >
+                            <a onclick="removeAddress('<%= address._id %>', event)" class="btn btn-outline-dark btn-rounded">
+                                <i class="icon-long-arrow-right">Remove</i>
+                              </a>
+                              
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End .tabs-vertical -->
+                </div>
+                <!-- End .col-md-6 -->
+                <% } ) } %>
 
 
+              </div>
+              <!-- End .col-md-6 -->
+  
+              <aside class="col-lg-3">
+                <div class="summary">
+                  <h3 class="summary-title">Your Order</h3>
+                  <!-- End .summary-title -->
+  
+                  <table class="table table-summary">
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                  <% products.forEach((value,index)=> { %>
 
-<script>
-    // Add a click event listener to the labels
-    $(".custom-label").click(function () {
-        // Remove the "checked" class from all labels
-        $(".custom-label").removeClass("checked");
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a
+                            ><%= value.productId.productName %>(Set: <%= value.quantity
+                            %>)</a
+                          >
+                        </td>
+                        <td>₹ <%= value.totalPrice %> </td>
+                      </tr>
+                      <% }) %>
+  
+                      <tr class="summary-subtotal">
+                        <td>Subtotal:</td>
+                        <td id="total1" ><%= total %> </td>
+                      </tr>
+  
+                      <!-- End .summary-subtotal -->
+                      <tr>
+                        <td>Shipping:</td>
+                        <td>Free shipping</td>
+                      </tr>
+                      <tr class="summary-total">
+                        <td>Total:</td>
+  
+                        <td id="total1" > <%= total %></td>
+                      </tr>
+                      <!-- End .summary-total -->
+                    </tbody>
+                  </table>
+  
+                  <div class="d-flex align-items-center">
+                    <div class="mr-2">
+                      <input
+                        required
+                        type="radio"
+                        id="COD"
+                        name="payment"
+                        value="COD"
+                      />
+                    </div>
+                    <a href="" class="d-block text-dark" for="pay1"
+                      >Cash On Delivery</a
+                    >
+                  </div>
+  
+                  <div class="d-flex align-items-center">
+                    <div class="mr-2">
+                      <input
+                        required
+                        type="radio"
+                        id="payment"        
+                        name="payment"
+                        value="onlinePayment"
+                        checked
+                      />
+                    </div>
+                    <a href="" class="d-block text-dark" for="pay2"
+                      >Online Payment</a
+                    >
+                  </div>
+  
+                  <div class="d-flex align-items-center">
+                    <div class="mr-2">
+                      <input
+                        required
+                        type="radio"
+                        id="wallet"
+                        name="payment"
+                        value="wallet"
+                      />
+                    </div>
+                    <a href="" class="d-block text-dark" for="pay3">Wallet</a>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-outline-primary-2 btn-order btn-block"
+                  >
+                    <span class="btn-text">Place Order</span>
+                    <span class="btn-hover-text">Proceed to Checkout</span>
+                  </button>
+                </div>
+  
+                <!-- End .summary -->
+              </aside>
+  
+              <!-- End .col-lg-3 -->
+            </div>
+          </form>
+  
+          <!-- End .row -->
+        </div>
+  
+        <!-- End .container -->
+      </div>
+  
+      <!-- End .checkout -->
+    </div>
+  
+    <!-- End .page-content -->
+  </main>
+  <!-- End .main -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
+  <script>
+    function removeAddress(id, event) {
+  // Prevent the default behavior of the anchor element (page navigation)
+  event.preventDefault();
 
-        // Add the "checked" class to the clicked label
-        $(this).addClass("checked");
+  console.log(id);
+  $.ajax({
+  url: "/removeAddress", // Check if this path is correct
+  data: {
+    id: id,
+  },
+  method: "post",
+  success: (response) => {
+    if (response.remove) {
+      location.reload();
+    }
+  },
+});
+}
+  
+    $("#checkout-form").submit((e) => {
+      e.preventDefault();
+      let address = $("input[name=address]:checked").val();
+      let total = document.getElementById("total1").innerHTML; // Modified to use jQuery instead of plain JavaScript
+      let payment = $("input[name=payment]:checked").val();
+      $.ajax({
+        url: "/placeOrder",
+        method: "post",
+        data: { Total: total, address, payment: payment },
+        success: (response) => {
+          if (response.codsuccess == true) {
+            location.href = `/orderSuccess/${response.orderid}`;
+          } else if (response.walletFailed == true) {
+            swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Insufficient Balance In Your Wallet",
+              showConfirmButton: false,
+              showCancelButton: false,
+              timer: 1500,
+            });
+          } else {
+            razorPayment(response.order);
+          }
+        },
+      });
     });
-
-   
-</script>
-
-
-<script>
-    // Add a click event listener to the "Use This Address" button
-    document.getElementById("useAddressButton").addEventListener("click", function () {
-        // Submit the form with id "addressForm"
-        document.getElementById("addressForm").submit();
-    });
-</script>
+  
+    function razorPayment(order) {
+      // console.log(process.env.RazorId);
+      var options = {
+        key: "rzp_test_JlWCUFe3VlTOlk", // Enter the Key ID generated from the Dashboard
+        amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "FurniCube Pvt.Ltd", //your business name
+        description: "Test Transaction",
+        image: "/user/images/icons/logo.png",
+        order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        handler: function (response) {
+          verifyPayment(response, order);
+        },
+        prefill: {
+          //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+          name: "FurniCube Pvt.Ltd", //your customer's name
+          email: "furnicube007store@example.com",
+          contact: "910000000369", //Provide the customer's phone number for better conversion rates
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#c96",
+        },
+      };
+  
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+  
+    function verifyPayment(payment, order) {
+      const amount2 = document.getElementById("total1").innerHTML;
+      $.ajax({
+        url: "/verify-payment",
+        method: "post",
+        data: {
+          payment: payment,
+          amount2: amount2,
+          order: order,
+        },
+        success: (response) => {
+          if (response.codsuccess == true) {
+            location.href = `/orderSuccess/${response.orderid}`;
+          } else {
+            swal.fire({
+              positon: "center",
+              icon: "error",
+              title: "Payment failed",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        },
+      });
+    }
+  </script>
+  <script>
+    function applycoupon(code) {
+      
+      const amount = document.getElementById('total1').innerHTML;
+     
+      
+      $.ajax({
+        url: "/applyCoupon",
+        data: {
+          code: code,
+          amount: amount
+        },
+        method: "post",
+        success: (response) => {
+          if (response.user) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops !!',
+              text: 'This coupon already used!'
+            })
+          } else if (response.limit) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops !!',
+              text: 'coupon limit exceeded!'
+            })
+          } else if (response.status) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops !!',
+              text: 'Coupon limit exceeded!'
+            })
+          } else if (response.cartAmount) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Oops !!',
+              text: 'You cant use the coupon...Buy more'
+            })
+          } else if (response.date) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Oops !!',
+              text: 'Coupon expired!!!'
+            })
+          } else if (response.amountOkey) {
+           
+            document.getElementById('total1').innerHTML = response.disTotal
+            console.log("done");
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Discount redeemed',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          } else if (response.invalid) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops !!!',
+              text: 'Invalid Coupon!!!'
+            })
+          }else if (response.active) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops !!',
+              text: 'This Coupon is not active yet.'
+            })
+          }
+        }
+      })
+    }
+  
+  </script>
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>

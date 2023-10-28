@@ -15,65 +15,88 @@
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
 
-    <body>
-        <form action="/editAddress" method="post">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <h2 class="checkout-title">Billing Details</h2>
-                        <div class="form-group">
-                            <label for="company-name">Full Name</label>
-                            <input type="text" class="form-control" id="FullName" name="fullName" value="<%=addresses.fullName%>" required>
-                        </div>
-    
-                        
-    
-                        <div class="form-group">
-                            <label for="country">Country *</label>
-                            <input type="text" class="form-control" id="country" name="country" value="<%=addresses.country%>" required>
-                        </div>
-    
-                       
-    
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="town-city"> City *</label>
-                                    <input type="text" class="form-control" id="city" name="city" value="<%=addresses.city%>" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="state-county">State  *</label>
-                                    <input type="text" class="form-control" id="state" name="state" value="<%=addresses.state%>" required>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="postcode">Pin Code*</label>
-                                    <input type="text" class="form-control" id="pinCode" name="pincode" value="<%=addresses.pincode%>" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="phone">Mobile *</label>
-                                    <input type="tel" class="form-control" id="phone" name="mobile" value="<%=addresses.mobile%>" required>
-                                </div>
-                            </div>
-    
-                            <button type="submit">Update</button>
-                            <input type="hidden" name="id" value="<%=addresses._id%>">
-                        </div>
-    
-                    </div>
-    
-                    
-                </div>
+    <style>
+        /* body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        } */
+
+        /* .container {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        } */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="checkout-title">Billing Details</h2>
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="FullName">Full Name</label>
+                <input type="text" class="form-control" id="FullName" name="fullName" value="<%=addresses.fullName%>" required>
             </div>
+
+            <div class="form-group">
+                <label for="country">Country *</label>
+                <input type="text" class="form-control" id="country" name="country" value="<%=addresses.country%>"  required>
+            </div>
+
+            <div class="form-group">
+                <label for="city">City *</label>
+                <input type="text" class="form-control" id="city" name="city" value="<%=addresses.city%>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="state">State *</label>
+                <input type="text" class="form-control" id="state" name="state" value="<%=addresses.state%>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pinCode">Pin Code *</label>
+                <input type="text" class="form-control" id="pinCode" name="pincode" value="<%=addresses.pincode%>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Mobile *</label>
+                <input type="tel" class="form-control" id="phone" name="mobile" value="<%=addresses.mobile%>" required>
+            </div>
+
+            <button type="submit" class="">Register</button>
+
+            <input type="hidden" name="id" value="<%= addresses._id %>">
         </form>
+    </div>
 </main><!-- End .main -->
 
 
