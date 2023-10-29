@@ -2,6 +2,7 @@ const adminDb = require("../models/adminModel");
 const categoryDb = require("../models/categoryModel");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const orderDb = require("../models/orderModel")
 
 const loadAdminLogin = async (req, res) => {
   try {
@@ -209,6 +210,28 @@ const blockUnblock = async (req, res) => {
   }
 };
 
+
+const loaduserOrders = async(req,res)=>{
+  try{
+
+
+
+    const ordersData = await orderDb.find().populate("products.productId").sort({ date: -1 });
+
+    console.log("loaduserOrder : ", ordersData);
+
+    res.render("userOrders", { orders: ordersData });
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+
+
+
+
 const adminLogout = async (req, res) => {
   try {
     req.session.admin_id=false
@@ -230,5 +253,6 @@ module.exports = {
   editCategory,
   listOrNot,
   blockUnblock,
-  adminLogout
+  adminLogout,
+  loaduserOrders,
 };

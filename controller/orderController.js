@@ -178,21 +178,24 @@ const placeOrder = async(req,res)=>{
 
 
       if (order.status === "placed") {
-        await cartDb.deleteOne({ userId: req.session.user_id });
+        await cartDb.deleteOne({ user: req.session.user_id });
         for (let i = 0; i < products.length; i++) {
-          const pro = products[i].productId;
-          console.log("pro :",pro);
-          const count = parseInt(products[i].quantity);
-          console.log("the count is :",count);
+          const productId = products[i].productId;
+          console.log("pro :",productId);
+          const quantity = products[i].quantity;
+          console.log("the count is :",quantity);
           
-          console.log(await productDb.findOneAndUpdate(
-            { _id: pro },
-            { $inc: { quantity: -count } }
-          ));
+       const result= await productDb.updateOne({ _id: productId },{$inc:{quantity:-quantity}})
+       console.log(result)
+           
+        
         }
         
         
       }
+
+
+      
       
 
   }catch(error){
@@ -203,8 +206,19 @@ const placeOrder = async(req,res)=>{
 
 
 
-const orderPlacedPageLoad = async(req,rse)=>{
+const orderPlacedPageLoad = async(req,res)=>{
   try{
+
+
+
+    const orderId = req.params.orderid; // Get the orderid from the URL
+    const order = await orderDb.findById(orderId);
+
+    if (!order) {
+      // Handle the case where the order with the given ID is not found
+      res.status(404).send("Order not found");
+      return;
+    }
 
     const cart = await cartDb.findOne({ user: req.session.user_id });
     let cartCount=0; 
@@ -213,10 +227,75 @@ const orderPlacedPageLoad = async(req,rse)=>{
     }
     
 
-    res.render("orderPlaced", {  cartCount });
+    res.render("orderPlaced", { order, cartCount }); // Pass the order data to the vie
 
   }catch(error){
     console.log(error);
+  }
+}
+
+
+
+
+const loadOrderPage = async(req,res)=>{
+  try{
+
+    const userId = req.session.user_id
+    const cart = await cartDb.findOne({user:userId})
+    let cartCount=0; 
+
+
+    if(cart){
+      cartCount = cart.products.lenght
+    }
+
+    const orderData = await orderDb.find({userId:userId}).sort({date:-1})
+
+    console.log("orderData :",orderData);
+
+    res.render('orders',{user:userId,orders:orderData,cartCount})
+
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+const orderDetails = async(req,res)=>{
+  try {
+
+    const userId = req.session.user_id
+    const id = req.query.id;
+
+    console.log(id);
+    const orderedProduct = await orderDb.findOne({ _id: id }).populate(
+      "products.productId"
+    );
+
+    console.log("orderedData is :", orderedProduct);
+
+
+    // const currentDate = new Date();   
+    // const deliveryDate = orderedProduct.deliveryDate;
+    // const timeDiff = currentDate - deliveryDate;
+    // const daysDiff = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
+
+    const cart = await cartDb.findOne({ user: req.session.user_id });
+    let cartCount=0; 
+    // let wishCount=0;
+    if (cart) {
+      cartCount = cart.products.length;
+    }
+    
+
+    res.render("orderDetails", {
+      userId: userId,
+      orders: orderedProduct,
+      cartCount,
+    });
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
@@ -229,263 +308,11 @@ const orderPlacedPageLoad = async(req,rse)=>{
 
 
 
-
-// const useThisAddress = async(req,res)=>{
-
-//     console.log("entered use this address");
-//   try {
-//     const userId = req.session.user_id
-//     let userAddress = await addressDb.findOne({ userId: req.session.user_id });
-
-//     if (userAddress) {
-//       const selectedAddress = userAddress.addresses.find((address) => {
-//         return address._id.toString() === req.body.address.toString();
-//       });
-
-//       console.log(selectedAddress);
-
-      
-
-//       if (selectedAddress) {
-        
-//         let Total
-//         const total = await cartDb.aggregate([
-//               {
-//                   $match :{user : new ObjectId(userId)}
-//               },
-//               {
-//                   $unwind : '$products'
-//               },
-//               {
-//                   $project :{
-//                       price :  '$products.price',
-//                       quantity : '$products.quantity'
-//                   }
-//               },
-//               {
-//                   $group :{
-//                       _id : null,
-//                       total : {
-//                           $sum : {
-//                               $multiply : ["$quantity","$price"],
-//                           }
-//                       }
-//                   }
-//               }
-//             ]).exec();
-//           Total = total[0].total
-//           console.log(Total);
-//         return res.render("orderPayment", {
-//           user: userId,
-//           address: selectedAddress,
-//           total:Total,
-//         });
-//       } 
-//     } 
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-
-  
-// }
-
-
-
-
-
-
-
-// const itemsAndDelivery = async(req,res)=>{
-
-//     console.log("itemsAndDelivery");
-//   try{
-
-
-//     const addressId = req.body.id
-//     const userId = req.session.user_id
-//     let payment =
-//       req.body.paymentMethod === 'COD'?"Cash On Delivery":paymentMethod
-
-//       console.log("payment Method is :",payment);
-
-//       const userAddress = await addressDb.findOne({userId:req.session.user_id}) 
-//       const selectedAddress = userAddress.addresses.find((address) => {
-//         return address && address._id ? address._id.toString() : null;
-//     });
-//       console.log("selected Address:", selectedAddress)
-
-//       const cartDetails = await cartDb.find({user:req.session.user_id}).exec()
-
-//       console.log("cartDetails items and delivery : ", cartDetails[0]);
-
-//       if (cartDetails) {
-//         let Total
-//         const total = await cartDb.aggregate([
-//           {
-//               $match :{user : new ObjectId(userId)}
-//           },
-//           {
-//               $unwind : '$products'
-//           },
-//           {
-//               $project :{
-//                   price :  '$products.price',
-//                   quantity : '$products.quantity'
-
-//               }
-//           },
-//           {
-//               $group :{
-//                   _id : null,
-//                   total : {
-//                       $sum : {
-//                           $multiply : ["$quantity","$price"],
-//                       }
-//                   }
-//               }
-//           }
-//       ]).exec()
-//       Total = total[0].total
-//         // let deliveryDate = await daliveryDateCalculate();
-//         // console.log(deliveryDate);
-//         res.render("finalcheckout", {
-//           total:Total,
-//           address: selectedAddress,
-//           user: req.session.user_id,
-//           payment,
-//           cartItems: cartDetails,
-//           // deliveryDate,
-//         });
-//       }
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-// }
-
-
-
-// const loadplaceOrder = async (req, res) => {
-//     try {
-//       // const orderId = req.query.id;
-//       console.log(req.body);
-//       // let orderDetails = await OrderDB.findOne({ _id: orderId });
-//       if(req.body.status=="success"){
-//        return res.render("orderPlaced", {
-//           success: 1,
-//           user: req.session.user_id,
-//       });
-//       }else{
-//        return res.render("orderPlaced", {
-//           success: 0,
-//           user: req.session.user_id,
-//       });
-//       }
-      
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
-
-
-
-
-
-
-
-
-// const placeOrder = async(req,res)=>{
-//     try{
-
-//       console.log("entered in to the place order function");
-
-//         let addressId = req.body.address;
-
-//     let paymentType = req.body.payment;
-//     const cartDetails = await cartDb.findOne({ user: req.session.user_id });
-
-//     let userAddress = await addressDb.findOne({ userId: req.session.user_id });
-//     const shipAddress = userAddress.addresses.find((address) => {
-//       return address._id.toString() === addressId.toString();
-//     });
-
-//     // console.log("collected:", shipAddress);
-
-    
-//     // console.log("collected :" + shipAddress);
-//     const { country, fullName, mobileNumber, pincode, city, state } =
-//       shipAddress;
-//     // console.log(state);
-
-//     const cartProducts = cartDetails.products.map((productItem) => ({
-//       productId: productItem.product,
-//       quantity: productItem.quantity,
-//       OrderStatus: "pending",
-//       StatusLevel: 1,
-//       paymentStatus: "pending",
-//       "returnOrderStatus.status":"none",
-//       "returnOrderStatus.reason":"none"
-//     }));
-//     let Total
-//     const total = await cartDb.aggregate([
-//       {
-//           $match :{user : new ObjectId(userId)}
-//       },
-//       {
-//           $unwind : '$products'
-//       },
-//       {
-//           $project :{
-//               price :  '$products.price',
-//               quantity : '$products.quantity'
-
-//           }
-//       },
-//       {
-//           $group :{
-//               _id : null,
-//               total : {
-//                   $sum : {
-//                       $multiply : ["$quantity","$price"],
-//                   }
-//               }
-//           }
-//       }
-//   ]).exec()
-//   Total = total[0].total
-
-//   const order = new orderDb({
-//     userId: req.session.user_id,
-//     "shippingAddress.country": country,
-//     "shippingAddress.fullName": fullName,
-//     "shippingAddress.mobile": mobile,
-//     "shippingAddress.pincode": pincode,
-//     "shippingAddress.city": city,
-//     "shippingAddress.state": state,
-//     products: cartProducts,
-//     totalAmount: Total,
-//     paymentMethod: paymentType,
-   
-//     // orderDate:new Date(),
-    
-//   });
-//   const placeorder = await order.save();
-
-
-
-//     }catch(error){
-//         console.log(error);
-//     }
-// }
-
-
-
 module.exports={
     loadCheckOut,
     removeAddress,
     placeOrder,
-    orderPlacedPageLoad
-    // itemsAndDelivery,
-    // useThisAddress,
-    // loadplaceOrder,
-    // placeOrder
+    orderPlacedPageLoad,
+    loadOrderPage,
+    orderDetails
 }

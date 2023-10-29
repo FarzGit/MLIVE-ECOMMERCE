@@ -81,4 +81,8 @@ adminRoute.get('/editProduct',adminAuth.isLogin,productController.loadEditProduc
 adminRoute.post("/editProduct",upload.array("image",4),productController.editProduct)
 adminRoute.get("/is_activeProduct",adminAuth.isLogin,productController.productListorUnlist)
 
+
+
+adminRoute.get("/userOrders",adminController.loaduserOrders)
+
 module.exports = adminRoute;

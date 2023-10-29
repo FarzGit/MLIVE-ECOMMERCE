@@ -69,43 +69,29 @@
                     
 
                 
-                <div class="col-md-10">
-                  <div class="tabs-horizontal">
-                    <div class="card card-dashboard">
-                      <div class="card-body">
-                        <input
-                          class="form-check-input"
-                          required
-                          type="radio"
-                          name="address"
-                          id="flexRadioDefault1"
-                          value=" <%= address.fullName %>,<%= address.mobile %>,<%= address.country %>,<%= address.city %>,<%= address.state %>,<%= address.pincode %> "
-                        />
-                        <ul>
-                          <li>Full Name : <%= address.fullName %> </li>
-                          <li>Mobile :<%= address.mobile %> </li>
-                          <li>country : <%= address.country %> </li>
-                          <li>City :<%= address.city %> </li>
-                          <li>State : <%= address.state %> </li>
-                          <li>Pin Code :<%= address.pincode %> </li>
-                          <div class="card-body">
-                            <a
-                              href="/editAddress"
-                              class="btn btn-outline-dark btn-rounded"
-                              ><i class="icon-long-arrow-right">Edit </i></a
-                            >
-                            <a onclick="removeAddress('<%= address._id %>', event)" class="btn btn-outline-dark btn-rounded">
-                                <i class="icon-long-arrow-right">Remove</i>
-                              </a>
-                              
+                
+
+                  <div class="container">
+                    <div class="row">
+                      
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                          <div class="card mb-3">
+                            <label class="custom-label p-3 border rounded-4 m-2">
+                              <div class="form-check d-flex align-items-center mx-4">
+                                <input class="form-check-input" type="radio" value="<%= address.fullName %>,<%= address.mobile %>,<%= address.country %>,<%= address.city %>,<%= address.state %>,<%= address.pincode %>"
+                                  name="address" id="flexRadioDefault">
+                                <div class="mx-5">
+                                  <p class="text-dark"><b><%= address.fullName %></b>, <%= address.city %>, <%= address.state %>. Contact Number: <b style="color: #043a6c;"><span class="material-symbols-outlined" style="font-size: 13px;"><%= address.mobileNumber %></span><%= address.mobileNumber %></b></p>
+                                  <p><%= address.pincode %>, <%= address.country %></p>
+                                </div>
+                              </div>
+                            </label>
                           </div>
-                        </ul>
-                      </div>
+                        </div>
+                      
                     </div>
                   </div>
-                  <!-- End .tabs-vertical -->
-                </div>
-                <!-- End .col-md-6 -->
+                  
                 <% } ) } %>
 
 
@@ -134,7 +120,7 @@
                             %>)</a
                           >
                         </td>
-                        <td>₹ <%= value.totalPrice %> </td>
+                        <td>₹ <%= total %> </td>
                       </tr>
                       <% }) %>
   
@@ -200,13 +186,14 @@
                     </div>
                     <a href="" class="d-block text-dark" for="pay3">Wallet</a>
                   </div>
+                  <a>
                   <button
                     type="submit"
-                    class="btn btn-outline-primary-2 btn-order btn-block"
-                  >
+                    class="btn btn-outline-primary-2 btn-order btn-block">
                     <span class="btn-text">Place Order</span>
                     <span class="btn-hover-text">Proceed to Checkout</span>
                   </button>
+                </a>
                 </div>
   
                 <!-- End .summary -->
@@ -260,10 +247,10 @@
       $.ajax({
         url: "/placeOrder",
         method: "post",
-        data: { Total: total, address, payment: payment },
+        data: { total: total, address, payment: payment },
         success: (response) => {
           if (response.codsuccess == true) {
-            location.href = `/orderSuccess/${response.orderid}`;
+            location.href = `/verify-payment/${response.orderid}`;
           } else if (response.walletFailed == true) {
             swal.fire({
               position: "center",
@@ -280,37 +267,7 @@
       });
     });
   
-    function razorPayment(order) {
-      // console.log(process.env.RazorId);
-      var options = {
-        key: "rzp_test_JlWCUFe3VlTOlk", // Enter the Key ID generated from the Dashboard
-        amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        currency: "INR",
-        name: "FurniCube Pvt.Ltd", //your business name
-        description: "Test Transaction",
-        image: "/user/images/icons/logo.png",
-        order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        handler: function (response) {
-          verifyPayment(response, order);
-        },
-        prefill: {
-          //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-          name: "FurniCube Pvt.Ltd", //your customer's name
-          email: "furnicube007store@example.com",
-          contact: "910000000369", //Provide the customer's phone number for better conversion rates
-        },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#c96",
-        },
-      };
-  
-      var rzp1 = new Razorpay(options);
-      rzp1.open();
-    }
-  
+    
     function verifyPayment(payment, order) {
       const amount2 = document.getElementById("total1").innerHTML;
       $.ajax({
@@ -323,7 +280,7 @@
         },
         success: (response) => {
           if (response.codsuccess == true) {
-            location.href = `/orderSuccess/${response.orderid}`;
+            location.href = `//verify-payment/${response.orderid}`;
           } else {
             swal.fire({
               positon: "center",
@@ -337,78 +294,6 @@
       });
     }
   </script>
-  <script>
-    function applycoupon(code) {
-      
-      const amount = document.getElementById('total1').innerHTML;
-     
-      
-      $.ajax({
-        url: "/applyCoupon",
-        data: {
-          code: code,
-          amount: amount
-        },
-        method: "post",
-        success: (response) => {
-          if (response.user) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops !!',
-              text: 'This coupon already used!'
-            })
-          } else if (response.limit) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops !!',
-              text: 'coupon limit exceeded!'
-            })
-          } else if (response.status) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops !!',
-              text: 'Coupon limit exceeded!'
-            })
-          } else if (response.cartAmount) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Oops !!',
-              text: 'You cant use the coupon...Buy more'
-            })
-          } else if (response.date) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Oops !!',
-              text: 'Coupon expired!!!'
-            })
-          } else if (response.amountOkey) {
-           
-            document.getElementById('total1').innerHTML = response.disTotal
-            console.log("done");
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Discount redeemed',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          } else if (response.invalid) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops !!!',
-              text: 'Invalid Coupon!!!'
-            })
-          }else if (response.active) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops !!',
-              text: 'This Coupon is not active yet.'
-            })
-          }
-        }
-      })
-    }
-  
-  </script>
+ 
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>

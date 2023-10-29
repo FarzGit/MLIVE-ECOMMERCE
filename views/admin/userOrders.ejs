@@ -1,0 +1,85 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+
+<body class="g-sidenav-show bg-gray-200">
+  <%- include("../admin/layouts/adminSideBar.ejs") %>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+      <!-- Navbar -->
+      <%- include("../admin/layouts/adminNavBar.ejs") %>
+      <!-- End Navbar -->
+      <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12 col-md-8 col-lg-9 elemDesign" style=" width: 1320px;">
+            <div class="card my-4">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                 
+                  <h6 class="text-white text-capitalize ps-3">ORDERS</h6>
+                </div>
+              </div>
+              <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                  <table class="table table-dark">
+                    <thead>
+                      <tr>
+                  <th>No.</th>
+                  <th>Order Id</th>
+                  <th>Order Date</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>View</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if(orders.length > 0) { orders.forEach((orders, index) => {
+                        %>
+                        <tr>
+                          
+                          <td style="color: rgb(0, 123, 231);" class="text-center">
+                            <%= index +1 %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= orders.uniqueId %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= orders.date.toLocaleDateString('en-US', { year:
+                              'numeric', month: 'short', day: '2-digit' }).replace(/\//g,
+                              '-') %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= orders.totalAmount%>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <%= orders.status %>
+                          </td>
+                          <td style="color: aliceblue;" class="text-center">
+                            <div class="card-title">
+                              <a href="/admin/orderFullDetails?id=<%= orders._id %>">
+                                <button type="button" class="btn btn-success btn-md">
+                                  Details
+                                </button>
+                              </a>
+                            </div>
+                          </td>
+                        
+                          
+                        </tr>
+                        <% }) %> <% }else{ %> <% }%>
+                    </tbody>
+                  </table>
+                  <!-- Pagination -->
+        
+
+        <!-- Pagination End -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 col-lg-3 elemDesign">
+            <!-- Sidebar content for medium and large screens -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <%- include("../admin/layouts/adminFooter.ejs") %>

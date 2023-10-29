@@ -62,7 +62,9 @@ userRoute.post('/deleteAddress',userAuth.isLogin,userController.deleteUserAddres
 userRoute.get('/checkout',userAuth.isLogin,orderController.loadCheckOut)
 userRoute.post('/removeAddress', userAuth.isLogin, orderController.removeAddress)
 userRoute.post('/placeOrder',userAuth.isLogin, orderController.placeOrder)
-userRoute.get('verify-payment',userAuth.isLogin,orderController.orderPlacedPageLoad)
+userRoute.get('/verify-payment',userAuth.isLogin,orderController.orderPlacedPageLoad)
+userRoute.get('/orders',userAuth.isLogin,orderController.loadOrderPage)
+userRoute.get('/orderDetails',userAuth.isLogin,orderController.orderDetails)
 
 
 // userRoute.post('/checkout',userAuth.isLogin,orderController.useThisAddress)

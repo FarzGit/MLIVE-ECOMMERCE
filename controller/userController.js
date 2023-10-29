@@ -441,6 +441,8 @@ const loadHome = async (req, res) => {
 
 const loadShop = async (req, res) => {
   try {
+    const userId = req.session.user_id
+    console.log("userId is :", userId);
     const perPage = 12; // Number of products per page
     let page = parseInt(req.query.page) || 1; // Get the page from the request query and parse it as an integer
     const categoryDetails = await categoryDb.find({});
@@ -464,6 +466,7 @@ const loadShop = async (req, res) => {
       product: products,
       currentPage: page,
       pages: totalPages,
+      user: userId
     });
   } catch (error) {
     console.log(error);

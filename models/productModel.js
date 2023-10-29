@@ -31,13 +31,14 @@ const productSchema = new mongoose.Schema({
     required:true
 },
   quantity: {
-    type: String,
+    type: Number,
     required: true,
   },
   status: {
     type: String,
     required: true,
-  },is_active:{
+  },
+  is_active:{
     type:Boolean,
     default:true
     
