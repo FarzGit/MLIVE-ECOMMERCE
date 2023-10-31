@@ -60,7 +60,7 @@
               </div>
           </div>
   
-          <form id="checkout-form">
+          <form id="checkout-form" >
             <div class="row">
               <div class="col-md-8">
                 <h5 style="text-align: center;">Choose Billing Address</h5><br>
@@ -215,9 +215,8 @@
     <!-- End .page-content -->
   </main>
   <!-- End .main -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
   
   <script>
     function removeAddress(id, event) {
@@ -239,61 +238,47 @@
 });
 }
   
-    $("#checkout-form").submit((e) => {
-      e.preventDefault();
-      let address = $("input[name=address]:checked").val();
-      let total = document.getElementById("total1").innerHTML; // Modified to use jQuery instead of plain JavaScript
-      let payment = $("input[name=payment]:checked").val();
-      $.ajax({
-        url: "/placeOrder",
-        method: "post",
-        data: { total: total, address, payment: payment },
-        success: (response) => {
-          if (response.codsuccess == true) {
-            location.href = `/verify-payment/${response.orderid}`;
-          } else if (response.walletFailed == true) {
-            swal.fire({
-              position: "center",
-              icon: "error",
-              title: "Insufficient Balance In Your Wallet",
-              showConfirmButton: false,
-              showCancelButton: false,
-              timer: 1500,
-            });
-          } else {
-            razorPayment(response.order);
-          }
-        },
-      });
-    });
-  
-    
-    function verifyPayment(payment, order) {
-      const amount2 = document.getElementById("total1").innerHTML;
-      $.ajax({
-        url: "/verify-payment",
-        method: "post",
-        data: {
-          payment: payment,
-          amount2: amount2,
-          order: order,
-        },
-        success: (response) => {
-          if (response.codsuccess == true) {
-            location.href = `//verify-payment/${response.orderid}`;
-          } else {
-            swal.fire({
-              positon: "center",
-              icon: "error",
-              title: "Payment failed",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-        },
-      });
-    }
   </script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src ="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+<script>
+  $("#checkout-form").submit(function(e) {
+    console.log("clicked");
+    e.preventDefault(); // Prevent the default form submission
+
+    // Your existing code
+    console.log('button clicked');
+    let address = $("input[name=address]:checked").val();
+    let total = document.getElementById("total1").innerHTML;
+    let payment = $("input[name=payment]:checked").val();
+    console.log('button clicked');
+
+    $.ajax({
+      url: "/placeOrder",
+      method: "post",
+      data: { total: total, address: address, payment: payment },
+      success: (response) => {
+        console.log(response);
+        if (response) {
+          console.log("Form submitted successfully!");
+          alert("Form submitted successfully!");
+        } else {
+          console.log('failed');
+          alert("Form submission failed!");
+        }
+      },
+    });
+  });
+</script>
+
+    
  
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>
+

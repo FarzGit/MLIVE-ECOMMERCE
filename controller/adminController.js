@@ -188,11 +188,19 @@ const getAllUserData = async (req, res) => {
 const blockUnblock = async (req, res) => {
   try {
     const id = req.query.id;
+    const user = await User.findById(id);                                         
+    console.log("user id is : ", user);
 
     const userData = await User.findById({ _id: id });
 
     if (userData.is_blocked === true) {
       await User.updateOne({ _id: id }, { $set: { is_blocked: false } });
+      
+    }
+    if(user){
+      if(req.session.user_id === id){
+        req.session.user_id = null
+      }
     }
     if (userData.is_blocked === false) {
       let block = await User.updateOne(

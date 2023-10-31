@@ -186,11 +186,13 @@ const insertUser = async (req, res) => {
 
     const creationTime = Date.now() / 1000;
     const expirationTime = creationTime + 30;
-
+    const userCheckMobile = await User.findOne({mobile: req.body.mobile})
     const userCheck = await User.findOne({ email: req.body.email });
     if (userCheck) {
-      res.render("registration",{message:"user already exist"});
-    } else {
+      res.render("registration",{message:"email is existed"});
+    } else if(userCheckMobile){
+      res.render("registration",{message:"Mobile Number existed"})    }
+    else {
       const spassword = await securePassword(req.body.password);
       req.session.Fname = req.body.Fname;
       req.session.Lname = req.body.Lname;
@@ -417,11 +419,16 @@ const loadHome = async (req, res) => {
   try {
     console.log("user");
     console.log(req.session.user_id);
+    const userId = req.session.user_id
+    
+   
+    
     
 
-    if(req.session.user_id){
+    if(userId){
       console.log("user entered");
-      res.render('home',{user:req.session.user_id})
+      const userData = await User.findById({_id:userId})
+      res.render('home',{user:userData})
     }else{
       res.render('home',{message:"user logged"})
     }
@@ -448,6 +455,7 @@ const loadShop = async (req, res) => {
     const categoryDetails = await categoryDb.find({});
     const totalProducts = await productDb.countDocuments({ is_active: true });
     const totalPages = Math.ceil(totalProducts / perPage);
+    const userData = await User.findById({_id:userId})
 
     // Ensure that the page is within valid bounds
     if (page < 1) {
@@ -466,7 +474,8 @@ const loadShop = async (req, res) => {
       product: products,
       currentPage: page,
       pages: totalPages,
-      user: userId
+      user: userId,
+      user:userData
     });
   } catch (error) {
     console.log(error);
@@ -484,6 +493,7 @@ const loadProductDetails = async(req,res)=>{
     const id = req.query.id
     console.log(id);
     const products = await productDb.findById({_id:id})
+    
 
     console.log(products);
     res.render('productDetails',{product:products})
@@ -527,8 +537,9 @@ const loadAddress = async(req,res)=>{
   try{
 
     const userId = req.session.user_id
+    const userData = await User.findById({_id:userId})
         
-    res.render('address',{user:userId})
+    res.render('address',{user:userData})
 
   }catch(error){
     console.log(error);
@@ -592,12 +603,13 @@ const loadEditAddress = async(req,res)=>{
     const id = req.query.id
     console.log(id);
     const userId = req.session.user_id
+    const userData = await User.findById({_id:userId})
 
     let userAddress = await addressDb.findOne({ userId: userId  },{addresses:{$elemMatch:{_id:id}}})
 
     const address= userAddress.addresses
 
-    res.render('editAddress',{user:userId,addresses:address[0]})
+    res.render('editAddress',{user:userData,addresses:address[0]})
 
     
 

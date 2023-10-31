@@ -38,9 +38,9 @@
                       <td>
                         
                         <% if (data[i].is_blocked === true) { %>
-                          <button type="button" class="btn btn-inverse-danger btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'block')">Unblock</button>
+                          <button type="button" class="btn btn-danger btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'block')">Blocked</button>
                         <% } else { %>
-                          <button type="button" class="btn btn-success btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'unblock')">Block</button>
+                          <button type="button" class="btn btn-success btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'unblock')">Unblock</button>
                         <% } %>
 
 
@@ -69,12 +69,12 @@
     let confirmationText;
     let confirmationTitle;
 
-    if (action === 'block') {
-      confirmationText = 'Are you sure you want to Unblock this user?';
-      confirmationTitle = 'Unblock User';
-    } else if (action === 'unblock') {
+    if (action === 'unblock') {
       confirmationText = 'Are you sure you want to Block this user?';
       confirmationTitle = 'Block User';
+    } else if (action === 'block') {
+      confirmationText = 'Are you sure you want to Unblock this user?';
+      confirmationTitle = 'Unblock User';
     }
 
     Swal.fire({

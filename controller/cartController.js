@@ -99,7 +99,7 @@ const addToCart = async (req, res) => {
 
         
                        
-                        res.render('cart', { user: req.session.user_id, cart: cartData.products, userId: userId, total: Total });
+                        res.render('cart', { user: req.session.user_id, cart: cartData.products, userId: userId, total: Total ,user:userData });
                     }else{
                         res.render('cart', { user: req.session.user_id,  cart: [],total:0 });
                     }
@@ -119,7 +119,7 @@ const addToCart = async (req, res) => {
 
     const cartQuantity = async(req,res)=>{
         try{
-
+            
             const userId = req.body.user
             const productId = req.body.product
             const count = parseInt(req.body.count)
@@ -129,11 +129,12 @@ const addToCart = async (req, res) => {
 
             const [{quantity:quantity}] = cartData.products
 
-            const stockAvailale = await productDb.find({_id:new ObjectId(productId)})
-            console.log(stockAvailale);
+            const stockAvailale = await productDb.findById({_id:new ObjectId(productId)})
+            console.log("stockAvailale",stockAvailale.quantity);
             
             if(stockAvailale.quantity < quantity + count){
-                res.json({changeSuccess:false})
+                res.json({changeSuccess:true})
+                return;
             }else{
                 await cartDb.updateOne(
                     {user:userId, "products.productId" : productId},

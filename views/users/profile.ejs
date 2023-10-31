@@ -10,7 +10,8 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item " aria-current="page">My Account</li>
+                <li class="breadcrumb-item "><a href="/"></a>My Account</li>
+                
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -129,7 +130,7 @@
                                         </p>
                                         <hr class="m-0 p-0 my-3">
                                         <div class="d-flex justify-content-end ">
-                                           <a href="/editAddress?id=<%= address.addresses[i]._id %>"> <button class="text-dark" type="button" id="editBTN" data-bs-toggle="modal" data-bs-target="">Edit </button></a>
+                                           <a href="/editAddress?id=<%= address.addresses[i]._id %>"> <button class="text-dark" type="button" id="editBTN" data-bs-toggle="modal" data-bs-target="" style="margin-top: 10px;">Edit </button></a>
                                             <p class="mx-3" style="margin-top: 10px;">|</p>
                                            <button class="text-danger" type="button"   data-bs-toggle="modal" onclick="deleteAddress('<%= address.addresses[i]._id %>')">Remove</button>
                                             

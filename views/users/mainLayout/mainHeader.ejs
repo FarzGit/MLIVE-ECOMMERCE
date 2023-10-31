@@ -35,21 +35,24 @@
 	<link rel="stylesheet" type="text/css" href="/static/userAssets/css/util.css">
 	<link rel="stylesheet" type="text/css" href="/static/userAssets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/static/userAssets/css/styles.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.css">
 
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
 	
-    <link rel="stylesheet" href="/static/userAssets/another/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/userAssets/another/style.css">
+
+
+
+	
+    <link rel="stylesheet" href="/static/userAssets/another/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/userAssets/another/css/style.css">
 	
 
 <!--===============================================================================================-->
@@ -147,7 +150,7 @@
 					<%if(typeof user!=='undefined'){%>
 					<div style="padding-left: 30px;">
 						<a href="profile" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 " >
-							<i class="fa-regular fa-user" style="color: #333333;"></i><span>     myaccount</span>
+							<i class="fa-regular fa-user" style="color: #333333;"></i><span style="font-size: 15px;"> <%= user.firstName + ' ' + user.lastName %></span>
 						</a>
 					
 

@@ -14,6 +14,7 @@ const loadCheckOut = async(req,res)=>{
       const userId =req.session.user_id;
       const addressData = await addressDb.findOne({userId:userId})
       
+      
 
       const userData = await userDb.findOne ({_id:userId})
       const cartData = await cartDb.findOne({user:userId}).populate("products.productId").exec()
@@ -242,6 +243,7 @@ const loadOrderPage = async(req,res)=>{
 
     const userId = req.session.user_id
     const cart = await cartDb.findOne({user:userId})
+    const userData = await userDb.findById({_id:userId})
     let cartCount=0; 
 
 
@@ -253,7 +255,7 @@ const loadOrderPage = async(req,res)=>{
 
     console.log("orderData :",orderData);
 
-    res.render('orders',{user:userId,orders:orderData,cartCount})
+    res.render('orders',{user:userData,orders:orderData,cartCount})
 
 
   }catch(error){
@@ -266,6 +268,7 @@ const orderDetails = async(req,res)=>{
   try {
 
     const userId = req.session.user_id
+    const userData = await userDb.findById({_id:userId})
     const id = req.query.id;
 
     console.log(id);
@@ -290,7 +293,7 @@ const orderDetails = async(req,res)=>{
     
 
     res.render("orderDetails", {
-      userId: userId,
+      user: userData,
       orders: orderedProduct,
       cartCount,
     });

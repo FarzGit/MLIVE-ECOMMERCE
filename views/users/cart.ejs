@@ -1,9 +1,5 @@
 <%- include('../users/mainLayout/mainHeader.ejs')%>
 
-
-
-
-
 <!-- breadcrumb
 <div class="container">
     <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
@@ -17,108 +13,123 @@
         </span>
     </div>
 </div> -->
-    
 
-
-
-
-
-<main class="main">
-    
-         <!-- <div class="container">
+<main class="main" id="reloadDiv">
+  <!-- <div class="container">
             <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
         </div> -->
-    
-    <nav aria-label="breadcrumb" class="breadcrumb-nav">
-        <div class="container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
-            </ol>
-        </div>
-    </nav>
 
-    <div class="page-content">
-        <div class="cart">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <table class="table table-cart table-mobile">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <!-- <th>Total</th> -->
-                                    <th></th>
-                                </tr>
-                            </thead>
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Shopping Cart
+        </li>
+      </ol>
+    </div>
+  </nav>
 
-                            <tbody>
-                                <% if (cart && cart.length > 0) { %>
-                                    <% cart.forEach((data) => { %>
-                                <tr>
-                                    <td class="product-col">
-                                        <div class="product">
-                                            <figure class="product-media">
-                                                <a href="#">
-                                                    <img src="/static/adminAssets/images/<%= data.productId.image[0] %>" alt="Product image">
-                                                </a>
-                                            </figure>
+  <div class="page-content">
+    <div class="cart">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9">
+            <table class="table table-cart table-mobile">
+              <thead>
+                <tr>
+                  <th class="d-flex align-items-center justify-content-center">Product</th>
+                  <th >Price</th>
+                  <th class="d-flex align-items-center justify-content-center">Quantity</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
 
-                                            <h3 class="product-title">
-                                                <a href="#"><%= data.productId.productName %></a>
-                                            </h3><!-- End .product-title -->
-                                        </div><!-- End .product -->
-                                    </td>
-                                    <td class="price-col"><%= data.productId.price %></td>
-                                    <td class="quantity-col">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                               
-                                            <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)" >-</a>
-                                    <span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>"><%=data.quantity%></span>
-                                    <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m " onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)" >+</a>
-                                            
-                                        </div> 
-                                    </td>
-                                    <!-- <td class="total-col"><%= total %></td> -->
-                                    <td class="remove-col"><button class="btn-remove" onclick="removeProduct('<%=data.productId._id%>')"><i class="icon-close"></i></button></td>
-                                </tr>
-                                <% }); %>
-                                <% }else{%>
-                                    <tr>cart is empty</tr>
-                                <%}%>
-                                
-                            </tbody>
-                        </table>
+              <tbody>
+                <% if (cart && cart.length > 0) { %> <% cart.forEach((data) => {
+                %>
+                <tr>
+                  <td class="product-col">
+                    <div class="product">
+                      <figure class="product-media">
+                        <a href="#">
+                          <img
+                            src="/static/adminAssets/images/<%= data.productId.image[0] %>"
+                            alt="Product image"
+                          />
+                        </a>
+                      </figure>
 
-                        <div class="cart-bottom">
-                            <div class="cart-discount">
-                                <form action="#">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" required placeholder="coupon code">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="fa  icon-refresh"></i></a>
-                        </div>
+                      <h3 class="product-title">
+                        <a href="#"><%= data.productId.productName %></a>
+                      </h3>
+                      <!-- End .product-title -->
                     </div>
-                    <aside class="col-lg-3">
-                        <div class="summary summary-cart">
-                            <h3 class="summary-title">Cart Total</h3>
+                    <!-- End .product -->
+                  </td>
+                  <td class="price-col"><%= data.productId.price %></td>
+                  <td class="quantity-col" style="width: 211px;">
+                    <div class="wrap-num-product flex-w m-l-auto m-r-0" style=" margin-right: 54px;" >
+                        <a
+                            class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+                            onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)"
+                            >-</a>
+                        <span   
+                            class="mtext-104 cl3 txt-center num-product p-2"
+                            id="<%=data.productId._id%>"
+                            ><%=data.quantity%></span>
+                        <a
+                            class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+                            onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)"
+                            >+</a>
+                    </div>
+                  </td>
+                  <td class="total-col"><%= total %></td>
+                  <td class="remove-col">
+                    <button
+                      class="btn-remove"
+                      onclick="removeProduct('<%=data.productId._id%>')"
+                    >
+                      <i class="icon-close"></i>
+                    </button>
+                  </td>
+                </tr>
+                <% }); %> <% }else{%>
+                <tr>
+                  cart is empty
+                </tr>
+                <%}%>
+              </tbody>
+            </table>
 
-                            <table class="table table-summary">
-                                <tbody>
-                                    <tr class="summary-subtotal">
-                                        <td>Subtotal:</td>
-                                        <td><%= total %></td>
-                                    </tr>
-                                    <!-- <tr class="summary-shipping">
+            <!-- <div class="cart-bottom">
+                                <div class="cart-discount">
+                                    <form action="#">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" required placeholder="coupon code">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="fa  icon-refresh"></i></a>
+                            </div> -->
+          </div>
+          <aside class="col-lg-3">
+            <div class="summary summary-cart">
+              <h3 class="summary-title">Cart Total</h3>
+
+              <table class="table table-summary">
+                <tbody>
+                  <tr class="summary-subtotal">
+                    <td>Subtotal:</td>
+                    <td><%= total %></td>
+                  </tr>
+                  <!-- <tr class="summary-shipping">
                                         <td>Shipping:</td>
                                         <td>&nbsp;</td>
                                     </tr>
@@ -158,80 +169,112 @@
                                         <td>&nbsp;</td>
                                     </tr> -->
 
-                                    <tr class="summary-total">
-                                        <td>Total:</td>
-                                        <td><%= total %></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                  <tr class="summary-total">
+                    <td>Total:</td>
+                    <td><%= total %></td>
+                  </tr>
+                </tbody>
+              </table>
 
-                            <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
-                        </div>
-
-                        <a href="/shop" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
-                    </aside>
-                </div>
+              <a
+                href="/checkout"
+                class="btn btn-outline-primary-2 btn-order btn-block"
+                >PROCEED TO CHECKOUT</a
+              >
             </div>
+
+            <a href="/shop" class="btn btn-outline-dark-2 btn-block mb-3"
+              ><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i
+            ></a>
+          </aside>
         </div>
+      </div>
     </div>
+  </div>
 </main>
 
 <script>
-      function removeProduct(productId){
-           $.ajax({
-            url:'/remove-product',
-            method:'post',
-            encoded:true,
-            data:{
-                product:productId
-            }
-           }).done((data)=>{
-            if(data){
-            
-            swal('Item removed')
-            location.reload()
+  function removeProduct(productId) {
+    $.ajax({
+      url: '/remove-product',
+      method: 'post',
+      // encoded:true,
+      data: {
+        product: productId
+      }
+    }).done(data => {
+      if (data) {
+        $('#reloadDiv').load('/cart #reloadDiv')
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Item Removed Successfully',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else {
+        // res.json({action:failed})
+        console.log('Item removal failed')
+      }
+    })
+  }
 
-        
-            }else{
-                res.json({action:failed})
-            }
-           })
+  function cartCount(productId, userId, count) {
+    const quantityElement = document.getElementById(productId);
+    const quantity = parseInt(quantityElement.innerHTML);
+    count = parseInt(count);
+
+    if (count === -1 && quantity === 1) {
+        // Disable the "minus" button if the quantity is 1
+        return;
     }
 
-
-
-
-
-    function cartCount(productId,userId,count){
-        const quantity=parseInt(document.getElementById(productId).innerHTML)
-        count = parseInt(count)
-        if(count==-1 && quantity==0){
-            removeProduct(productId)
-        }else{
-            $.ajax({
-            url:'/cart-quantity',
-            method: "post",
-            encoded: true,
-            data:{
-               product:productId,
-               user:userId,
-               count:count,
-               quantity:quantity
-            },
-             }).done((data)=>{
-                if(data){
-                    document.getElementById(productId).innerText = quantity +count
-                    //  location.reload()
-                    // $(proId).html(data);
-                    // alert(data)
-                }else{
-                    alert('failed')
-                }
-             })
+    $.ajax({
+        url: '/cart-quantity',
+        method: 'post',
+        encoded: true,
+        data: {
+            product: productId,
+            user: userId,
+            count: count,
+            quantity: quantity
         }
+    }).done(data => {
+        if (data) {
+            const newQuantity = quantity + count;
+            quantityElement.innerText = newQuantity;
+
+            // Enable the "minus" button if the quantity is greater than 0
+            const minusButton = quantityElement.previousElementSibling;
+            if (newQuantity <= 0) {
+                minusButton.style.pointerEvents = 'none';
+                minusButton.style.opacity = 0.5;
+            } else {
+                minusButton.style.pointerEvents = 'auto';
+                minusButton.style.opacity = 1;
+            }
+
+            $('#reloadDiv').load('/cart #reloadDiv');
+        }else if(data.check){
+            swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Out of stock",
+          });
+        } 
         
-        
-    }
+        else {
+            swal.fire({
+            position: "center",
+            icon: "warning",
+            text: response.message,
+            timer: 1500,
+            showConfirmButton: false,
+        });
+        }
+    });
+}
+  
 </script>
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>
