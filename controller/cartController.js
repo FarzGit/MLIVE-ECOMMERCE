@@ -120,12 +120,13 @@ const addToCart = async (req, res) => {
     const cartQuantity = async(req,res)=>{
         try{
             
-            const userId = req.body.user
+            const userId = req.session.user_id
             const productId = req.body.product
+            console.log("productId : ",productId);
             const count = parseInt(req.body.count)
 
             const cartData = await cartDb.findOne({user:new ObjectId(userId),"products.productId":new ObjectId(productId)},{"products.productId.$":1 , "products.quantity":1})
-            console.log(cartData);
+            console.log("cardData is :",cartData);
 
             const [{quantity:quantity}] = cartData.products
 
@@ -141,6 +142,31 @@ const addToCart = async (req, res) => {
                     {$inc : {"products.$.quantity" : count}})
                     res.json({changeSuccess:true})
             }
+
+            const updateCartData = await cartDb.findOne({user:userId})
+            console.log("updateCartData : ", updateCartData.products);
+             
+
+            const updateProduct = updateCartData.products.find(
+                (product) => product.productId.toString() === productId.toString()
+            );
+
+
+            console.log("updateProduct :",updateProduct)
+            const updateQuantity = updateProduct.quantity
+            console.log("updatedQuantity :",updateQuantity);
+            const  productPrice = stockAvailale.price;
+
+            const productTotal = productPrice * updateQuantity
+            console.log("product total is :", productTotal);
+
+            await cartDb.updateOne(
+                { user: userId, "products.productId": productId },
+      { $set: { "products.$.totalPrice": productTotal } }
+            )
+
+
+
 
         }catch(error){
             console.log(error);
