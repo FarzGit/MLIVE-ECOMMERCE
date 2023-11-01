@@ -609,7 +609,7 @@ const loadEditAddress = async(req,res)=>{
 
     const address= userAddress.addresses
 
-    res.render('editAddress',{user:userData,addresses:address[0]})
+    res.render('editAddress',{user:userId,addresses:address[0]})
 
     
 

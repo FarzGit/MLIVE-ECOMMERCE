@@ -75,6 +75,7 @@ adminRoute.get("/is_blockedUser",adminAuth.isLogin,adminController.blockUnblock)
 adminRoute.get("/logout",adminAuth.isLogin,adminController.adminLogout)
 
 adminRoute.get("/Product",adminAuth.isLogin, productController.loadProducts);
+adminRoute.get('/adminProductDetails',adminAuth.isLogin,productController.loadAdminProductDetails)
 adminRoute.get("/addProduct",adminAuth.isLogin, productController.loadAddProducts);
 adminRoute.post('/addProduct',upload.array("image",4),productController.addProduct)
 adminRoute.get('/editProduct',adminAuth.isLogin,productController.loadEditProduct)

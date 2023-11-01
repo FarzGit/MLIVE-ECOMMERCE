@@ -54,11 +54,11 @@
                           </td>
                           <td style="color: aliceblue;" class="text-center">
                             <div class="card-title">
-                              <a href="/admin/orderFullDetails?id=<%= orders._id %>">
-                                <button type="button" class="btn btn-success btn-md">
+                              <!-- <a href="/admin/orderFullDetails?id=<%= orders._id %>"> -->
+                                <button type="button" class="btn btn-success btn-md" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                   Details
                                 </button>
-                              </a>
+                              <!-- </a> -->
                             </div>
                           </td>
                         
@@ -81,5 +81,69 @@
         </div>
       </div>
     </main>
+
+    <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Use modal-lg to make the modal larger -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card">
+                <img src="image1.jpg" class="card-img-top" alt="Image 1">
+                <div class="card-body">
+                  <h5 class="card-title">Card 1</h5>
+                  <p class="card-text">Description for Card 1.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <img src="image2.jpg" class="card-img-top" alt="Image 2">
+                <div class="card-body">
+                  <h5 class="card-title">Card 2</h5>
+                  <p class="card-text">Description for Card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <img src="image3.jpg" class="card-img-top" alt="Image 3">
+                <div class="card-body">
+                  <h5 class="card-title">Card 3</h5>
+                  <p class="card-text">Description for Card 3.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <img src="image4.jpg" class="card-img-top" alt="Image 4">
+                <div class="card-body">
+                  <h5 class="card-title">Card 4</h5>
+                  <p class="card-text">Description for Card 4.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <%- include("../admin/layouts/adminFooter.ejs") %>

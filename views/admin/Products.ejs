@@ -31,7 +31,7 @@
                         <th class="text-center">Category</th>
                         <th class="text-center">Price</th>
                         <th class="text-center">Quantity</th>
-                        <th class="text-center">Description</th>
+                        <th class="text-center">Details</th>
                         <th class="text-center">edit</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
@@ -41,7 +41,7 @@
                       <% for (let i = 0; i < product.length; i++) { %>
                         <tr>
                           <td class="text-center">
-                            <img class="img-fluid" src="/static/adminAssets/images/<%= product[i].image[0] %>" alt="">
+                            <img  src="/static/adminAssets/images/<%= product[i].image[0] %>" alt="" style="height: 100px; width: 90px;">
                           </td>
                           <td style="color: aliceblue;" class="text-center">
                             <%= product[i].brand %>
@@ -59,7 +59,7 @@
                             <%= product[i].quantity %>
                           </td>
                           <td style="color: aliceblue; " class="text-center">
-                            <%= product[i].description %>
+                            <a href="/admin/adminProductDetails?id=<%= product[i]._id%>" class="btn">View Details	&#62;</a>
                           </td>
                           <td>
                             <% if( product[i].quantity <=0 ) {%>
@@ -82,6 +82,9 @@
                       <% } %>
                     </tbody>
                   </table>
+
+
+                  
                   <!-- Pagination -->
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">

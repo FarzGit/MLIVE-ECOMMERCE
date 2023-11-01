@@ -45,6 +45,26 @@ const loadProducts = async (req, res) => {
 };
 
 
+const loadAdminProductDetails = async(req,res)=>{
+  try{
+
+    console.log(" entered into the productdetails  ")
+
+    const id =  req.query.id
+
+    console.log("id is :",id);
+
+    const product = await productDb.findById({_id:id})
+    console.log(product);
+
+    res.render('adminViewProductDetails',{product:product})
+    
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
 
   const loadAddProducts =async(req,res)=>{
     try{
@@ -219,7 +239,8 @@ module.exports ={
     addProduct, 
     loadEditProduct ,
     editProduct,
-    productListorUnlist
+    productListorUnlist,
+    loadAdminProductDetails
 }
 
 

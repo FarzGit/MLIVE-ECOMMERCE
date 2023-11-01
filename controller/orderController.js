@@ -10,7 +10,7 @@ const loadCheckOut = async(req,res)=>{
 
     try{
 
-      console.log("entering loadChecout");
+      // console.log("entering loadChecout");
       const userId =req.session.user_id;
       const addressData = await addressDb.findOne({userId:userId})
       
@@ -18,7 +18,7 @@ const loadCheckOut = async(req,res)=>{
 
       const userData = await userDb.findOne ({_id:userId})
       const cartData = await cartDb.findOne({user:userId}).populate("products.productId").exec()
-      console.log(cartData);
+      // console.log(cartData);
       const products = cartData.products;
 
       const cart = await cartDb.findOne({user:userId})
@@ -51,13 +51,13 @@ const loadCheckOut = async(req,res)=>{
                     }
                   ]).exec();
 
-    console.log("the total is :", total  );
+    // console.log("the total is :", total  );
 
 
     let stock = []
     let countCart =[]
-    console.log("stock :",stock);
-    console.log("countCart :",countCart);
+    // console.log("stock :",stock);
+    // console.log("countCart :",countCart);
 
 
     for (let i = 0; i < products.length; i++) {
@@ -83,7 +83,6 @@ const loadCheckOut = async(req,res)=>{
 
 
     if (userId) { 
-      console.log("called if userId api");
       if (inStock === true) {
         if (addressData) {
           if (addressData.addresses.length > 0) {
@@ -102,10 +101,10 @@ const loadCheckOut = async(req,res)=>{
               cartQuantity
             });
           } else {
-            res.redirect("/");
+            res.redirect("/checkout");
           }
         } else {
-          res.redirect("/profile");
+          res.redirect("/checkout");
         }
       } else {
         res.render("cart", { message: proName, userId: userId, cartQuantity });
@@ -128,15 +127,21 @@ console.log("entered into remove address");
 
     const id = req.body.id;
     console.log(id);
-    await addressDb.updateOne(
+  
+    const result = await addressDb.updateOne(
       { userId: req.session.user_id },
       { $pull: { address: { _id: id } } }
     );
+    console.log("result is: ",result);
 
-    res.json({ remove: true });
+    
+      res.json({ remove: false });
+    
 
-  }catch(error){
+  }
+  catch(error){
     console.log(error);
+    res.status(500).json({ error: "An error occurred" });
   }
 }
 
@@ -149,10 +154,10 @@ const placeOrder = async(req,res)=>{
     const cartData = await cartDb.findOne({user: userId})
     const products = cartData.products
     const total = parseInt(req.body.total)
-    console.log("total is :",total);
+    // console.log("total is :",total);
     const paymentMethod = req.body.payment
     const userData = await userDb.findOne({_id:userId})
-    console.log("user Data",userData);
+    // console.log("user Data",userData);
     const name = userData.firstName;
     const uniNum = Math.floor(Math.random() * 900000) + 100000;
     const status = paymentMethod === "COD" ? "placed" : "pending";
@@ -187,7 +192,7 @@ const placeOrder = async(req,res)=>{
           console.log("the count is :",quantity);
           
        const result= await productDb.updateOne({ _id: productId },{$inc:{quantity:-quantity}})
-       console.log(result)
+      //  console.log(result)
            
         
         }
@@ -276,7 +281,7 @@ const orderDetails = async(req,res)=>{
       "products.productId"
     );
 
-    console.log("orderedData is :", orderedProduct);
+    // console.log("orderedData is :", orderedProduct); 
 
 
     // const currentDate = new Date();   

@@ -58,9 +58,9 @@ const addToCart = async (req, res) => {
     const loadCart = async(req,res)=>{
         try{
 
-            const name = req.session.user_id
+            const id = req.session.user_id
 
-            const userData = await userDb.findById({_id:name})
+            const userData = await userDb.findById({_id:id})
             
             const userId = userData._id
             
@@ -99,7 +99,7 @@ const addToCart = async (req, res) => {
 
         
                        
-                        res.render('cart', { user: req.session.user_id, cart: cartData.products, userId: userId, total: Total ,user:userData });
+                        res.render('cart', { user: userData, cart: cartData.products, userId: userId, total: Total });
                     }else{
                         res.render('cart', { user: req.session.user_id,  cart: [],total:0 });
                     }
@@ -122,16 +122,16 @@ const addToCart = async (req, res) => {
             
             const userId = req.session.user_id
             const productId = req.body.product
-            console.log("productId : ",productId);
+            // console.log("productId : ",productId);
             const count = parseInt(req.body.count)
 
             const cartData = await cartDb.findOne({user:new ObjectId(userId),"products.productId":new ObjectId(productId)},{"products.productId.$":1 , "products.quantity":1})
-            console.log("cardData is :",cartData);
+            // console.log("cardData is :",cartData);
 
             const [{quantity:quantity}] = cartData.products
 
             const stockAvailale = await productDb.findById({_id:new ObjectId(productId)})
-            console.log("stockAvailale",stockAvailale.quantity);
+            // console.log("stockAvailale",stockAvailale.quantity);
             
             if(stockAvailale.quantity < quantity + count){
                 res.json({changeSuccess:true})
@@ -144,7 +144,7 @@ const addToCart = async (req, res) => {
             }
 
             const updateCartData = await cartDb.findOne({user:userId})
-            console.log("updateCartData : ", updateCartData.products);
+            // console.log("updateCartData : ", updateCartData.products);
              
 
             const updateProduct = updateCartData.products.find(
@@ -152,9 +152,9 @@ const addToCart = async (req, res) => {
             );
 
 
-            console.log("updateProduct :",updateProduct)
+            // console.log("updateProduct :",updateProduct)
             const updateQuantity = updateProduct.quantity
-            console.log("updatedQuantity :",updateQuantity);
+            // console.log("updatedQuantity :",updateQuantity);
             const  productPrice = stockAvailale.price;
 
             const productTotal = productPrice * updateQuantity
