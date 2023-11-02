@@ -26,17 +26,16 @@ const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg" ||
-      file.mimetype == "image/webp" ||
-      file.mimetype == "image/avif"
-
+      file.mimetype === "image/png" ||
+      file.mimetype === "image/jpg" ||
+      file.mimetype === "image/jpeg" ||
+      file.mimetype === "image/webp" ||
+      file.mimetype === "image/avif"
     ) {
       cb(null, true);
     } else {
       cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg .webp format allowed!"));
+      return cb(new Error("Only .png, .jpg, .jpeg, .webp format allowed!"));
     }
   },
 });
@@ -79,11 +78,15 @@ adminRoute.get('/adminProductDetails',adminAuth.isLogin,productController.loadAd
 adminRoute.get("/addProduct",adminAuth.isLogin, productController.loadAddProducts);
 adminRoute.post('/addProduct',upload.array("image",4),productController.addProduct)
 adminRoute.get('/editProduct',adminAuth.isLogin,productController.loadEditProduct)
-adminRoute.post("/editProduct",upload.array("image",4),productController.editProduct)
+adminRoute.post("/editProduct", upload.array("image", 4), productController.editProduct)
+
 adminRoute.get("/is_activeProduct",adminAuth.isLogin,productController.productListorUnlist)
 
 
 
-adminRoute.get("/userOrders",adminController.loaduserOrders)
+adminRoute.get("/userOrders",adminAuth.isLogin,adminController.loaduserOrders)
+adminRoute.get("/orderFullDetails",adminAuth.isLogin,adminController.adminOrderFullDetails)
+
+
 
 module.exports = adminRoute;

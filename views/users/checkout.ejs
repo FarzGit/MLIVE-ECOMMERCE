@@ -238,37 +238,37 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  $("#checkout-form").submit(function(e) {
+  document.getElementById("checkout-form").addEventListener("submit", function(e) {
     console.log("clicked");
     e.preventDefault(); // Prevent the default form submission
 
     // Your existing code
     console.log('button clicked');
-    let address = $("input[name=address]:checked").val();
+    let address = document.querySelector("input[name=address]:checked").value;
     let total = document.getElementById("total1").innerHTML;
-    let payment = $("input[name=payment]:checked").val();
+    let payment = document.querySelector("input[name=payment]:checked").value;
     console.log('button clicked');
 
-    $.ajax({
-      url: "/placeOrder",
-      method: "post",
-      data: { total: total, address: address, payment: payment },
-      success: (response) => {
-        console.log(response);
-        if (response) {
+    // Send the data using Axios
+    axios.post("/placeOrder", { total, address, payment })
+      .then(function(response) {
+        console.log(response.data);
+        if (response.data) {
           console.log("Form submitted successfully!");
           alert("Form submitted successfully!");
         } else {
           console.log('failed');
           alert("Form submission failed!");
         }
-      },
-    });
+      })
+      .catch(function(error) {
+        console.error(error);
+        alert("An error occurred while submitting the form.");
+      });
   });
 </script>
-
 
 <!-- ================================================handling the radioButton to active entire the div========================================= -->
 

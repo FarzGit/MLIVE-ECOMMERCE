@@ -316,11 +316,14 @@ const orderDetails = async(req,res)=>{
 
 
 
+
+
+
 module.exports={
     loadCheckOut,
     removeAddress,
     placeOrder,
     orderPlacedPageLoad,
     loadOrderPage,
-    orderDetails
+    orderDetails,
 }

@@ -235,6 +235,25 @@ const loaduserOrders = async(req,res)=>{
   }
 }
 
+const adminOrderFullDetails = async (req,res)=>{
+  try{
+    console.log("entered order full details :");
+
+    const id =req.query.id
+    console.log("order id :",id);
+
+    const orderData = await orderDb.findOne({_id:id}).populate("products.productId")
+
+
+
+    res.render('orderFullDetails',{orders:orderData})
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
 
 
 
@@ -263,4 +282,5 @@ module.exports = {
   blockUnblock,
   adminLogout,
   loaduserOrders,
+  adminOrderFullDetails
 };

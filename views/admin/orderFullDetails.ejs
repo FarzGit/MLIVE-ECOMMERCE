@@ -1,0 +1,120 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+<body class="g-sidenav-show bg-gray-200">
+  <%- include("../admin/layouts/adminSideBar.ejs") %>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-9 elemDesign" style="width: 1320px;">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-capitalize ps-3">ORDER DETAILS</h6>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="p-0">
+                <div class="table-responsive">
+                  <ul>
+                    <span style="color: darkgrey">Amount: </span>
+                    <%= orders.totalAmount %>
+                  </ul>
+                  <ul>
+                    <span style="color: darkgrey"> Date: </span>
+                    <%= orders.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %>
+                  </ul>
+                  <ul>
+                    <span style="color: darkgrey">Status:</span>
+                    <%= orders.status %>
+                  </ul>
+                  <ul>
+                    <span style="color: darkgrey">Payment method: </span><%= orders.paymentMethod %>
+                  </ul>
+                  <ul>
+                    <span style="color: darkgrey">Order status:</span>
+                    <%= orders.status %>
+                  </ul>
+                  <ul>
+                    <span style="color: darkgrey">Delivery details:</span>
+                    <%= orders.deliveryDetails %>
+                  </ul>
+
+                  <br>
+
+                  <table class="table table-dark">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Product Price</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Order status</th>
+                        <td>Action</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if (orders.products.length > 0) {
+                      orders.products.forEach((data, i) => { %>
+
+                      <tr>
+                        <td>
+                          <img src="/static/adminAssets/images/<%=data.productId.image[i] %>" alt="" style="height: 90px;" />
+                        </td>
+                        <td><%= data.productId.productName %></td>
+                        <td>Rs:<%= data.productId.price %></td>
+                        <td><%= data.productId.category %></td>
+                        <td><%= data.quantity %></td>
+                        <td><%= orders.status %></td>
+                        <td>
+                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <i class="bi bi-pencil-square"></i>
+                          </button>
+                        </td>
+                      </tr>
+
+                      <% }) %> <%}%>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4 col-lg-3 elemDesign"></div>
+      </div>
+
+
+     <!-- ==============================================================orderFullDetailsModal============================================================================================ -->
+
+
+
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <a type="button" class="btn btn-outline-danger" href="#">Cancel</a>
+              <a type="button" class="btn btn-outline-secondary" href="#">Shipped</a>
+              <a type="button" class="btn btn-outline-success" href="#">Delivery</a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </main>
+
+    <%- include("../admin/layouts/adminFooter.ejs") %>

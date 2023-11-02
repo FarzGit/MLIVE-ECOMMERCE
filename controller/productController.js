@@ -45,6 +45,7 @@ const loadProducts = async (req, res) => {
 };
 
 
+
 const loadAdminProductDetails = async(req,res)=>{
   try{
 
