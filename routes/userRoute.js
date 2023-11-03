@@ -71,7 +71,8 @@ userRoute.post('/orderCancel',orderController.cancelOrder)
 
 
 userRoute.post('/checkoutAddress',userAuth.isLogin,orderController.addCheckoutAddress)
-userRoute.post('/editCheckoutAddress',userAuth.isLogin,orderController.editAdminAddress)
+userRoute.get('/editCheckoutAddress',userAuth.isLogin,orderController.loadCheckoutEditAddress)
+userRoute.post('/editCheckoutAddress',userAuth.isLogin,orderController.editCheckoutAddress)
 
 
 

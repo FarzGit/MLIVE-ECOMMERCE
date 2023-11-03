@@ -14,7 +14,7 @@ const loadCheckOut = async(req,res)=>{
       const userId =req.session.user_id;
       const addressData = await addressDb.findOne({userId:userId})
 
-      console.log(addressData.fullName)
+      
       
       
 
@@ -351,39 +351,67 @@ const addCheckoutAddress = async(req,res)=>{
   }
 }
 
-
-
-
-
-const editAdminAddress =async(req,res)=>{
+ const loadCheckoutEditAddress =async(req,res)=>{
   try{
 
-    console.log("entered  editAdminAddress")
+    console.log("hai");
+    const id = req.query.id
+    console.log(id);
     const userId = req.session.user_id
-    const addressId = req.query.id;
-    const updated = await addressDb.updateOne(
-      { userId: userId, "addresses._id": addressId },
-      {
-        $set: {
-          
+    const userData = await userDb.findById({_id:userId})
 
-              "addresses.$.fullName": req.body.fullName,
-              "addresses.$. mobile": req.body.mobile,
-              "addresses.$.country": req.body.country,
-              "addresses.$.city": req.body.city,
-              "addresses.$.state": req.body.state,
-              "addresses.$.pincode": req.body.pincode,
-        },
-      }
-    );
+    let userAddress = await addressDb.findOne({ userId: userId  },{addresses:{$elemMatch:{_id:id}}})
 
-    console.log("updated")
+    const address= userAddress.addresses
 
-    res.redirect("/checkOut");
+    console.log(address);
+
+    
+
+    res.render('editCheckOutAddress', {user:userId,addresses:address[0]})
 
   }catch(error){
     console.log(error);
   }
+
+}
+
+
+
+const editCheckoutAddress = async(req,res)=>{
+  try{
+     console.log("entere address edit");
+    const addressId =req.body.id
+    console.log("addressId :",addressId);
+    
+    const userId = req.session.user_id
+    console.log(userId);
+    
+
+
+    const pushAddress = await addressDb.updateOne(
+      { userId: userId , "addresses._id":addressId},
+      {
+        $set: {
+          
+           "addresses.$.fullName": req.body.fullName,
+           "addresses.$.mobile": req.body.mobile,
+           "addresses.$.country": req.body.country,
+           "addresses.$.city": req.body.city,
+           "addresses.$.state": req.body.state,
+           "addresses.$.pincode": req.body.pincode,
+          
+        },
+      }
+    );
+    console.log(pushAddress);
+    res.redirect("/checkout");
+    
+
+  }catch(error){
+    console.log(error);
+  }
+
 }
 
 const cancelOrder = async (req,res)=>{
@@ -448,7 +476,8 @@ module.exports={
     loadOrderPage,
     orderDetails,
     addCheckoutAddress,
-    editAdminAddress,
+    loadCheckoutEditAddress,
+    editCheckoutAddress,
     cancelOrder
     
 
