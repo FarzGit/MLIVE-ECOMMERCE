@@ -13,6 +13,8 @@ const loadCheckOut = async(req,res)=>{
       // console.log("entering loadChecout");
       const userId =req.session.user_id;
       const addressData = await addressDb.findOne({userId:userId})
+
+      console.log(addressData.fullName)
       
       
 
@@ -104,7 +106,7 @@ const loadCheckOut = async(req,res)=>{
             res.redirect("/checkout");
           }
         } else {
-          res.redirect("/checkout");
+          res.redirect("/profile");
         }
       } else {
         res.render("cart", { message: proName, userId: userId, cartQuantity });
@@ -309,9 +311,128 @@ const orderDetails = async(req,res)=>{
 
 
 
+const addCheckoutAddress = async(req,res)=>{
+  try{
+
+    console.log("entered in to add address")
+
+    const user = req.session.user_id;
+    const addressData = await addressDb.findOne({ userId: user });
+    console.log("address data :",addressData);
+    if (addressData) {
+      const updated = await addressDb.updateOne(
+        { userId: user },
+        {
+          $push: {
+            addresses: {
+              fullName: req.body.fullName,
+              mobile: req.body.mobile,
+              country: req.body.country,
+              city: req.body.city,
+              state: req.body.state,
+              pincode: req.body.pincode,
+            },
+          },
+        }
+      );
+      console.log(updated)
+      if (updated) {
+        res.redirect("/checkout");
+      } else {
+        res.redirect("/checkout");
+        console.log("not added");
+      }
+    } else {
+      res.redirect("/checkout");
+    }
+
+  }catch(error){
+    console.log(error);
+  }
+}
 
 
 
+
+
+const editAdminAddress =async(req,res)=>{
+  try{
+
+    console.log("entered  editAdminAddress")
+    const userId = req.session.user_id
+    const addressId = req.query.id;
+    const updated = await addressDb.updateOne(
+      { userId: userId, "addresses._id": addressId },
+      {
+        $set: {
+          
+
+              "addresses.$.fullName": req.body.fullName,
+              "addresses.$. mobile": req.body.mobile,
+              "addresses.$.country": req.body.country,
+              "addresses.$.city": req.body.city,
+              "addresses.$.state": req.body.state,
+              "addresses.$.pincode": req.body.pincode,
+        },
+      }
+    );
+
+    console.log("updated")
+
+    res.redirect("/checkOut");
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+const cancelOrder = async (req,res)=>{
+  try{
+
+    const orderId = req.body.orderid;
+    const userId = req.session.user_id;
+    const cancelReason = req.body.reason;
+    const cancelAmount = req.body.totalPrice;
+    const amount = parseInt(cancelAmount);
+    const orderData = await orderDb.findOne({ _id: orderId });
+    const products = orderData.products;
+
+
+
+    if (
+      orderData.paymentMethod == "COD" ||
+      orderData.status == "pending"
+    ) {
+      // Change the order status
+      const updatedData = await orderDb.updateOne(
+        { _id: orderId },
+        {
+          $set: { cancelReason: cancelReason, status: "cancelled" , statusLevel: 0},
+        }
+      );
+
+      console.log("updatedData is:",updatedData);
+
+      for (let i = 0; i < products.length; i++) {
+        const productId = products[i].productId;
+        const quantity = products[i].quantity;
+        await productDb.findOneAndUpdate(
+          { _id: productId },
+          { $inc: { quantity: quantity } }
+        );
+      }
+
+      if (updatedData) {
+        res.redirect("/orders");
+      } else {
+        console.log("order status not updated");
+      }
+    }
+
+  }catch(error){
+    console.log(error);
+  }
+}
 
 
 
@@ -326,4 +447,9 @@ module.exports={
     orderPlacedPageLoad,
     loadOrderPage,
     orderDetails,
+    addCheckoutAddress,
+    editAdminAddress,
+    cancelOrder
+    
+
 }

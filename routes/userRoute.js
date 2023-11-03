@@ -65,6 +65,13 @@ userRoute.post('/placeOrder',userAuth.isLogin, orderController.placeOrder)
 userRoute.get('/verify-payment',userAuth.isLogin,orderController.orderPlacedPageLoad) 
 userRoute.get('/orders',userAuth.isLogin,orderController.loadOrderPage)
 userRoute.get('/orderDetails',userAuth.isLogin,orderController.orderDetails)
+userRoute.post('/orderCancel',orderController.cancelOrder)
+
+
+
+
+userRoute.post('/checkoutAddress',userAuth.isLogin,orderController.addCheckoutAddress)
+userRoute.post('/editCheckoutAddress',userAuth.isLogin,orderController.editAdminAddress)
 
 
 
