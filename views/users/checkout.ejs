@@ -85,7 +85,7 @@
                               <input class="form-check-input" type="radio" value="<%= address.fullName %>,<%= address.mobile %>,<%= address.country %>,<%= address.city %>,<%= address.state %>,<%= address.pincode %>"
                                 name="address" id="flexRadioDefault" required>
                               <div class="mx-5">
-                                <p class="text-dark"><b><%= address.fullName %></b>, <%= address.city %>, <%= address.state %>. Contact Number: <b style="color: #043a6c;"><span class="material-symbols-outlined" style="font-size: 13px;"><%= address.mobileNumber %></span><%= address.mobileNumber %></b></p>
+                                <p class="text-dark"><b><%= address.fullName %></b>, <%= address.city %>, <%= address.state %>. Contact Number: <b style="color: #043a6c;"><span class="material-symbols-outlined" style="font-size: 13px;"><%= address.mobile %></span><%= address.mobileNumber %></b></p>
                                 <p><%= address.pincode %>, <%= address.country %></p>
                               </div>
                             </div>
@@ -198,7 +198,7 @@
                     </div>
                     <a href="" class="d-block text-dark" for="pay3">Wallet</a>
                   </div>
-                  <a>
+                  <a href="#">
                   <button
                     type="submit"
                     class="btn btn-outline-primary-2 btn-order btn-block">
@@ -206,6 +206,7 @@
                     <span class="btn-hover-text">Proceed to Checkout</span>
                   </button>
                 </a>
+                
                 </div>
   
                 <!-- End .summary -->
@@ -269,21 +270,7 @@
                       <span class="error-message text-danger" id="phoneError"></span>
                   </div>
               </div>
-          </div>
-
-         
-
-          
-
-      
-
-
-
-         
-
-          
-
-          
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn rounded" style="background-color: rgb(199, 37, 37); " data-bs-dismiss="modal">Close</button>
@@ -318,45 +305,48 @@
   
   
   
+
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    
+    $(document).ready(function() {
+      $("#checkout-form").on("submit", function(e) {
+        e.preventDefault(); // Prevent the default form submission
   
-  </script>
+        // Your existing code
+        console.log("clicked");
+        var address = $("input[name=address]:checked").val();
+        var total = $("#total1").text();
+        var payment = $("input[name=payment]:checked").val();
+        console.log('button clicked');
 
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-  document.getElementById("checkout-form").addEventListener("submit", function(e) {
-    console.log("clicked");
-    e.preventDefault(); // Prevent the default form submission
-
-    // Your existing code
-    console.log('button clicked');
-    let address = document.querySelector("input[name=address]:checked").value;
-    let total = document.getElementById("total1").innerHTML;
-    let payment = document.querySelector("input[name=payment]:checked").value;
-    console.log('button clicked');
-
-    // Send the data using Axios
-    axios.post("/placeOrder", { total, address, payment })
-      .then(function(response) {
-        console.log(response.data);
-        if (response.data) {
-          console.log("Form submitted successfully!");
-          alert("Form submitted successfully!");
-        } else {
-          console.log('failed');
-          alert("Form submission failed!");
-        }
-      })
-      .catch(function(error) {
-        console.error(error);
-        alert("An error occurred while submitting the form.");
+        console.log('Before AJAX request');
+        // Send the data using jQuery AJAX
+        $.ajax({
+          type: "POST",
+          url: "/placeOrder",
+          data: { total: total, address: address, payment: payment },
+          success: function(response) {
+            if (response) {
+              
+              window.location.href = '/orderPlaced'
+            } else {
+              console.log('failed');
+              alert("Form submission failed!");
+            }
+          },
+          error: function(error) {
+            console.error(error);
+            alert("An error occurred while submitting the form.");
+          }
+        });
+        console.log('After AJAX request');
       });
-  });
-</script>
+    });
+  </script>
 
 <!-- ================================================handling the radioButton to active entire the div========================================= -->
 

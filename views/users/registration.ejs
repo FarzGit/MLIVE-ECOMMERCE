@@ -93,14 +93,10 @@
    
     <div class="login-box">
         <h1>Registration</h1>
-        <div id="error" style="color: red;"></div>
-        <% if(typeof message !== 'undefined') { %>
-            <p style="color: red; font-size: large; font-weight: 300;">
-                <%= message %>
-            </p>
-        <% } %>
+        <div id="errorMessage" style="color: red; font-size: 12px; font-weight: 300;"></div>
 
-        <form action="/register" method="POST" id="form">
+        <!-- <form action="/register" method="POST" id="form"> -->
+            <form action="/register" method="POST" id="form" >
             <div class="input-container">
                 <input type="text" id="Fname" name="Fname" placeholder="First Name">
                 <p class="error-message" style="color: red;"></p>
@@ -132,6 +128,10 @@
         </form>
     </div>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -229,21 +229,52 @@
     });
 });
 
+
+
+
+
+// <!-- ===============================================================ajaxRequest========================================================================== -->
+
+
+$(document).ready(function () {
+  $("#form").submit(function (event) {
+    event.preventDefault();
+    var formData = $(this).serialize();
+
+    $.ajax({
+      type: "POST",
+      url: "/register",
+      data: formData,
+      success: function (response) {
+        console.log(response); // Log the response to the console
+        if (response.message === "success") {
+          window.location.href = "/userOtp";
+        } else {
+          $("#errorMessage").text(response.message);
+        }
+      },
+      error: function (error) {
+        console.log("Error:", error); // Log any AJAX errors
+      }
+    });
+  });
+});
+
+
+
+
+
 </script>
     
 
-<!-- ===============================================================setTimeout========================================================================== -->
 
-    <script>
-        setTimeout(function() {
-          var messageElement = document.getElementById("message");
-          if (messageElement) {
-            messageElement.style.display = "none";
-          }
-        }, );
-      </script>
     
 
 
 
 <%- include('../users/layouts/footer.ejs')%>
+
+
+
+
+

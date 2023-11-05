@@ -7,7 +7,7 @@ const otpGenerator = require("otp-generator");
 const productDb = require('../models/productModel')
 const categoryDb = require('../models/categoryModel');
 const addressDb = require('../models/userAddressModel')
-const Swal = require('sweetalert2')
+const Swal = require('sweetalert2');
 const { AwsInstance } = require("twilio/lib/rest/accounts/v1/credential/aws");
 
 
@@ -126,11 +126,13 @@ const verifyOtp = async (req, res) => {
         isVerified: 1,
       });
       const result = await user.save();
+
       
-        res.redirect("/login");
+      
+        res.json({success:true})
       
     } else {
-      res.render("userOtp", { message: "Invalid OTP" });
+      res.json({success:false, message:"Invalid OTP"})
     }
   } catch (error) {
     console.log(error);
@@ -189,9 +191,10 @@ const insertUser = async (req, res) => {
     const userCheckMobile = await User.findOne({mobile: req.body.mobile})
     const userCheck = await User.findOne({ email: req.body.email });
     if (userCheck) {
-      res.render("registration",{message:"email is existed"});
+      res.json({ message: "email is existed" });
+
     } else if(userCheckMobile){
-      res.render("registration",{message:"Mobile Number existed"})    }
+      res.json({ message: "Mobile Number existed" });    }
     else {
       const spassword = await securePassword(req.body.password);
       req.session.Fname = req.body.Fname;
@@ -207,16 +210,17 @@ const insertUser = async (req, res) => {
           };
           otpSend(req.session.name, req.session.email, req.session.otp.code);
 
-          res.render("userOtp");
+          res.json({ message: "Success" });
         } else {
-          res.render("registration", { message: "Password doesn't match" });
+          res.json({ message: "Password doesn't match" });
         }
       } else {
-        res.render("registration", { message: "Please enter all details" });
+        res.json({ message: "Please enter all details" });
       }
     }
   } catch (error) {
     console.log(error);
+    res.json({ message: "Internal server error" });
   }
 };
 
@@ -259,23 +263,24 @@ const verifyLogin = async (req, res) => {
         if (passwordMatch) {
           if (userData.isVerified == false) {
             req.session.user_id = userData._id;
-            res.render("login", { message: "please verify your mail" });
+            res.json({message:"please verify your mail"})
           } else {
             req.session.user_id = userData._id;
 
-            res.redirect("/");
+            res.json({ message: "success" });
           }
         } else {
-          res.render("login", { message: "Email and  password is incorrect" });
+          res.json({ message: "Invalid Credentials" });
         }
       } else {
-        res.render("login", { message: "This User is blocked" });
+        res.json({ message: "This User is blocked" });
       }
     } else {
-      res.render("login", { message: "Email and  password is incorrect" });
+      res.json({ message: "User not Found" });
     }
   } catch (error) {
     console.log(error.message);
+    
   }
 };
 
@@ -514,7 +519,7 @@ const loadProfile = async (req,res)=>{
     const id = req.session.user_id
     const userData = await  User.findById({_id:id})
     let userAddress = await addressDb.findOne({ userId: id })
-    console.log(userAddress);
+    // console.log(userAddress);
 
     
     console.log(userData);
@@ -599,9 +604,7 @@ const addAddress = async(req,res)=>{
 
 const loadEditAddress = async(req,res)=>{
   try{
-    console.log("hai");
     const id = req.query.id
-    console.log(id);
     const userId = req.session.user_id
     const userData = await User.findById({_id:userId})
 
@@ -624,9 +627,7 @@ const loadEditAddress = async(req,res)=>{
 
 const updateUserAddress = async(req,res)=>{
   try{
-     console.log("entere address edit");
     const addressId =req.body.id
-    console.log("addressId :",addressId);
     
     const userId = req.session.user_id
     console.log(userId);
@@ -648,7 +649,6 @@ const updateUserAddress = async(req,res)=>{
         },
       }
     );
-    console.log(pushAddress);
     res.redirect("/profile");
     
 
@@ -662,28 +662,33 @@ const updateUserAddress = async(req,res)=>{
 // ===================================================================deleteUserAddress==================================================================
 
 
-const deleteUserAddress = async(req,res)=>{
-  try{
-     console.log(" delete User Enter");
-    const id = req.body.id
+const deleteUserAddress = async (req, res) => {
+  try {
+    console.log("delete User Enter");
+    const id = req.body.id; // Use req.body.id to access the addressId
     console.log(id);
-    const userId = req.session.user_id
+    const userId = req.session.user_id;
     console.log(userId);
-    const deleteAddress = await addressDb.updateOne({userId:userId},{$pull:{addresses:{_id:id}}})
+    const deleteAddress = await addressDb.updateOne({ userId: userId }, { $pull: { addresses: { _id: id } } });
     console.log(deleteAddress);
 
-    res.json({remove:true})
-
-
-  }catch(error){
+    res.json({ remove: true });
+  } catch (error) {
     console.log(error);
   }
 }
 
 
+// =====================================================================changeUserPassFromProfile=====================================================
 
 
-
+// const changePassword = async(req,res)=>{
+//   try{
+//       console.log(req.body.newPassword)
+//   }catch(error){
+//     console.log(error);
+//   }
+// }
 
 
 
@@ -715,5 +720,6 @@ module.exports = {
   addAddress,
   loadEditAddress,
   updateUserAddress,
-  deleteUserAddress
+  deleteUserAddress,
+  // changePassword
 };

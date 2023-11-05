@@ -56,13 +56,14 @@ userRoute.post('/profile',userAuth.isLogin,userController.addAddress)
 
 userRoute.get('/editAddress',userAuth.isLogin,userController.loadEditAddress)
 userRoute.post('/editAddress',userAuth.isLogin,userController.updateUserAddress)
-userRoute.post('/deleteAddress',userAuth.isLogin,userController.deleteUserAddress)
+userRoute.post('/deleteAddress',userAuth.isLogin,userController.deleteUserAddress)  
+// userRoute.post('/changepassword',userAuth.isLogin,userController.changePassword)
 
 
 userRoute.get('/checkout',userAuth.isLogin,orderController.loadCheckOut)
 // userRoute.post('/removeAddress', userAuth.isLogin, orderController.removeAddress)
 userRoute.post('/placeOrder',userAuth.isLogin, orderController.placeOrder)
-userRoute.get('/verify-payment',userAuth.isLogin,orderController.orderPlacedPageLoad) 
+userRoute.get('/orderPlaced',orderController.orderPlacedPageLoad) 
 userRoute.get('/orders',userAuth.isLogin,orderController.loadOrderPage)
 userRoute.get('/orderDetails',userAuth.isLogin,orderController.orderDetails)
 userRoute.post('/orderCancel',orderController.cancelOrder)

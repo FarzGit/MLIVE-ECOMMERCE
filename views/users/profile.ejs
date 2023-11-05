@@ -138,7 +138,7 @@
                                         <div class="d-flex justify-content-end ">
                                            <a href="/editAddress?id=<%= address.addresses[i]._id %>"> <button class="text-dark" type="button" id="editBTN" data-bs-toggle="modal" data-bs-target="" style="margin-top: 10px;">Edit </button></a>
                                             <p class="mx-3" style="margin-top: 10px;">|</p>
-                                           <button class="text-danger" type="button"   data-bs-toggle="modal" onclick="deleteAddress('<%= address.addresses[i]._id %>')">Remove</button>
+                                           <a ><button class="text-danger" type="button"   data-bs-toggle="modal" onclick="deleteAddress('<%= address.addresses[i]._id %>')" style="margin-top: 10px;">Remove</button></a>
                                             
                                         </div>
                                     </div>
@@ -189,16 +189,20 @@
                                     </button>
                                 </form>
                                 <hr>
-                                <h6 class="fs-1 font-monospace">Change Password</h6>
+                                <h6 class="font-monospace">Change Password</h6>
                                 <form action="/changepassword" method="post">
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-12">
                                                 <label>Current Password</label>
                                                 <input type="password" name="oldPassword" class="form-control" required>
                                             </div><!-- End .col-sm-6 -->
                                             <div class="col-sm-6">
-                                                <label>Create New Password</label>
+                                                <label>New Password</label>
+                                                <input type="password" name="oldPassword" class="form-control" required>
+                                            </div><!-- End .col-sm-6 -->
+                                            <div class="col-sm-6">
+                                                <label>Confirm Password</label>
                                                 <input type="password" name="newPassword" class="form-control" required>
                                             </div><!-- End .col-sm-6 -->
                                         </div><!-- End .row -->
@@ -275,7 +279,6 @@
             
   
             <button type="submit" class="btn  mx-auto rounded" style="background-color: rgb(70, 70, 215); color: #fff;">Register</button>
-
           </form>
         </div>
       </div>
@@ -317,7 +320,7 @@ function deleteAddress(addressId) {
         url: "/deleteAddress",
         method: "post",
         data: {
-          addressId: addressId,
+          id: addressId, // Pass addressId as a query parameter
         },
         success: (response) => {
           if (response.remove === true) {
@@ -329,6 +332,10 @@ function deleteAddress(addressId) {
   });
 }
 </script>
+
+
+    
+    
 
 
 

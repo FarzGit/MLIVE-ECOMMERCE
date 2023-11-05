@@ -47,8 +47,9 @@
                                     <td><%= orders[i].date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
                                     <td>₹<%= orders[i].totalAmount %></td>
                                     <td> <%= orders[i].paymentMethod %></td>
-                                    
-                                    <td><%= orders[i].status %></td>
+                                   
+                                    <td ><%= orders[i].status %></td>
+                                   
                                     <td>
                                         <a href="/orderDetails?id=<%= orders[i]._id %>" class=" btn-outline-dark btn-round">View Details</a>
                                     </td>

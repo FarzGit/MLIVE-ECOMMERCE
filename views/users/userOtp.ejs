@@ -110,7 +110,8 @@
 
 
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         let countdown = 30; // Initial countdown value in seconds
@@ -156,6 +157,56 @@
       invalidMsg.style.display = "none";
     }
   }, 3000); // 3000 milliseconds (3 seconds) delay
+
+
+ 
+// =============================================================AJX REQ===============================================================================
+
+
+$(document).ready(function () {
+        $("form").submit(function (event) {
+            event.preventDefault();
+            const otp = $("#otp").val();
+
+            // Make an AJAX request to verify the OTP
+            $.ajax({
+                type: "POST",
+                url: "/userOtp",
+                data: { otp: otp },
+                success: function (data) {
+                    if (data.success) {
+                        // OTP verification was successful
+                        Swal.fire({
+                            title: 'Registered Successfully',
+                            text: 'You have successfully verified your OTP and registered.',
+                            icon: 'success',
+                            timer: 1500, 
+                            showConfirmButton: false 
+                        }).then(function () {
+                            window.location.href = '/login';
+                        });
+                    } else {
+                        // OTP verification failed
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message || 'Invalid OTP',
+                            icon: 'error',
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while processing your request',
+                        icon: 'error',
+                    });
+                }
+            });
+        });
+    });
+
+
+
 
     </script>
 

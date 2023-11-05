@@ -9,43 +9,6 @@
     border-radius: 5px;
     margin-left: 15px;
   }
-
-
-  .image-preview-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px; /* Add some spacing between previews */
-  }
-
-  .image-preview {
-      max-width: 100px;
-      max-height: 100px;
-      position: relative;
-  }
-
-  .image-preview img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: cover;
-  }
-
-  .remove-button {
-      display: none;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background-color: #ff5c5c;
-      border: none;
-      color: white;
-      cursor: pointer;
-      padding: 5px 10px;
-      font-size: 14px;
-      border-radius: 4px;
-  }
-
-  .image-preview:hover .remove-button {
-      display: block;
-  }
 </style>
 
 <body class="g-sidenav-show bg-gray-200">
@@ -133,11 +96,15 @@
                     </div>
                     <div class="col-6">
                       <div class="form-group">
-                        <input class="form-control" type="file" id="coverPic" name="coverPic" multiple accept="image/*">
-                        <div class="image-preview-container mt-2" ></div>
-                    </div>
-                      
-                  </form>
+                        
+                        <div class="col-lg-12 col-md-6 rounded-image-preview">
+                          <label class="upload__btn ms-3">
+                            <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
+                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
+                            <span class="error" style="color: red;"></span>
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>  
@@ -156,169 +123,82 @@
 
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const form = document.querySelector('.forms-sample');
-      form.addEventListener('submit', function (event) {
-        let isValid = true;
-  
-        // Reset error messages
-        const errorElements = document.querySelectorAll('.error');
-        errorElements.forEach(function (errorElement) {
-          errorElement.textContent = '';
-        });
-  
-        // Product Name Validation
-        const productName = document.getElementById('productName');
-        if (productName.value.trim() === '') {
-          isValid = false;
-          productName.nextElementSibling.textContent = 'Product Name is required';
-        }
-  
-        productName.addEventListener('input', function () {
-          productName.nextElementSibling.textContent = '';
-        });
-  
-        // Price Validation
-        const price = document.getElementById('price');
-        const priceValue = parseFloat(price.value);
-        if (price.value.trim() === '') {
-          isValid = false;
-          price.nextElementSibling.textContent = 'Price is required';
-        } else if (isNaN(priceValue) || priceValue <= 0) {
-          isValid = false;
-          price.nextElementSibling.textContent = 'Price must be a number greater than zero';
-        }
-  
-        price.addEventListener('input', function () {
-          price.nextElementSibling.textContent = '';
-        });
-  
-        // Brand Validation
-        const brand = document.getElementById('brand');
-        if (brand.value.trim() === '') {
-          isValid = false;
-          brand.nextElementSibling.textContent = 'Brand is required';
-        } else if (brand.value !== brand.value.toUpperCase()) {
-          isValid = false;
-          brand.nextElementSibling.textContent = 'Brand must be in uppercase';
-        }
-  
-        brand.addEventListener('input', function () {
-          brand.nextElementSibling.textContent = '';
-        });
-  
-        // Category Validation
-        const category = document.querySelector('select[name="category"]');
-        if (category.value === '') {
-          isValid = false;
-          category.nextElementSibling.textContent = 'Category is required';
-        }
-  
-        category.addEventListener('change', function () {
-          category.nextElementSibling.textContent = '';
-        });
-  
-        // Status Validation
-        const status = document.getElementById('status');
-        if (status.value.trim() === '') {
-          isValid = false;
-          status.nextElementSibling.textContent = 'Status is required';
-        }
-  
-        status.addEventListener('input', function () {
-          status.nextElementSibling.textContent = '';
-        });
-  
-        // Quantity Validation
-        const quantity = document.getElementById('quantity');
-        const quantityValue = parseFloat(quantity.value);
-        if (quantity.value.trim() === '') {
-          isValid = false;
-          quantity.nextElementSibling.textContent = 'Quantity is required';
-        } else if (isNaN(quantityValue) || quantityValue <= 0) {
-          isValid = false;
-          quantity.nextElementSibling.textContent = 'Quantity must be a positive number';
-        }
-  
-        quantity.addEventListener('input', function () {
-          quantity.nextElementSibling.textContent = '';
-        });
-  
-        // Description Validation
-      const description = document.getElementById('description');
-      if (description.value.trim() === '') {
-        isValid = false;
-        description.nextElementSibling.textContent = 'Description is required';
-      }
+     document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("productForm");
+            const productName = document.getElementById("productName");
+            const price = document.getElementById("price");
+            const brand = document.getElementById("brand");
+            const category = document.getElementsByName("category")[0];
+            const status = document.getElementById("status");
+            const quantity = document.getElementById("quantity");
+            const description = document.getElementById("description");
+            const image = document.getElementById("formFile");
+            const errorMessages = document.querySelectorAll(".error");
 
-      description.addEventListener('input', function () {
-        description.nextElementSibling.textContent = '';
-      });
-  
-        // Image Validation
-        const image = document.querySelector('input[name="image"]');
-        if (image.files.length === 0) {
-          isValid = false;
-          image.parentElement.nextElementSibling.textContent = 'Image is required';
-        }
-  
-        image.addEventListener('change', function () {
-          image.parentElement.nextElementSibling.textContent = '';
-        });
-  
-        if (!isValid) {
-          event.preventDefault();
-        }
-      });
-    });
-  </script>
-  
+            form.addEventListener("submit", function(event) {
+                let isValid = true;
+                errorMessages.forEach(message => message.textContent = "");
 
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const coverPicInput = document.getElementById('coverPic');
-        const previewContainer = document.querySelector('.image-preview-container');
-
-        coverPicInput.addEventListener('change', function() {
-            previewContainer.innerHTML = '';
-
-            Array.from(coverPicInput.files).forEach(function(file) {
-                const reader = new FileReader();
-
-                reader.onload = function() {
-                    const imagePreview = document.createElement('div');
-                    imagePreview.classList.add('image-preview');
-
-                    const image = document.createElement('img');
-                    image.src = reader.result;
-                    image.classList.add('img-fluid');
-
-                    const removeButton = document.createElement('button');
-                    removeButton.type = 'button';
-                    removeButton.classList.add('remove-button');
-                    removeButton.textContent = 'Remove';
-                    removeButton.addEventListener('click', function() {
-                        imagePreview.remove();
-                        // Remove corresponding file from input
-                        const dt = new DataTransfer();
-                        Array.from(coverPicInput.files).forEach(function(existingFile) {
-                            if (existingFile !== file) {
-                                dt.items.add(existingFile);
-                            }
-                        });
-                        coverPicInput.files = dt.files;
-                    });
-
-                    imagePreview.appendChild(image);
-                    imagePreview.appendChild(removeButton);
-                    previewContainer.appendChild(imagePreview);
+                if (!productName.value.trim()) {
+                    displayError(productName, "Product Name is required");
+                    isValid = false;
                 }
 
-                reader.readAsDataURL(file);
+                if (parseInt(price.value) <= 0) {
+                    displayError(price, "Price must be greater than 0");
+                    isValid = false;
+                }
+
+                if (!brand.value.trim()) {
+                    displayError(brand, "Brand is required");
+                    isValid = false;
+                }
+
+                if (category.selectedIndex === 0) {
+                    displayError(category, "Please select a Category");
+                    isValid = false;
+                }
+
+                if (!status.value.trim()) {
+                    displayError(status, "Status is required");
+                    isValid = false;
+                }
+
+                if (parseInt(quantity.value) <= 0) {
+                    displayError(quantity, "Quantity must be greater than 0");
+                    isValid = false;
+                }
+
+                if (!description.value.trim()) {
+                    displayError(description, "Description is required");
+                    isValid = false;
+                }
+
+                if (!image.files.length) {
+                    displayError(image, "Please upload at least one image");
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+
+            // Function to display error message and add styling
+            function displayError(element, message) {
+                element.nextElementSibling.textContent = message;
+                element.nextElementSibling.style.fontSize = "10px";
+            }
+
+            // Clear error messages when typing in input fields
+            const inputFields = form.querySelectorAll("input, select, textarea");
+            inputFields.forEach(field => {
+                field.addEventListener("input", function() {
+                    this.nextElementSibling.textContent = "";
+                });
             });
         });
-    });
-    </script>
+</script>
+  
     
       <%- include("../admin/layouts/adminFooter.ejs") %>

@@ -1,133 +1,51 @@
 <%- include('../users/mainLayout/mainHeader.ejs')%>
   
-<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <form action="" method="post" onsubmit="return validateForm();" class="border rounded p-4" style="width: 530px; height: 685px">
-        <h5 class="text-center">Billing Details</h5>
-        <div class="form-group">
-            <label for="FullName">Full Name *</label>
-            <input type="text" class="form-control" id="FullName" name="fullName" style="height: 37px" value="<%= addresses.fullName %>" oninput="hideError('fullNameError')">
-            <span class="error-message text-danger" id="fullNameError"></span>
-        </div>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-md-6">
+        <form action="" method="post" onsubmit="return validateForm();" class="shadow p-3 mb-5 bg-body rounded">
+            <h5 class="text-center">Billing Details</h5>
+            <div class="form-group">
+                <label for="FullName">Full Name *</label>
+                <input type="text" class="form-control" id="FullName" name="fullName" style="height: 37px" value="<%= addresses.fullName %>" oninput="hideError('fullNameError')">
+                <span class="error-message text-danger" id="fullNameError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="country">Country *</label>
-            <input type="text" class= "form-control" id="country" name="country" style="height: 37px" value="<%= addresses.country %>" oninput="hideError('countryError')">
-            <span class="error-message text-danger" id="countryError"></span>
-        </div>
+            <div class="form-group">
+                <label for="country">Country *</label>
+                <input type="text" class="form-control" id="country" name="country" style="height: 37px" value="<%= addresses.country %>" oninput="hideError('countryError')">
+                <span class="error-message text-danger" id="countryError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="city">City *</label>
-            <input type="text" class="form-control" id="city" name="city" style="height: 37px" value="<%= addresses.city %>" oninput="hideError('cityError')">
-            <span class="error-message text-danger" id="cityError"></span>
-        </div>
+            <div class="form-group">
+                <label for="city">City *</label>
+                <input type="text" class="form-control" id="city" name="city" style="height: 37px" value="<%= addresses.city %>" oninput="hideError('cityError')">
+                <span class="error-message text-danger" id="cityError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="state">State *</label>
-            <input type="text" class="form-control" id="state" name="state" style="height: 37px" value="<%= addresses.state %>" oninput="hideError('stateError')">
-            <span class="error-message text-danger" id="stateError"></span>
-        </div>
+            <div class="form-group">
+                <label for="state">State *</label>
+                <input type="text" class="form-control" id="state" name="state" style="height: 37px" value="<%= addresses.state %>" oninput="hideError('stateError')">
+                <span class="error-message text-danger" id="stateError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="pinCode">Pin Code *</label>
-            <input type="text" class="form-control" id="pinCode" name="pincode" style="height: 37px" value="<%= addresses.pincode %>" oninput="hideError('pinCodeError')">
-            <span class="error-message text-danger" id="pinCodeError"></span>
-        </div>
+            <div class="form-group">
+                <label for="pinCode">Pin Code *</label>
+                <input type="text" class="form-control" id="pinCode" name="pincode" style="height: 37px" value="<%= addresses.pincode %>" oninput="hideError('pinCodeError')">
+                <span class="error-message text-danger" id="pinCodeError"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="phone">Mobile *</label>
-            <input type="tel" class="form-control" id="phone" name="mobile" style="height: 37px" value="<%= addresses.mobile %>" oninput="hideError('phoneError')">
-            <span class="error-message text-danger" id="phoneError"></span>
-        </div>
+            <div class="form-group">
+                <label for="phone">Mobile *</label>
+                <input type="tel" class="form-control" id="phone" name="mobile" style="height: 37px" value="<%= addresses.mobile %>" oninput="hideError('phoneError')">
+                <span class="error-message text-danger" id="phoneError"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
 
-<input type="hidden" name="id" value="<%= addresses._id %>">
-    </form>
+            <input type="hidden" name="id" value="<%= addresses._id %>">
+        </form>
+    </div>
 </div>
-<script>
-    function validateForm() {
-        var fullName = document.getElementById("FullName").value;
-        var country = document.getElementById("country").value;
-        var city = document.getElementById("city").value;
-        var state = document.getElementById("state").value;
-        var pincode = document.getElementById("pinCode").value;
-        var mobile = document.getElementById("phone").value;
-
-
-            var indianPinCodePattern = /^\d{6}$/;
-            var indianPhonePattern = /^[6-9]\d{9}$/;
-
-        // Function to display an error message
-        function showError(inputElement, errorMessage, errorId) {
-            var errorElement = document.getElementById(errorId);
-            errorElement.innerHTML = errorMessage;
-            errorElement.style.display = "block";
-        }
-
-        // Function to hide the error message
-        function hideError(errorId) {
-            var errorElement = document.getElementById(errorId);
-            errorElement.innerHTML = "";
-            errorElement.style.display = "none";
-        }
-
-        // Validation for Full Name (non-empty)
-        if (fullName === "") {
-            showError(document.getElementById("FullName"), "Full Name must be filled out", "fullNameError");
-            return false;
-        } else {
-            hideError("fullNameError"); // Hide the error if the field is not empty
-        }
-
-        // Validation for Country (non-empty)
-        if (country === "") {
-            showError(document.getElementById("country"), "Country must be filled out", "countryError");
-            return false;
-        } else {
-            hideError("countryError"); // Hide the error if the field is not empty
-        }
-
-        // Validation for City (non-empty)
-        if (city === "") {
-            showError(document.getElementById("city"), "City must be filled out", "cityError");
-            return false;
-        } else {
-            hideError("cityError"); // Hide the error if the field is not empty
-        }
-
-        // Validation for State (non-empty)
-        if (state === "") {
-            showError(document.getElementById("state"), "State must be filled out", "stateError");
-            return false;
-        } else {
-            hideError("stateError"); // Hide the error if the field is not empty
-        }
-
-        // Validation for Pin Code (non-empty, only numbers)
-        var pinCodePattern = /^\d+$/;
-        if (pincode === "") {
-            showError(document.getElementById("pinCode"), "Pin Code must be filled out", "pinCodeError");
-            return false;
-        } else if (!pinCodePattern.test(pincode)) {
-            showError(document.getElementById("pinCode"), "Pin Code should only contain numbers", "pinCodeError");
-            return false;
-        } else {
-            hideError("pinCodeError"); // Hide the error if the field is not empty and valid
-        }
-
-        // Validation for Mobile Number (10 digits with the pattern "1111111111")
-        var mobilePattern = /^[6-9]\d{9}$/;
-
-        if (!mobile.match(mobilePattern)) {
-            showError(document.getElementById("phone"), "Mobile Number should be 10 digits in the format '1111111111'", "phoneError");
-            return false;
-        } else {
-            hideError("phoneError"); // Hide the error if the field is valid
-        }
-
-        return true; // Form is valid
-    }
-</script>
 
 
 

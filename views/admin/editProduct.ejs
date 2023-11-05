@@ -33,13 +33,15 @@
                   <div class="col-6">
                     <div class="form-group">
                       <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #000000;">Product Name</label>
-                      <input type="text" class="form-control form-style" name="productName" id="exampleInputName1" placeholder="Name" value="<%=product.productName%>" required>
+                      <input type="text" class="form-control form-style" name="productName" id="exampleInputName1" placeholder="Name" value="<%=product.productName%>" >
+                      <span class="error" style="color: red;"></span>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #080000;">Price</label>
                       <input type="number" class="form-control form-style" id="exampleInputName1" name="price" placeholder="price" value="<%=product.price%>" required>
+                      <span class="error" style="color: red;"></span>
                     </div>
                   </div>
                 </div>
@@ -97,7 +99,7 @@
                         <div class="col-lg-12 col-md-6 rounded-image-preview">
                           <label class="upload__btn ms-3">
                             <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
-                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
+                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" required>
                           </label>
                         </div>
                         <div class="old-image-preview">
@@ -125,6 +127,119 @@
       </div>
     </div>
   </main>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.querySelector('.forms-sample');
+  
+      form.addEventListener('submit', function (event) {
+        let isValid = true;
+  
+        // Product Name Validation
+        const productName = document.querySelector('input[name="productName"]');
+        if (productName.value.trim() === '') {
+          isValid = false;
+          productName.nextElementSibling.textContent = 'Product Name is required';
+        }
+  
+        productName.addEventListener('input', function () {
+          productName.nextElementSibling.textContent = '';
+        });
+  
+        // Price Validation
+        const price = document.querySelector('input[name="price"]');
+        const priceValue = parseFloat(price.value);
+        if (price.value.trim() === '') {
+          isValid = false;
+          price.nextElementSibling.textContent = 'Price is required';
+        } else if (isNaN(priceValue) || priceValue <= 0) {
+          isValid = false;
+          price.nextElementSibling.textContent = 'Price must be a positive number';
+        }
+  
+        price.addEventListener('input', function () {
+          price.nextElementSibling.textContent = '';
+        });
+  
+        // Brand Validation
+        const brand = document.querySelector('input[name="brand"]');
+        if (brand.value.trim() === '') {
+          isValid = false;
+          brand.nextElementSibling.textContent = 'Brand is required';
+        }
+  
+        brand.addEventListener('input', function () {
+          brand.nextElementSibling.textContent = '';
+        });
+  
+        // Category Validation
+        const category = document.querySelector('select[name="category"]');
+        if (category.value === '') {
+          isValid = false;
+          category.nextElementSibling.textContent = 'Category is required';
+        }
+  
+        category.addEventListener('change', function () {
+          category.nextElementSibling.textContent = '';
+        });
+  
+        // Status Validation
+        const status = document.querySelector('input[name="status"]');
+        if (status.value.trim() === '') {
+          isValid = false;
+          status.nextElementSibling.textContent = 'Status is required';
+        }
+  
+        status.addEventListener('input', function () {
+          status.nextElementSibling.textContent = '';
+        });
+  
+        // Quantity Validation
+        const quantity = document.querySelector('input[name="quantity"]');
+        const quantityValue = parseFloat(quantity.value);
+        if (quantity.value.trim() === '') {
+          isValid = false;
+          quantity.nextElementSibling.textContent = 'Quantity is required';
+        } else if (isNaN(quantityValue) || quantityValue <= 0) {
+          isValid = false;
+          quantity.nextElementSibling.textContent = 'Quantity must be a positive number';
+        }
+  
+        quantity.addEventListener('input', function () {
+          quantity.nextElementSibling.textContent = '';
+        });
+  
+        // Description Validation
+        const description = document.querySelector('textarea[name="description"]');
+        if (description.value.trim() === '') {
+          isValid = false;
+          description.nextElementSibling.textContent = 'Description is required';
+        }
+  
+        description.addEventListener('input', function () {
+          description.nextElementSibling.textContent = '';
+        });
+  
+        // Image Validation
+        const image = document.querySelector('input[name="image"]');
+        if (image.files.length === 0) {
+          isValid = false;
+          image.parentElement.nextElementSibling.textContent = 'Image is required';
+        }
+  
+        image.addEventListener('change', function () {
+          image.parentElement.nextElementSibling.textContent = '';
+        });
+  
+        if (!isValid) {
+          event.preventDefault();
+        }
+      });
+    });
+  </script>
+  
 
     
       <%- include("../admin/layouts/adminFooter.ejs") %>

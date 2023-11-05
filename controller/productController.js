@@ -1,4 +1,3 @@
-
 const productDb = require('../models/productModel')
 const User = require('../models/userModel')
 const categoryDb = require('../models/categoryModel')
@@ -243,7 +242,3 @@ module.exports ={
     productListorUnlist,
     loadAdminProductDetails
 }
-
-
-
-

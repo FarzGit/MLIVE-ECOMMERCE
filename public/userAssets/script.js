@@ -16,83 +16,90 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-// ===========================================================================Validationform Address==========================================================
+// ===========================================================================Validationform Address ==========================================================
 
 
-function validateForm() {
-  var fullName = document.getElementById("FullName").value;
-  var country = document.getElementById("country").value;
-  var city = document.getElementById("city").value;
-  var state = document.getElementById("state").value;
-  var pincode = document.getElementById("pinCode").value;
-  var mobile = document.getElementById("phone").value;
-
-  // Function to display an error message
-  function showError(inputElement, errorMessage, errorId) {
-      var errorElement = document.getElementById(errorId);
-      errorElement.innerHTML = errorMessage;
-      errorElement.style.display = "block";
-  }
-
-  // Function to hide the error message
-  function hideError(errorId) {
-      var errorElement = document.getElementById(errorId);
-      errorElement.innerHTML = "";
-      errorElement.style.display = "none";
-  }
-
-  // Validation for Full Name (non-empty)
-  if (fullName === "") {
-      showError(document.getElementById("FullName"), "Full Name must be filled out", "fullNameError");
-      return false;
-  } else {
-      hideError("fullNameError"); // Hide the error if the field is not empty
-  }
-
-  // Validation for Country (non-empty)
-  if (country === "") {
-      showError(document.getElementById("country"), "Country must be filled out", "countryError");
-      return false;
-  } else {
-      hideError("countryError"); // Hide the error if the field is not empty
-  }
-
-  // Validation for City (non-empty)
-  if (city === "") {
-      showError(document.getElementById("city"), "City must be filled out", "cityError");
-      return false;
-  } else {
-      hideError("cityError"); // Hide the error if the field is not empty
-  }
-
-  // Validation for State (non-empty)
-  if (state === "") {
-      showError(document.getElementById("state"), "State must be filled out", "stateError");
-      return false;
-  } else {
-      hideError("stateError"); // Hide the error if the field is not empty
-  }
-
-  // Validation for Pin Code (non-empty, only numbers)
-  var pinCodePattern = /^\d+$/;
-  if (pincode === "") {
-      showError(document.getElementById("pinCode"), "Pin Code must be filled out", "pinCodeError");
-      return false;
-  } else if (!pinCodePattern.test(pincode)) {
-      showError(document.getElementById("pinCode"), "Pin Code should only contain numbers", "pinCodeError");
-      return false;
-  } else {
-      hideError("pinCodeError"); // Hide the error if the field is not empty and valid
-  }
-
-  // Validation for Mobile Number (10 digits with the pattern "1111111111")
-  var mobilePattern = /^\d{10}$/;
-  if (!mobile.match(mobilePattern)) {
-      showError(document.getElementById("phone"), "Mobile Number should be 10 digits in the format '1111111111'", "phoneError");
-      return false;
-  } else {
-      hideError("phoneError"); // Hide the error if the field is valid
-  }
-
-  return true; // Form is valid
-}
+    function validateForm() {
+      // Reset error messages
+      document.getElementById("fullNameError").innerText = "";
+      document.getElementById("countryError").innerText = "";
+      document.getElementById("cityError").innerText = "";
+      document.getElementById("stateError").innerText = "";
+      document.getElementById("pinCodeError").innerText = "";
+      document.getElementById("phoneError").innerText = "";
+    
+      // Get input values
+      var fullName = document.getElementById("FullName").value;
+      var country = document.getElementById("country").value;
+      var city = document.getElementById("city").value;
+      var state = document.getElementById("state").value;
+      var pinCode = document.getElementById("pinCode").value;
+      var phone = document.getElementById("phone").value;
+    
+      // Validation rules (you can modify these as needed)
+      var valid = true;
+    
+      if (fullName.trim() === "") {
+        document.getElementById("fullNameError").innerText = "Full Name is required";
+        valid = false;
+      }
+    
+      if (country.trim() === "") {
+        document.getElementById("countryError").innerText = "Country is required";
+        valid = false;
+      }
+    
+      if (city.trim() === "") {
+        document.getElementById("cityError").innerText = "City is required";
+        valid = false;
+      }
+    
+      if (state.trim() === "") {
+        document.getElementById("stateError").innerText = "State is required";
+        valid = false;
+      }
+    
+      if (pinCode.trim() === "") {
+        document.getElementById("pinCodeError").innerText = "Pin Code is required";
+        valid = false;
+      } else if (!/^\d{6}$/.test(pinCode)) {
+        document.getElementById("pinCodeError").innerText = "Invalid Pin Code";
+        valid = false;
+      }
+    
+      if (phone.trim() === "") {
+        document.getElementById("phoneError").innerText = "Mobile is required";
+        valid = false;
+      } else if (!/^\d{10}$/.test(phone)) {
+        document.getElementById("phoneError").innerText = "Invalid Mobile Number (10 digits)";
+        valid = false;
+      }
+    
+      return valid;
+    }
+    
+    // Clear error messages when the user interacts with the input fields
+    document.getElementById("FullName").oninput = function() {
+      document.getElementById("fullNameError").innerText = "";
+    };
+    
+    document.getElementById("country").oninput = function() {
+      document.getElementById("countryError").innerText = "";
+    };
+    
+    document.getElementById("city").oninput = function() {
+      document.getElementById("cityError").innerText = "";
+    };
+    
+    document.getElementById("state").oninput = function() {
+      document.getElementById("stateError").innerText = "";
+    };
+    
+    document.getElementById("pinCode").oninput = function() {
+      document.getElementById("pinCodeError").innerText = "";
+    };
+    
+    document.getElementById("phone").oninput = function() {
+      document.getElementById("phoneError").innerText = "";
+    };
+  

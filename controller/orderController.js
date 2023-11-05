@@ -203,9 +203,7 @@ const placeOrder = async(req,res)=>{
       }
 
 
-      
-      
-
+      res.json({ success: true });
   }catch(error){
     console.log(error);
   }
@@ -217,25 +215,25 @@ const placeOrder = async(req,res)=>{
 const orderPlacedPageLoad = async(req,res)=>{
   try{
 
+          console.log("successfully ordered");
 
+    // const orderId = req.params.orderid
+    // const order = await orderDb.findById(orderId);
 
-    const orderId = req.params.orderid; // Get the orderid from the URL
-    const order = await orderDb.findById(orderId);
+    // if (!order) {
+    //   // Handle the case where the order with the given ID is not found
+    //   res.status(404).send("Order not found");
+    //   return;
+    // }
 
-    if (!order) {
-      // Handle the case where the order with the given ID is not found
-      res.status(404).send("Order not found");
-      return;
-    }
-
-    const cart = await cartDb.findOne({ user: req.session.user_id });
-    let cartCount=0; 
-    if (cart) {
-      cartCount = cart.products.length;
-    }
+    // const cart = await cartDb.findOne({ user: req.session.user_id });
+    // let cartCount=0; 
+    // if (cart) {
+    //   cartCount = cart.products.length;
+    // }
     
 
-    res.render("orderPlaced", { order, cartCount }); // Pass the order data to the vie
+    res.render("orderPlaced"); // Pass the order data to the vie
 
   }catch(error){
     console.log(error);

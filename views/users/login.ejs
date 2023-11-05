@@ -82,11 +82,7 @@
     <div class="container">
         <div class="login-box">
             <h1>Login</h1>
-            <% if(typeof message !== 'undefined' ){%>
-                <p id="errorMessage" style="color: red; font-size: large; font-weight: 300;">
-                    <%= message %>
-                </p>
-            <% } %>
+            
 
             <form action="/login" method="POST" id="form">
                 <div class="input-container">
@@ -97,6 +93,7 @@
                 <div class="input-container">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password">
+                    <div id="errorMessage" style="color: red; font-size: 12px; font-weight: 300;"></div>
                     <span class="error text-danger" id="password-error"></span>
                 </div>
 
@@ -119,7 +116,7 @@
         
 
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- =========================================================================input field valiation========================================================== -->
 
@@ -161,19 +158,44 @@
     passwordInput.addEventListener("input", function () {
         passwordError.textContent = "";
     });
+
+
+// ===============================================================errorMessageFromServerTojsonRespond=================================================
+
+
+
+$(document).ready(function () {
+  $("#form").submit(function (event) {
+    event.preventDefault();
+    var formData = $(this).serialize();
+
+    $.ajax({
+      type: "POST",
+      url: "/login",
+      data: formData,
+      success: function (response) {
+        console.log(response); // Log the response to the console
+        if (response.message === "success") {
+          window.location.href = "/";
+        } else {
+          $("#errorMessage").text(response.message);
+        }
+      },
+      error: function (error) {
+        console.log("Error:", error); // Log any AJAX errors
+      }
+    });
+  });
+});
+
+
+
+
 </script>
 
-<!-- =========================================================================setTimeout error========================================================== -->
 
 
-<!-- <script>
-setTimeout(function() {
-    var errorMessageElement = document.getElementById('errorMessage');
-    if (errorMessageElement) {
-      errorMessageElement.style.display = 'none';
-    }
-  }, 5000); // 5000 milliseconds = 5 seconds
-</script> -->
+
 
 
 
