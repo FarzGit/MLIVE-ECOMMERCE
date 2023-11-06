@@ -18,6 +18,8 @@
             <div class="card-body px-0 pb-2">
               <div class="p-0">
                 <div class="table-responsive">
+                  <% if (orders.products.length > 0) {
+                    orders.products.forEach((data, i) => { %>
                   <ul>
                     <span style="color: darkgrey">Amount: </span>
                     <%= orders.totalAmount %>
@@ -57,8 +59,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% if (orders.products.length > 0) {
-                      orders.products.forEach((data, i) => { %>
+                      
 
                       <tr>
                         <td>

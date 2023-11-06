@@ -154,7 +154,7 @@ const placeOrder = async(req,res)=>{
     const userId = req.session.user_id
     const address = req.body.address
     const cartData = await cartDb.findOne({user: userId})
-    const products = cartData.products
+    // const products = cartData.products
     const total = parseInt(req.body.total)
     // console.log("total is :",total);
     const paymentMethod = req.body.payment
@@ -165,17 +165,37 @@ const placeOrder = async(req,res)=>{
     const status = paymentMethod === "COD" ? "placed" : "pending";
     const statusLevel = status === "placed" ? 1: 0;
 
+
+    const today = new Date();
+    const deliveryDate = new Date(today);
+      deliveryDate.setDate(today.getDate() + 7);
+
+      console.log(deliveryDate);
+
+
+      const cartProducts = cartData.products.map((productItem) => ({
+        productId: productItem.productId,
+        quantity: productItem.quantity,
+        OrderStatus: "Placed",
+        statusLevel: 1,
+        paymentStatus: "Pending",
+        "returnOrderStatus.status":"none",
+        "returnOrderStatus.reason":"none",
+        "cancelOrder.reason" :"none"
+        
+      }));
+
+
     const order = new orderDb({
       deliveryDetails: address,
       uniqueId: uniNum,
       userId: userId,
       firstName: name,
       paymentMethod: paymentMethod,
-      products: products,
+      products: cartProducts,
       totalAmount: total,
       date: new Date(),
-      status: status,
-      statusLevel: statusLevel
+      expectedDelivery:deliveryDate,
 
       
 
@@ -185,12 +205,12 @@ const placeOrder = async(req,res)=>{
 
 
 
-      if (order.status === "placed") {
+      if (paymentMethod === 'COD') {
         await cartDb.deleteOne({ user: req.session.user_id });
-        for (let i = 0; i < products.length; i++) {
-          const productId = products[i].productId;
+        for (const item of cartData.products) {
+          const productId = item.productId._id;
           console.log("pro :",productId);
-          const quantity = products[i].quantity;
+          const quantity = parseInt(item.quantity, 10);
           console.log("the count is :",quantity);
           
        const result= await productDb.updateOne({ _id: productId },{$inc:{quantity:-quantity}})
@@ -258,7 +278,7 @@ const loadOrderPage = async(req,res)=>{
 
     const orderData = await orderDb.find({userId:userId}).sort({date:-1})
 
-    console.log("orderData :",orderData);
+    // console.log("orderData :",orderData);
 
     res.render('orders',{user:userData,orders:orderData,cartCount})
 
@@ -413,50 +433,33 @@ const editCheckoutAddress = async(req,res)=>{
 }
 
 const cancelOrder = async (req,res)=>{
-  try{
+  console.log('hi');
+  try {
+    const { orderId, productId } = req.body;
+    // orderId = orderId.toString
+    console.log(orderId);
 
-    const orderId = req.body.orderid;
-    const userId = req.session.user_id;
-    const cancelReason = req.body.reason;
-    const cancelAmount = req.body.totalPrice;
-    const amount = parseInt(cancelAmount);
-    const orderData = await orderDb.findOne({ _id: orderId });
-    const products = orderData.products;
+    const order = await orderDb.findById(orderId);
 
+    console.log(order);
 
-
-    if (
-      orderData.paymentMethod == "COD" ||
-      orderData.status == "pending"
-    ) {
-      // Change the order status
-      const updatedData = await orderDb.updateOne(
-        { _id: orderId },
-        {
-          $set: { cancelReason: cancelReason, status: "cancelled" , statusLevel: 0},
-        }
-      );
-
-      console.log("updatedData is:",updatedData);
-
-      for (let i = 0; i < products.length; i++) {
-        const productId = products[i].productId;
-        const quantity = products[i].quantity;
-        await productDb.findOneAndUpdate(
-          { _id: productId },
-          { $inc: { quantity: quantity } }
-        );
-      }
-
-      if (updatedData) {
-        res.redirect("/orders");
-      } else {
-        console.log("order status not updated");
-      }
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
     }
 
-  }catch(error){
-    console.log(error);
+    // Find the product within the order by its ID (using .toString() for comparison)
+    const productInfo = order.products.find(
+      (product) => product.productId.toString() === productId
+    );
+    console.log(productInfo);
+    productInfo.OrderStatus = "Cancelled";
+    productInfo.updatedAt = Date.now()
+    const result = await order.save();
+
+    console.log(result);
+    res.json({ cancel: 1 });
+  } catch (error) {
+    console.log(error.message);
   }
 }
 

@@ -2,15 +2,15 @@
 
 
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="page-header text-center m-t-85" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
-            <h1 class="page-title">Orders<span>Shop</span></h1>
+            <h1 class="page-title">Orders</h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
                 
                 <li class="breadcrumb-item active" aria-current="page">Orders</li>
             </ol>
@@ -26,16 +26,12 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Date</th>
+                                    <th>Order Date</th>
                                     <th>Amount</th>
                                     <th>Payment</th>
-                                    <!-- <th>Date</th> -->
-                                    <th>Status</th>
-                                    
-                                    
+                                    <th>Expected Delivery</th>
+                                    <th>Tracking Number</th>
                                     <th>Details</th>
-                                    
-                                    
                                 </tr>
                             </thead>
 
@@ -45,13 +41,12 @@
                                 <tr>
                                     <td><%= i+1 %></td>
                                     <td><%= orders[i].date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
-                                    <td>₹<%= orders[i].totalAmount %></td>
+                                    <td>₹ <%= orders[i].totalAmount %></td>
                                     <td> <%= orders[i].paymentMethod %></td>
-                                   
-                                    <td ><%= orders[i].status %></td>
-                                   
+                                    <td><%= orders[i].expectedDelivery.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
+                                    <td><%= orders[i].uniqueId %></td>
                                     <td>
-                                        <a href="/orderDetails?id=<%= orders[i]._id %>" class=" btn-outline-dark btn-round">View Details</a>
+                                        <a  href="/orderDetails?id=<%= orders[i]._id %>" class=" btn-outline-dark btn-round">View Details</a>
                                     </td>
                                 </td>
                                 
@@ -92,7 +87,7 @@
             </div><!-- End .container -->
         </div><!-- End .cart -->
     </div><!-- End .page-content -->
-</main><!-- End .main -->
+</main>
 
 
 

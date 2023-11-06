@@ -22,7 +22,7 @@ const orderSchema = new mongoose.Schema({
   products: [
     {
       productId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "product",
       },
@@ -30,26 +30,51 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 1,
       },
+      statusLevel: {
+        type: Number,
+        default: 0
+      },
       productPrice: {
         type: Number,
         // required: true,
       },
       totalPrice: {
         type: Number,
-        required: true,
+        // required: true,
+      },
+      OrderStatus: {
+        type: String,
+        require:true
+
+      },
+      paymentStatus:{
+        type:String,
+        require:true
+      },
+      returnOrderStatus:{
+        status:{
+          type:String
+        },
+        reason:{
+          type:String
+        }
+        
+      },
+     
+      
+      updatedAt:{
+        type:Date,
+        default:Date.now
       }
+      
     },
+    
   ],
   
   deliveryDate: {
     type: Date,
   },
-  cancelReason: {
-    type: String
-  },
-  returnReason: {
-    type: String
-  },
+  
   totalAmount: {
     type: Number,
     required: true,
@@ -57,13 +82,7 @@ const orderSchema = new mongoose.Schema({
   date: {
     type: Date,
   },
-  status: {
-    type: String,
-  },
-  statusLevel: {
-    type: Number,
-    default: 0
-  },
+ 
   paymentMethod: {
     type: String,
   },
@@ -75,7 +94,11 @@ const orderSchema = new mongoose.Schema({
   },
   discount: {
     type: String
-  }
+  },
+  expectedDelivery:{
+    type:Date,
+    required:true
+  },
 });
 
 module.exports = mongoose.model("order", orderSchema);
