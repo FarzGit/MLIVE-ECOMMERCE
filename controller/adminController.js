@@ -3,6 +3,7 @@ const categoryDb = require("../models/categoryModel");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const orderDb = require("../models/orderModel")
+const productDb = require("../models/productModel")
 
 const loadAdminLogin = async (req, res) => {
   try {
@@ -220,39 +221,166 @@ const blockUnblock = async (req, res) => {
 
 
 const loaduserOrders = async(req,res)=>{
-  try{
+  try {
+    const orders = await orderDb.find();
 
+    const productWiseOrdersArray = [];
 
+    for (const order of orders) {
+      for (const productInfo of order.products) {
+        const productId = productInfo.productId;
 
-    const ordersData = await orderDb.find().populate("products.productId").sort({ date: -1 });
-
-    console.log("loaduserOrder : ", ordersData);
-
-    res.render("userOrders", { orders: ordersData });
-
-  }catch(error){
-    console.log(error);
+        const product = await productDb.findById(productId).select(
+          "productName images price"
+        );
+        const userDetails = await User.findById(order.userId).select(
+          "email"
+        );
+        
+        if (product) {
+          // Push the order details with product details into the array
+          productWiseOrdersArray.push({
+            user: userDetails,
+            product: product,
+            orderDetails: {
+              _id: order._id,
+              userId: order.userId,
+              deliveryDetails: order.deliveryDetails  ,
+              date: order.date,
+              totalAmount: productInfo.quantity * product.price,
+              OrderStatus: productInfo.OrderStatus,
+              StatusLevel: productInfo.statusLevel,
+              paymentStatus:productInfo.paymentStatus,
+              paymentMethod: order.paymentMethod,
+              quantity: productInfo.quantity,
+            },
+          });
+        }
+      }
+    }
+    
+    res.render("userOrders", { orders: productWiseOrdersArray });
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
 const adminOrderFullDetails = async (req,res)=>{
-  try{
-    console.log("entered order full details :");
+  try {
 
-    const id =req.query.id
-    console.log("order id :",id);
+    const { orderId, productId } = req.query;
+  
+    const order = await orderDb.findById(orderId);
 
-    const orderData = await orderDb.findOne({_id:id}).populate("products.productId")
-
-
-
-    res.render('orderFullDetails',{orders:orderData})
-
-  }catch(error){
-    console.log(error);
+    // if (!order) {
+    //   return res
+    //     .status(404)
+    //     .render('error-404');
+    // }
+    const productInfo = order.products.find(
+      (product) => product.productId.toString() === productId
+    );
+    const product = await productDb.findById(productId).select(
+      "productName image price"
+    );
+    
+    const productOrder = {
+      orderId: order._id,
+      product: product,
+      orderDetails: {
+        _id: order._id,
+        userId: order.userId,
+        deliveryDetails: order.deliveryDetails,
+        date: order.date,
+        totalAmount: order.totalAmount,
+        OrderStatus: productInfo.OrderStatus,
+        StatusLevel: productInfo.statusLevel,
+        paymentMethod: order.paymentMethod,
+        paymentStatus: productInfo.paymentStatus,
+        quantity: productInfo.quantity,
+      },
+    };
+  
+    res.render("orderFullDetails", { product: productOrder, orderId, productId });
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
+
+
+const changeOrderStatus = async (req, res) => {
+  try {
+    const { status, orderId, productId } = req.body;
+    const order = await orderDb.findById(orderId);
+    // find status level
+
+    const statusMap = {
+      Shipped: 2,
+      OutforDelivery: 3,
+      Delivered: 4,
+    };
+
+    const selectedStatus = status;
+    const statusLevel = statusMap[selectedStatus];
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    // Find the product within the order by its ID (using .toString() for comparison)
+    const productInfo = order.products.find(
+      (product) => product.productId.toString() === productId
+    );
+    console.log(productInfo);
+    productInfo.OrderStatus = status;
+    productInfo.statusLevel = statusLevel;
+    productInfo.updatedAt = Date.now();
+
+    const result = await order.save();
+
+    console.log(result);
+  
+    res.redirect(
+      `/admin/orderFullDetails?orderId=${orderId}&productId=${productId}`
+    );
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
+
+const adminCancelOrder = async (req, res) => {
+  try {
+    const { orderId, productId } = req.body;
+
+    const order = await orderDb.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    const productInfo = order.products.find(
+      (product) => product.productId.toString() === productId
+    );
+
+    if (productInfo) {
+      productInfo.OrderStatus = "Cancelled";
+      productInfo.updatedAt = Date.now();
+
+      await order.save();
+
+      return res.json({ cancel: 1, message: "Order successfully cancelled" });
+    } else {
+      return res.status(404).json({ message: "Product not found in the order." });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ error: "An error occurred" });
+  }
+};
 
 
 
@@ -282,5 +410,7 @@ module.exports = {
   blockUnblock,
   adminLogout,
   loaduserOrders,
-  adminOrderFullDetails
+  adminOrderFullDetails,
+  changeOrderStatus,
+  adminCancelOrder
 };

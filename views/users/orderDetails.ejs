@@ -1,28 +1,23 @@
-<%- include('../users/mainLayout/mainHeader.ejs')%>
-
+<%- include('../users/mainLayout/mainHeader.ejs') %>
 
 <div class="container mt-5">
   <div class="row justify-content-center m-t-100">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="card border-0 shadow">
         <div class="card-body text-center">
           <i class="bi bi-check2-circle-fill order-icon"></i>
           <h1 class="order-title mt-4">Your Order Details</h1>
-          <!-- <p class="card-text">Thank you for your order! We have received it and will process it shortly.</p> -->
-          <p class="order-id">Your tracking ID is: <strong>
-              <%=orders.uniqueId%>
-            </strong></p>
+          <p class="order-id">Your tracking ID is: <strong><%=orders.uniqueId%></strong></p>
         </div>
       </div>
       <div class="card mt-4 border-0 shadow">
         <div class="card-body">
           <h2 class="mb-4">Order Details</h2>
-          <% if (orders && orders.products && orders.products.length> 0) {
-            for (let i = 0; i < orders.products.length; i++) { %>
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped text-center">
-              <thead>
-               
+          <% if (orders && orders.products && orders.products.length > 0) { %>
+            <% for (let i = 0; i < orders.products.length; i++) { %>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped text-center">
+                <thead>
                   <tr>
                     <th scope="col">Image</th>
                     <th scope="col">Product Name</th>
@@ -30,105 +25,78 @@
                     <th scope="col">Quantity</th>
                     <th scope="col">Total Price</th>
                     <th scope="col">Action</th>
-
                   </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><img src="/static/adminAssets/images/<%=orders.products[i].productId.image[0]%>" alt="Product Image"></td>
-                  <td class="align-middle">
-                    <%=orders.products[i].productId.productName%>
-                  </td>
-                  <td class="align-middle">
-                    ₹ <%=orders.products[i].productId.price%>
-                  </td>
-                  <td class="align-middle">
-                    <%=orders.products[i].quantity%>
-                  </td>
-                  <td class="align-middle">
-                    ₹ <%- (orders.products[i].productId.price) * (orders.products[i].quantity) %>
-                    </td>
-
-                    <td class="align-middle action-column">
-                      <button class="btn btn-danger cancel-product mall-btn"  onclick="cancelOrder('<%= orders._id %>','<%= orders.products[i].productId._id %>')">
-                        <% if (orders.products[i].OrderStatus === 'Canceled') { %>
+                </thead>
+                <tbody>
+                  
+                    <tr>
+                      <td><img src="/static/adminAssets/images/<%=orders.products[i].productId.image[0]%>" alt="Product Image"></td>
+                      <td class="align-middle"><%=orders.products[i].productId.productName%></td>
+                      <td class="align-middle">₹ <%=orders.products[i].productId.price%></td>
+                      <td class="align-middle"><%=orders.products[i].quantity%></td>
+                      <td class="align-middle">₹ <%- (orders.products[i].productId.price) * (orders.products[i].quantity) %></td>
+                      <td class="align-middle action-column">
+                        <button class="btn btn-danger cancel-product mall-btn" onclick="cancelOrder('<%= orders._id %>','<%= orders.products[i].productId._id %>')">
+                          <% if (orders.products[i].OrderStatus === 'Canceled') { %>
                             Canceled
                           <% } else { %>
                             Cancel
-                          <% } %></button>
+                          <% } %>
+                        </button>
                       </td>
-
-                </tr>
-              </tbody>                                                             
-            </table>
-          </div>
-          <% } %>
-        </div>
-      </div>
-      
-      <div class="card mt-4 border-0 shadow">
-        <div class="card-body">
-          <h2 class="mb-4">Delivery Information</h2>
-          <div class="row">
-            <div class="col-md-6">
-              <h5>Order Date:</h5>
-              <p>
-                <%=orders.date.toLocaleDateString('en-US', { year: 'numeric' , month: 'short' ,
-                day: '2-digit' }).replace(/\//g,'-')%>
-              </p>
+                    </tr>
+                  
+                </tbody>
+              </table>
             </div>
-            <div class="col-md-6">
-              <h5>Expected Delivery:</h5>
-              <p>
-                <%=orders.expectedDelivery.toLocaleDateString('en-US', { year: 'numeric' , month: 'short' ,
-                day: '2-digit' }).replace(/\//g,'-')%>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-9 mx-auto">
-
-          
-       
-          <%if(orders.products.OrderStatus!="canceled"){%>
-
-            <div class="card-footer" style="background: #ffffff;">
-              <h6 class="text-center">Order status:</h6>
-              <div class="progress-track">
-                  <ul id="progressbar">
-                      <li style="font-size: 12px;" class="step0 active " id="step1">Order placed
-                      </li>
-                      <li style="font-size: 12px;"
-                          class="step0 text-center "
-                          id="step2">Shipped</li>
-                      <li style="font-size: 12px;"
-                          class="step0  text-right "
-                          id="step3">Out for Delivery</li>
-                      <li style="font-size: 12px;"
-                          class="step0 text-right "
-                          id="step4">Delivered</li>
-      
-                  </ul>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Order Date:</h5>
+                <p><%=orders.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-')%></p>
               </div>
-          </div>
-
-          <%}else{%>
-
-            <h3 class="text-center py-4">Order canceled</h3>
-        <%}%>
-
+              <div class="col-md-6">
+                <h5>Expected Delivery:</h5>
+                <p><%=orders.expectedDelivery.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-')%></p>
+              </div>
+            </div>
+            <% if (orders.products[i].OrderStatus !== "Cancelled") { %>
+            <div class="progress-track">
+              
+              <ul id="progressbar">
+                <li style="font-size: 12px;" class="step0 active  " id="step1">Order placed</li>
+                <li style="font-size: 12px;" class="step0 text-center <%= orders.products[i].statusLevel >= 2 ? 'active' : '' %>" id="step2">Shipped</li>
+                <li style="font-size: 12px;" class="step0 text-right <%= orders.products[i].statusLevel >= 3 ? 'active' : '' %>" id="step3">Out for Delivery</li>
+                <li style="font-size: 12px;" class="step0 text-right text-success <%= orders.products[i].statusLevel >= 4 ? 'active' : '' %>" id="step4">Delivered</li>
+              </ul>
+            </div>
+            <% } else { %>
+                <div class="progress-track col-12">
+                  <ul id="progressbar">
+                    <li
+                      class="step0 active"
+                      style="width: 50%; font-size: 1rem"
+                      id="step1"
+                    >
+                      Order placed
+                    </li>
+                    <li
+                      class="step0 active text-right text-danger"
+                      style="width: 50%; font-size: 1rem"
+                      id="step4"
+                    >
+                      Cancelled
+                    </li>
+                  </ul>
+                </div>
+                <% } %>
+          
+        </div>
       </div>
-
-      </div>
-
+      <% } } %>
       <div class="card mt-4 border-0 shadow">
         <div class="card-body">
           <h2 class="mb-4">Shipping Address</h2>
-          <p>
-            <%= orders.deliveryDetails %>
-          </p>
-          
+          <p><%= orders.deliveryDetails %></p>
         </div>
       </div>
       <div class="text-center mt-4">
@@ -137,21 +105,19 @@
     </div>
   </div>
 </div>
-<% } %>
 
-<% if(orders.status == "delivered" ) {%>
+<% if (orders.status == "delivered") { %>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header p-5">
-          <h5  id="exampleModalLabel">Are you sure?</h5>
+          <h5 id="exampleModalLabel">Are you sure?</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-5">
           <form action="/productReturn" method="post">
             <input type="hidden" value="<%= orders._id %>" name="orderid">
             <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice">
-
             <div class="mb-3">
               <label for="message-text" class="col-form-label">Give reason for order returning:</label>
               <textarea name="reason" class="form-control" id="message-text" placeholder="eg: Not in good condition."></textarea>
@@ -162,92 +128,83 @@
             </div>
           </form>
         </div>
-        
       </div>
     </div>
   </div>
-
-  <% }else{ %>
-
-<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content" style="margin-top: 200px;">
-      <div class="modal-header p-5">
-        <h5  id="exampleModalLabel">Are you sure?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<% } else { %>
+  <!--
+  <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="margin-top: 200px;">
+        <div class="modal-header p-5">
+          <h5 id="exampleModalLabel">Are you sure?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-5">
+          <form action="/orderCancel" method="post">
+            <input type="hidden" value="<%= orders._id %>" name="orderid">
+            <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice">
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Give reason for order cancelling:</label>
+              <textarea name="reason" class="form-control" id="message-text" placeholder="eg: I changed my mind"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" style="background-color: grey; border-radius: 5px; width: 100px; height: 40px;" data-bs-dismiss="modal">No</button>
+              <button type="submit" style="background-color: rgb(2, 116, 255); border-radius: 5px; width: 130px; height: 40px;">Yes</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div class="modal-body p-5">
-        <form action="/orderCancel" method="post">
-          <input type="hidden" value="<%= orders._id %>" name="orderid">
-          <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice"> 
-
-          
-
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Give reason for order cancelling:</label>
-            <textarea name="reason" class="form-control" id="message-text" placeholder="eg: I changed my mind"></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button"   style="background-color: grey;border-radius: 5px; width: 100px; height: 40px;" data-bs-dismiss="modal">No</button>
-            <button type="submit" style="background-color: rgb(2, 116, 255);border-radius: 5px; width: 130px; height: 40px;">Yes</button>
-          </div>
-        </form>
-      </div>
-      
     </div>
   </div>
-</div>
+  -->
 <% } %>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-              
   console.log(orderId);
   console.log(productId);
 
   function cancelOrder(orderId, productId) {
     Swal.fire({
-        title: "Are you sure?",
-        text: "Cancel this Product!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Do it"
+      title: "Are you sure?",
+      text: "Cancel this Product!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Do it"
     }).then((result) => {
-        if (result.isConfirmed) {
-            // User confirmed, proceed with the cancellation
-            $.ajax({
-                url: '/orderCancel',
-                method: "post",
-                data: { orderId, productId },
-                success: function (response) {
-                    console.log(response);
-                    if (response.cancel == 1) {
-                        location.reload();
-                        Swal.fire({
-                            title: "Canceled!",
-                            text: "Your order has been canceled.",
-                            icon: "success"
-                        });
-                    }
-                },
-                error: function (error) {
-                    console.log('Error:', error);
-                    Swal.fire({
-                        title: "Error",
-                        text: "An error occurred while canceling the order.",
-                        icon: "error"
-                    });
-                }
+      if (result.isConfirmed) {
+        // User confirmed, proceed with the cancellation
+        $.ajax({
+          url: '/orderCancel',
+          method: "post",
+          data: { orderId, productId },
+          success: function (response) {
+            console.log(response);
+            if (response.cancel == 1) {
+              location.reload();
+              Swal.fire({
+                title: "Canceled!",
+                text: "Your order has been canceled.",
+                icon: "success"
+              });
+            }
+          },
+          error: function (error) {
+            console.log('Error:', error);
+            Swal.fire({
+              title: "Error",
+              text: "An error occurred while canceling the order.",
+              icon: "error"
             });
-        }
+          }
+        });
+      }
     });
-}
-
+  }
 </script>
 
-
-<%- include('../users/mainLayout/mainFooter.ejs')%>
-
+<%- include('../users/mainLayout/mainFooter.ejs') %>

@@ -86,6 +86,11 @@ adminRoute.get("/is_activeProduct",adminAuth.isLogin,productController.productLi
 
 adminRoute.get("/userOrders",adminAuth.isLogin,adminController.loaduserOrders)
 adminRoute.get("/orderFullDetails",adminAuth.isLogin,adminController.adminOrderFullDetails)
+adminRoute.post('/orderFullDetails/changeStatus',adminAuth.isLogin,adminController. changeOrderStatus )
+adminRoute.post('/adminCancelOrder', adminAuth.isLogin, adminController.adminCancelOrder);
+
+
+
 
 
 

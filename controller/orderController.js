@@ -441,7 +441,7 @@ const cancelOrder = async (req,res)=>{
 
     const order = await orderDb.findById(orderId);
 
-    console.log(order);
+    // console.log(order);
 
     if (!order) {
       return res.status(404).json({ message: "Order not found." });
@@ -456,7 +456,19 @@ const cancelOrder = async (req,res)=>{
     productInfo.updatedAt = Date.now()
     const result = await order.save();
 
-    console.log(result);
+    const quantity = productInfo.quantity
+    // console.log("quantity",quantity);
+    const proId = productInfo.productId
+    // console.log("proId",proId);
+
+    const updateQuantity = await productDb.findOneAndUpdate(
+      {_id:proId},
+      {$inc:{quantity:quantity}}
+    )
+
+    console.log(updateQuantity);
+
+    // console.log(result);
     res.json({ cancel: 1 });
   } catch (error) {
     console.log(error.message);
