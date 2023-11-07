@@ -35,8 +35,8 @@ const otpSend = async (Fname, email, otp) => {
       host: "smtp.gmail.com",
       port: 587,
       auth: {
-        user: "farzinahammedabc@gmail.com",
-        pass: "iirs drxr fais mmqq",
+        user: process.env.SMTP_MAIL,
+        pass: process.env.SMPT_PASS,
       },
     });
     console.log("hahah");
