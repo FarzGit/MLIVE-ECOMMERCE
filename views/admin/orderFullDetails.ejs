@@ -23,11 +23,11 @@
                   <div class="container-fluid d-flex flex-column justify-content-center ">
 
                       <div class="card  col-12 my-3 mx-auto p-2"
-                          style="border: 0.2px solid #494949; border-radius: 10px; ">
-                          <div class="card-header d-flex justify-content-between w-100">
+                          style="border: 0.2px solid #494949; border-radius: 10px; background-color: #344767; ">
+                          <div class="card-header d-flex justify-content-between w-100" style="background-color: #4a6084;">
                               <div class="d-flex flex-column ">
-                                  <p>ORDER PLACED</p>
-                                  <h6>
+                                  <p style="color: #ffff;">ORDER PLACED</p>
+                                  <h6 style="color: #ffff;">
                                       <%= product.orderDetails.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %>
                                   </h6>
 
@@ -41,38 +41,38 @@
                           </div>
                           <div class="card-body row col-12 d-flex ">
                               <div class="col-md-4 col-12 mx-auto">
-                                  <img src="/static/adminAssets/images/products/<%= product.product.image%>"
+                                  <img src="/static/adminAssets/images/<%= product.product.image[0]%>"
                                       style="width: 250px; height: 250px; border-radius: 7px;" alt="">
                                   <p class="card-text">
                                   </p>
                                   <!-- <a href="#" class="btn btn-dark">Go somewhere</a> -->
                               </div>
                               <div class="col-md-7 col-12">
-                                  <h4 class="card-title">
+                                  <h4  style="color: #ffff;"  class="card-title">
                                       <%= product.product.productName %>
                                   </h4>
                                   <p class="card-text">
-                                  <p>Quantity : <b>
+                                  <p style="color: #ffff;">Quantity : <b >
                                           <%= product.orderDetails.quantity %>
-                                      </b></p><i class="fa-solid fa-file-invoice-dollar"></i> Payment
-                                  Method : <%= product.orderDetails. paymentMethod %>
+                                      </b></p><p style="color: #ffff;"> Payment
+                                        Method :<%= product.orderDetails. paymentMethod %> </p>
                                       </p>
-                                      <h5 class="card-title mb-2">
+                                      <h5 class="card-title mb-2" style="color: #ffff;">
                                          ₹ <%- (product.product.price) * (product.orderDetails.quantity) %>        
                                       </h5>
                                       <hr class="  " style="background:#555555">
-                                      <h5 class="card-title" style="font-size: 15px;">
+                                      <h5 class="card-title" style="font-size: 15px; color: #ffff;" >
                                           shipping Address
                                       </h5>
-                                      <h6 class="card-title" style="font-size: 15px;">
+                                      <h6 class="card-title" style="font-size: 15px; color: #ffff;" >
                                           <%= product.orderDetails.deliveryDetails %>
                                       </h6>
                                       
                                       <hr class="m-0 p-0 my-3">
-                                      <%if(product.orderDetails.OrderStatus!="canceled"){%>
-                                          <button data-bs-toggle="modal" data-bs-target="#modCancel"
-                                              class="btn btn-inverse-danger p-3">Cancel Order</button>
-                                          <%}%>
+                                      <% if (product.orderDetails.OrderStatus !== "canceled") { %>
+                                        <button data-bs-toggle="modal" data-bs-target="#modCancel" class="btn btn-danger p-3" style="background-color: red;">Cancel Order</button>
+                                      <% } %>
+                                      
 
                                               <div class="col-12">
                                                   <div class="col-12 text-light">
@@ -93,18 +93,18 @@
                       <div class="container-fluid d-flex flex-column justify-content-center ">
 
                           <div class="card row col-12 my-3 mx-auto p-2"
-                              style="border: 0.2px solid #494949; border-radius: 10px; ">
+                              style="border: 0.2px solid #494949; border-radius: 10px; background-color: #344767; ">
                               <div class="col-md-9 mx-auto">
 
-                                  <h3 class="text-center py-4">Order Status</h3>
+                                  <h3 class="text-center py-4" style="color: #ffff;">Order Status</h3>
 
 
                                   <div class="progress-track">
                                       <ul id="progressbar">
-                                          <li class="step0 active " id="step1">Order placed</li>
-                                          <li class="step0 text-center <%= product.orderDetails.StatusLevel >= 2 ? 'active' : '' %>" id="step2">Shipped</li>
-                                          <li class="step0  text-right <%= product.orderDetails.StatusLevel >= 3 ? 'active' : '' %>" id="step3">Out for Delivery</li>
-                                          <li class="step0 text-right <%= product.orderDetails.StatusLevel >= 4 ? 'active' : '' %>" id="step4">Delivered</li>
+                                          <li class="step0 active " id="step1" style="color: #ffff;">Order placed</li>
+                                          <li class="step0 text-center <%= product.orderDetails.StatusLevel >= 2 ? 'active' : '' %>" id="step2" style="color: #ffff;">Shipped</li>
+                                          <li class="step0  text-right <%= product.orderDetails.StatusLevel >= 3 ? 'active' : '' %>" id="step3" style="color: #ffff;">Out for Delivery</li>
+                                          <li class="step0 text-right <%= product.orderDetails.StatusLevel >= 4 ? 'active' : '' %>" id="step4" style="color: #ffff;">Delivered</li>
                                           
                                       </ul>
                                   </div>
@@ -116,11 +116,11 @@
 
 
                               <div class="col-md-12 mx-auto d-flex justify-content-center py-3 mb-5">
-                                  <form action="/admin/orderFullDetails/changeStatus"  method="post">
+                                  <form action="/admin/orderFullDetails/changeStatus"  method="post"  >
                                       <select name="status" class="mb-3 form-control text-light"
-                                          style="width: 15rem; border-radius: 7px;" required>
+                                          style="width: 15rem; border-radius: 7px; background-color: #24335d;" required>
                                           <option value="" disabled selected>Select Status</option>
-                                          <option value="Shipped">Shipped</option>
+                                          <option value="Shipped" style="color: #ffff;">Shipped</option>
                                           <option value="OutforDelivery">Out for Delivery</option>
                                           <option value="Delivered">Delivered</option>
                                       </select>
@@ -128,7 +128,7 @@
                                       <input type="text" name="productId" value="<%= productId%>" hidden>
 
                                       <button type="submit"
-                                          class="btn-md btn-inverse-info mx-2 py-2 my-auto"
+                                      class="btn btn-primary"                                          
                                           style="width: 12rem;">Update Now</button>
                                   </form>
 
@@ -140,15 +140,15 @@
                           <div class="container-fluid d-flex flex-column justify-content-center ">
 
                               <div class="card row col-12 my-3 mx-auto p-2"
-                                  style="border: 0.2px solid #494949; border-radius: 10px; ">
+                                  style="border: 0.2px solid #494949; border-radius: 10px; background-color: #344767;;">
                                   <div class="col-md-9 mx-auto">
 
-                                      <h3 class="text-center py-4">Order cancelled</h3>
+                                      <h3 class="text-center py-4" style="color: #ffff;">Order cancelled</h3>
 
 
                                       <div class="progress-track  col-12">
                                           <ul id="progressbar">
-                                              <li class="step0 active " style="width: 50%;" id="step1">
+                                              <li class="step0 active " style="width: 50%; color: #ffff;" id="step1">
                                                   Order placed</li>
                                               <li class="step0 active text-right text-danger" style="width: 50%; "
                                                   id="step4">Cancelled</li>
@@ -181,33 +181,33 @@
 
      <div class="modal fade" id="modCancel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
+          <div class="modal-content" style="background-color: #edf7ff;">
               <div class="modal-header">
                   <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">
                       Modal title</h1> -->
-                  <p class="modal-title "> <b class="mdi mdi-comment-alert text-warning"></b>
+                  <p class="modal-title " style="color: black; font-weight: 400;"> <b class="mdi mdi-comment-alert " ></b>
                       Are you sure you want to
                       Cancel this order</p>
                   <button type="button" class=" btn mdi mdi-close" data-bs-dismiss="modal"
                       aria-label="Close"></button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" style="background-color: #344767;">
   
                   <div class="card mb-3 bg-dark" style="max-width: 540px;">
                       <div class="row g-0 ">
-                          <div class="col-md-3 d-flex align-items-center">
+                          <div class="col-md-3 d-flex align-items-center" style="height: 171px;">
                               <img style="width: 100px; height: 100px; border-radius: 7px;"
-                                  src="/static/adminAssets/images/products/<%= product.product.images%>"
+                                  src="/static/adminAssets/images/<%= product.product.image[0]%>"
                                   class="card-img-start" alt="...">
                           </div>
                           <div class="col-md-9">
                               <div class="card-body">
-                                  <h5 class="card-title">
+                                  <h5 class="card-title" style="color: #ffff;">
                                       <%= product.product.productName %>
                                   </h5>
   
                                   </p>
-                                  <p class="card-text"><small class="text-body-secondary"> Quantity :
+                                  <p class="card-text"><small class="text-body-secondary" style="color: #ffff;"> Quantity :
                                           <%= product.orderDetails.quantity %>
                                       </small></p>
   
@@ -217,8 +217,8 @@
                   </div>
   
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Not Now</button>
-                      <a type="button" class="btn btn-inverse-danger"
+                      <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal">Not Now</button>
+                      <a type="button" class="btn btn btn-danger " style="background-color: red;"
                           onclick="cancelOrder('<%= orderId %>','<%= productId %>')">Cancel
                           Now</a>
                   </div>

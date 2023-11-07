@@ -1,5 +1,30 @@
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
+<style>
+  .color{
+    color: #ffff;
+  }
+
+  .status-delivered {
+    color: rgb(0, 255, 0);
+  }
+  .status-pending {
+    color: orange;
+  }
+  .status-placed {
+    color: blue;
+  }
+  .status-shipped {
+    color: lightblue;
+  }
+  .status-cancelled {
+    color: red;
+  }
+  .status-out-for-delivery {
+    color: yellow;
+  }
+</style>
+
 <body class="g-sidenav-show bg-gray-200">
   <%- include("../admin/layouts/adminSideBar.ejs") %>
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
@@ -17,7 +42,7 @@
             </div>
             <div class="card-body px-0 pb-2">
               <div class="table-responsive">
-                <table class="table" id="user-table">
+                <table class="table" id="user-table" style="text-align: center;">
                   <thead>
                     <tr>
                       <th> User </th>
@@ -29,20 +54,20 @@
                       <th> Action</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody style="background-color: #344767;">
                     <% for (i = orders.length - 1; i >= 0; i--) { %>
-                      <tr>
+                      <tr style="text-align: center;">
                         <!-- list -->
-                        <td><%= orders[i].user.email %></td>
-                        <td>
+                        <td class="color"><%= orders[i].user.email %></td>
+                        <td class="color">
                           <span style="font-weight: 100;" class="pl-2">
                             <%= orders[i].orderDetails.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %>
                           </span>
                         </td>
-                        <td><%= orders[i].orderDetails.quantity %></td>
-                        <td>₹<%= orders[i].orderDetails.totalAmount %></td>
-                        <td>
-                          <button
+                        <td class="color"><%= orders[i].orderDetails.quantity %></td>
+                        <td class="color">₹<%= orders[i].orderDetails.totalAmount %></td>
+                        <td class="color">
+                          <p
                             <% if (orders[i].orderDetails.paymentStatus == "Pending") { %>
                               class="btn-inverse-warning"
                             <% } else if (orders[i].orderDetails.paymentStatus == "Success") { %>
@@ -54,32 +79,33 @@
                         </td>
                         <td>
                           <p
-                            <% if (orders[i].orderDetails.paymentStatus == "Delivered") { %>
-                              class="btn-inverse-warning"
+                            <% if (orders[i].orderDetails.OrderStatus == "Delivered") { %>
+                              class="status-delivered"
                             <% } else if (orders[i].orderDetails.OrderStatus == "Pending") { %>
-                              class="btn-inverse-warning"
+                              class="status-pending"
                             <% } else if (orders[i].orderDetails.OrderStatus == "Placed") { %>
-                              class="btn-inverse-primary"
+                              class="status-placed"
                             <% } else if (orders[i].orderDetails.OrderStatus == "Shipped") { %>
-                              class="btn-inverse-info"
-                            <% } else if (orders[i].orderDetails.OrderStatus == "Delivered") { %>
-                              class="btn-inverse-success"
+                              class="status-shipped"
                             <% } else if (orders[i].orderDetails.OrderStatus == "Cancelled") { %>
-                              class="btn-inverse-danger"
+                              class="status-cancelled"
                             <% } else if (orders[i].orderDetails.OrderStatus == "OutforDelivery") { %>
-                              class="btn-warning btn-sm"
+                              class="status-out-for-delivery"
                             <% } %>
                           ><%= orders[i].orderDetails.OrderStatus %></p>
                         </td>
+                        
+                        
                         <td>
                           <a href="/admin/orderFullDetails?orderId=<%= orders[i].orderDetails._id %>&productId=<%= orders[i].product._id %>"
-                            class="btn btn-inverse-info">Manage</a>
+                            class="btn btn-primary">Manage</a>
                         </td>
                       </tr>
                     <% } %>
                     <!-- list -->
                   </tbody>
                 </table>
+                
               </div>
             </div>
           </div>
