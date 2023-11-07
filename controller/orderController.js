@@ -4,6 +4,13 @@ const addressDb = require('../models/userAddressModel')
 const productDb = require('../models/productModel')
 const orderDb = require('../models/orderModel')
 const { ObjectId } = require('mongoose').Types;
+const Razorpay = require('razorpay')
+const crypto = require("crypto");
+
+var instance = new Razorpay({
+  key_id : "rzp_test_iIL0fxIFCvKlo5",
+  key_secret: "G92bW3rxieGm9HGnuaSAbtgr"
+})
 
 
 const loadCheckOut = async(req,res)=>{
@@ -165,6 +172,8 @@ const placeOrder = async(req,res)=>{
     const status = paymentMethod === "COD" ? "placed" : "pending";
     const statusLevel = status === "placed" ? 1: 0;
 
+    
+
 
     const today = new Date();
     const deliveryDate = new Date(today);
@@ -204,31 +213,105 @@ const placeOrder = async(req,res)=>{
       const orderid = order._id;
 
 
-
+    if(orderData){
       if (paymentMethod === 'COD') {
+        console.log("entered into cod");
         await cartDb.deleteOne({ user: req.session.user_id });
         for (const item of cartData.products) {
           const productId = item.productId._id;
           console.log("pro :",productId);
           const quantity = parseInt(item.quantity, 10);
           console.log("the count is :",quantity);
-          
        const result= await productDb.updateOne({ _id: productId },{$inc:{quantity:-quantity}})
       //  console.log(result)
-           
-        
         }
-        
-        
+        res.json({ success: true ,orderid });
+      }else {
+        const orderId = orderData._id;
+        // console.log("orderId id :", orderId);
+    const totalAmount = orderData.totalAmount;
+    console.log("totalAmount is:",totalAmount);
+
+    if(paymentMethod === 'onlinePayment'){
+
+      console.log("entered onlinePayment");
+
+      var options ={
+        amount : totalAmount,
+        currency: 'INR',
+        receipt : "" + orderId
       }
+      instance.orders.create(options, (error, order) => {
+        res.json({order})
+    })
+
+    }
+    console.log("end of online payment");
+    
+      }
+      
+      
+      
+    }
+      
 
 
-      res.json({ success: true });
+      
   }catch(error){
     console.log(error);
   }
 }
 
+
+
+const verifyPayment = async(req,res)=>{
+  try{
+    const cartData = await cartDb.findOne({user:req.session.user_id})
+    const products = cartData.products
+    const details = req.body;
+    const hmac = crypto.createHmac("sha256", rzp_test_iIL0fxIFCvKlo5);
+
+    hmac.update(
+      details.payment.razorpay_order_id +
+        "|" +
+        details.payment.razorpay_payment_id
+    );
+    const hmacValue = hmac.digest("hex");
+
+    if (hmacValue === details.payment.razorpay_signature) {
+      for (let i = 0; i < products.length; i++) {
+        const productId = products[i].productId;
+        const quantity = products[i].quantity;
+        await productDb.findByIdAndUpdate(
+          { _id: productId },
+          { $inc: { quantity: -quantity } }
+        );
+      }
+      await orderDb.findByIdAndUpdate(
+        { _id: details.order.receipt },
+        { $set: {  OrderStatus : "placed" , statusLevel: 1 } }
+      );
+
+      await orderDb.findByIdAndUpdate(
+        { _id: details.order.receipt },
+        { $set: { paymentId: details.payment.razorpay_payment_id } }
+      );
+      await cartDb.deleteOne({ user: req.session.user_id });
+      const orderid = details.order.receipt;
+
+      
+     
+      res.json({ codsuccess: true, orderid });
+
+    }else {
+      await orderDb.findByIdAndRemove({ _id: details.order.receipt });
+      res.json({ success: false });
+    }
+
+  }catch(error){
+    console.log(error);
+  }
+}
 
 
 
@@ -491,7 +574,8 @@ module.exports={
     addCheckoutAddress,
     loadCheckoutEditAddress,
     editCheckoutAddress,
-    cancelOrder
+    cancelOrder,
+    verifyPayment
     
 
 }

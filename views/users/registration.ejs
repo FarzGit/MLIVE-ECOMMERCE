@@ -93,10 +93,10 @@
    
     <div class="login-box">
         <h1>Registration</h1>
-        <div id="errorMessage" style="color: red; font-size: 12px; font-weight: 300;"></div>
+        
 
         <!-- <form action="/register" method="POST" id="form"> -->
-            <form action="/register" method="POST" id="form" >
+            <form action="/register" method="post" id="form" >
             <div class="input-container">
                 <input type="text" id="Fname" name="Fname" placeholder="First Name">
                 <p class="error-message" style="color: red;"></p>
@@ -107,10 +107,12 @@
             </div>
             <div class="input-container">
                 <input type="email" id="email" name="email" placeholder="Email">
+                <div id="emailErrorMessage" style="color: red; font-size: 12px; font-weight: 300;"></div>
                 <p class="error-message" style="color: red; "></p>
             </div>
             <div class="input-container">
                 <input type="text" id="mobile" name="mobile" placeholder="Mobile">
+                <div id="mobileErrorMessage" style="color: red; font-size: 12px; font-weight: 300;"></div>
                 <span class="error-message" style="color: red;"></span>
             </div>
             <div class="input-container">
@@ -131,112 +133,102 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('form');
+      const fnameInput = document.getElementById('Fname');
+      const lnameInput = document.getElementById('Lname');
+      const emailInput = document.getElementById('email');
+      const mobileInput = document.getElementById('mobile');
+      const passwordInput = document.getElementById('password');
+      const cpasswordInput = document.getElementById('Cpassword');
+      const errorMessages = document.querySelectorAll('.error-message');
 
+      // Email regex pattern
+      var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('form');
-    const fnameInput = document.getElementById('Fname');
-    const lnameInput = document.getElementById('Lname');
-    const emailInput = document.getElementById('email');
-    const mobileInput = document.getElementById('mobile');
-    const passwordInput = document.getElementById('password');
-    const cpasswordInput = document.getElementById('Cpassword');
-    const errorMessages = document.querySelectorAll('.error-message');
+      // Mobile number regex pattern
+      var phoneRegex = /^(?!^(\d)\1{9}$)\d{10}$/;
 
-    // Email regex pattern
-    var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
-
-    // Mobile number regex pattern
-    var phoneRegex = /^(?!^(\d)\1{9}$)\d{10}$/;
-
-    form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form submission initially
-
+      form.addEventListener('submit', function (event) {
         let isValid = true;
         errorMessages.forEach(function (element) {
-            element.innerText = '';
-            element.style.fontSize = '10px'; // Set the font size to 10px
+          element.innerText = '';
+          element.style.fontSize = '10px'; // Set the font size to 10px
         });
 
         if (fnameInput.value.trim() === '') {
-            errorMessages[0].innerText = 'First Name is required.';
-            isValid = false;
+          errorMessages[0].innerText = 'First Name is required.';
+          isValid = false;
         }
 
         if (lnameInput.value.trim() === '') {
-            errorMessages[1].innerText = 'Last Name is required.';
-            isValid = false;
+          errorMessages[1].innerText = 'Last Name is required.';
+          isValid = false;
         }
 
         if (emailInput.value.trim() === '') {
-            errorMessages[2].innerText = 'Email is required.';
-            isValid = false;
+          errorMessages[2].innerText = 'Email is required.';
+          isValid = false;
         } else if (!emailRegex.test(emailInput.value.trim())) { // Check email format using regex
-            errorMessages[2].innerText = 'Email is not valid. (e.g., example@gmail.com)';
-            isValid = false;
+          errorMessages[2].innerText = 'Email is not valid. (e.g., example@gmail.com)';
+          isValid = false;
         }
 
         if (mobileInput.value.trim() === '') {
-            errorMessages[3].innerText = 'Mobile is required.';
-            isValid = false;
+          errorMessages[3].innerText = 'Mobile is required.';
+          isValid = false;
         } else if (!phoneRegex.test(mobileInput.value.trim())) { // Check mobile format using regex
-            errorMessages[3].innerText = 'Please enter a valid 10-digit mobile number.';
-            isValid = false;
+          errorMessages[3].innerText = 'Please enter a valid 10-digit mobile number.';
+          isValid = false;
         }
 
         if (passwordInput.value.length < 5) {
-            errorMessages[4].innerText = 'Password must be at least 5 characters long.';
-            isValid = false;
+          errorMessages[4].innerText = 'Password must be at least 5 characters long.';
+          isValid = false;
         } else if (!/[^a-zA-Z0-9]/.test(passwordInput.value) || passwordInput.value.includes(' ')) {
-            errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
-            isValid = false;
+          errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
+          isValid = false;
         }
 
         if (cpasswordInput.value === '') {
-            errorMessages[5].innerText = 'Confirm Password is required.';
-            isValid = false;
+          errorMessages[5].innerText = 'Confirm Password is required.';
+          isValid = false;
         } else if (cpasswordInput.value !== passwordInput.value) {
-            errorMessages[4].innerText = 'Passwords do not match.';
-            errorMessages[5].innerText = 'Passwords do not match.';
-            isValid = false;
+          errorMessages[4].innerText = 'Passwords do not match.';
+          errorMessages[5].innerText = 'Passwords do not match.';
+          isValid = false;
         }
 
-        if (isValid) {
-            // If everything is valid after the delay, submit the form
-            form.submit();
+        if (!isValid) {
+          event.preventDefault(); // Prevent form submission if there are validation errors
         }
-    });
+      });
 
-    // Real-time validation
-    const inputElements = [fnameInput, lnameInput, emailInput, mobileInput, passwordInput, cpasswordInput];
+      // Real-time validation
+      const inputElements = [fnameInput, lnameInput, emailInput, mobileInput, passwordInput, cpasswordInput];
 
-    inputElements.forEach((input, index) => {
+      inputElements.forEach((input, index) => {
         input.addEventListener('input', function () {
-            errorMessages[index].innerText = '';
+          errorMessages[index].innerText = '';
         });
-    });
+      });
 
-    passwordInput.addEventListener('input', function () {
+      passwordInput.addEventListener('input', function () {
         const passwordValue = passwordInput.value;
         errorMessages[4].innerText = '';
 
         if (passwordValue.length < 5) {
-            errorMessages[4].innerText = 'Password must be at least 5 characters long.';
+          errorMessages[4].innerText = 'Password must be at least 5 characters long.';
         } else if (!/[^a-zA-Z0-9]/.test(passwordValue) || passwordValue.includes(' ')) {
-            errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
+          errorMessages[4].innerText = 'Password must contain at least one special character and cannot contain spaces.';
         }
+      });
     });
-});
 
+    // <!-- ===============================================================ajaxRequest========================================================================== -->
 
-
-
-
-// <!-- ===============================================================ajaxRequest========================================================================== -->
-
-
-$(document).ready(function () {
+    $(document).ready(function () {
   $("#form").submit(function (event) {
     event.preventDefault();
     var formData = $(this).serialize();
@@ -246,26 +238,32 @@ $(document).ready(function () {
       url: "/register",
       data: formData,
       success: function (response) {
-        console.log(response); // Log the response to the console
-        if (response.message === "success") {
-          window.location.href = "/userOtp";
+        console.log(response);
+
+        if (response.emailError) {
+          $("#emailErrorMessage").text(response.emailError);
         } else {
-          $("#errorMessage").text(response.message);
+          $("#emailErrorMessage").text("");
+        }
+
+        if (response.mobileError) {
+          $("#mobileErrorMessage").text(response.mobileError);
+        } else {
+          $("#mobileErrorMessage").text("");
+        }
+
+        if (response.message === "Success") {
+          window.location.href = "/userOtp";
         }
       },
       error: function (error) {
-        console.log("Error:", error); // Log any AJAX errors
+        console.log("Error:", error);
       }
     });
   });
 });
 
-
-
-
-
-</script>
-    
+  </script>
 
 
     

@@ -99,7 +99,7 @@ const otpSend = async (Fname, email, otp) => {
 
 const loadOtp = async (req, res) => {
   try {
-    res.redirect("/userOtp");
+    res.render("userOtp");
   } catch (error) {
     console.log(error.message);
   }
@@ -190,11 +190,19 @@ const insertUser = async (req, res) => {
     const expirationTime = creationTime + 30;
     const userCheckMobile = await User.findOne({mobile: req.body.mobile})
     const userCheck = await User.findOne({ email: req.body.email });
-    if (userCheck) {
-      res.json({ message: "email is existed" });
+    let emailError = "";
+    let mobileError = "";
 
-    } else if(userCheckMobile){
-      res.json({ message: "Mobile Number existed" });    }
+    if (userCheck) {
+      emailError = "Email is already in use.";
+    }
+
+    if (userCheckMobile) {
+      mobileError = "Mobile number is already in use.";
+    }
+
+    if (emailError || mobileError) {
+      res.json({ emailError, mobileError });   }
     else {
       const spassword = await securePassword(req.body.password);
       req.session.Fname = req.body.Fname;

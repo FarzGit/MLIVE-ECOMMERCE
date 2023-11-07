@@ -309,8 +309,10 @@
 
 
 
+  
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
     $(document).ready(function() {
       $("#checkout-form").on("submit", function(e) {
@@ -330,22 +332,78 @@
           url: "/placeOrder",
           data: { total: total, address: address, payment: payment },
           success: function(response) {
-            if (response) {
+            if (response.success === true) {
               
-              window.location.href = '/orderPlaced'
+              window.location.href =  `/orderPlaced/${response.orderid}`
             } else {
-              console.log('failed');
-              alert("Form submission failed!");
+              razorPayment(response.order)
             }
-          },
-          error: function(error) {
-            console.error(error);
-            alert("An error occurred while submitting the form.");
           }
         });
         console.log('After AJAX request');
       });
     });
+
+
+    function razorPayment(order) {
+    // console.log(process.env.RazorId);
+    console.log("entered to razorpay");
+    var options = {
+      key: "rzp_test_iIL0fxIFCvKlo5", // Enter the Key ID generated from the Dashboard
+      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "M LIVE Pvt.Ltd", //your business name
+      description: "Test Transaction",
+      image: "/user/images/icons/",
+      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: function (response) {
+        verifyPayment(response, order);
+      },
+      prefill: {
+        //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        name: " M LIVE Pvt.Ltd", //your customer's name
+        email: "MLIVEMARKET@example.com",
+        contact: "9230566487", //Provide the customer's phone number for better conversion rates
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#c96",
+      },
+    };
+
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
+
+
+  function verifyPayment(payment, order) {
+    const amount2 = document.getElementById("total1").innerHTML;
+    $.ajax({
+      url: "/verifyPayment",
+      method: "post",
+      data: {
+        payment: payment,
+        amount2: amount2,
+        order: order,
+      },
+      success: (response) => {
+        if (response.codsuccess == true) {
+          location.href = '/orderPlaced';
+        } else {
+          swal.fire({
+            positon: "center",
+            icon: "error",
+            title: "Payment failed",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      },
+    });
+  }
+
   </script>
 
 <!-- ================================================handling the radioButton to active entire the div========================================= -->

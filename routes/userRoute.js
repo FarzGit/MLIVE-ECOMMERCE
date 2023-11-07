@@ -16,6 +16,7 @@ userRoute.use(
 const userController = require("../controller/userController")
 const cartController = require("../controller/cartController")
 const orderController =require("../controller/orderController")
+const walletController = require("../controller/walletController")
 
 userRoute.set("view engine", "ejs");
 userRoute.set("views", "./views/users");
@@ -63,10 +64,12 @@ userRoute.post('/deleteAddress',userAuth.isLogin,userController.deleteUserAddres
 userRoute.get('/checkout',userAuth.isLogin,orderController.loadCheckOut)
 // userRoute.post('/removeAddress', userAuth.isLogin, orderController.removeAddress)
 userRoute.post('/placeOrder',userAuth.isLogin, orderController.placeOrder)
-userRoute.get('/orderPlaced',orderController.orderPlacedPageLoad) 
+userRoute.get('/orderPlaced/:id',orderController.orderPlacedPageLoad) 
 userRoute.get('/orders',userAuth.isLogin,orderController.loadOrderPage)
 userRoute.get('/orderDetails',userAuth.isLogin,orderController.orderDetails)
 userRoute.post('/orderCancel',orderController.cancelOrder)
+userRoute.post('/verifyPayment',userAuth.isLogin, orderController.verifyPayment)
+
 
 
 
@@ -74,6 +77,11 @@ userRoute.post('/orderCancel',orderController.cancelOrder)
 userRoute.post('/checkoutAddress',userAuth.isLogin,orderController.addCheckoutAddress)
 userRoute.get('/editCheckoutAddress',userAuth.isLogin,orderController.loadCheckoutEditAddress)
 userRoute.post('/editCheckoutAddress',userAuth.isLogin,orderController.editCheckoutAddress)
+
+
+
+
+// userRoute.get('/wallet',userAuth.isLogin,walletController.loadWallet)
 
 
 
