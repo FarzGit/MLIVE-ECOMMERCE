@@ -80,9 +80,12 @@ userRoute.post('/editCheckoutAddress',userAuth.isLogin,orderController.editCheck
 
 
 
-userRoute.get('/wallet',userAuth.isLogin,userController.getWallet)
+userRoute.get('/walletHistory',userAuth.isLogin,userController.getWalletHistory)
 userRoute.post('/profile/addMoneyToWallet',userAuth.isLogin,userController.postAddMoneyToWallet)
 userRoute.post('/verifyWalletpayment',userAuth.isLogin,userController.postVerifyWalletPayment)
+userRoute.get('/wallet',userAuth.isLogin,userController.getWallet)
+
+
 
 
 

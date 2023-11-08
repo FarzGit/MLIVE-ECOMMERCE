@@ -18,98 +18,147 @@
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
-    <% if(user.walletHistory && user.walletHistory.length>0) {%>
-
-    <section class="mt-5">
+    <!-- <style>
+        /* Center the entire content vertically and horizontally */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style> -->
+    <!-- <body> -->
         <div class="container">
-            <h1 class="text-decoration-underline">WALLET HISTORY</h1>
-            
-                <div class="mt-5">
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center align-middle" width="100%" id="sortTable">
-                            <col style="width:10%">
-                            <col style="width:15%">
-                            <col style="width:25%">
-                            <col style="width:20%">
-                            <col style="width:15%">
-                            <col style="width:25%">
-                            <thead class="text-nowrap thead-light">
-                                <tr>
-                                    <th scope="col" class="text-center border">#</th>
-                                    <th scope="col" class="text-center border">Date</th>
-                                    <th scope="col" class="text-center border">Details</th>
-                                    <th scope="col" class="text-center border">Type</th>
-                                    <th scope="col" class="text-center border">Amount</th>
-                                    <th scope="col" class="text-center border">Current Balance</th>
-                                </tr>
-                            </thead>
-                            <tbody> <!-- .reverse for showing the data from latest transaction-->
-                                <% user.walletHistory.reverse().forEach((data)=>{ %>
-                                
-                                    <tr>
-                                        <th scope="row" class="border">
-                                            <%=user.walletHistory.indexOf(data) +1%>
-                                            
-                                        </th>
-                                        <% const dd=data.transactionDate.getDate(); const
-                                        mm=data.transactionDate.getMonth() + 1; const
-                                        yyyy=data.transactionDate.getFullYear(); const
-                                        formattedDate=`${dd}-${mm}-${yyyy}`; %>
-                                            <td class="border">
-                                                <%=formattedDate %>
-                                                
-                                            </td>
-                                            <td class="border">
-                                                <%=data.transactionDetails %>
-                                                
-                                            </td>
-                                            <% if(data.transactionType=='Credit' ) {%>
-                                            
-                                                <td class="border">
-                                                    <%=data.transactionType %>
-                                                    
-                                                </td>
-                                                <td class="text-success border">
-                                                    +<%=data.transactionAmount %>
-                                                    
-                                                </td>
-                                                <% }else{ %>
-                                                
-                                                    <td class="border">
-                                                        <%=data.transactionType %>
-                                                        
-                                                    </td>
-                                                    <td class="text-danger border">
-                                                        -<%=data.transactionAmount %>
-                                                        
-                                                    </td>
-                                                    <% } %>
-                                                   
-                                                        <td class="border">
-                                                            ₹<%=data.currentBalance %>
-                                                            
-                                                        </td>
-                                    </tr>
-                                    <% }) %>
-                                    
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <% }else{ %>
-                
-                    <div class="mainDiv text-center container">
-                        <h1>No wallet transactions!</h1>
-                        <img src="/assets/extra-images/source.gif" width="300rem" class="img-fluid rounded-5" alt="">
-                        <div class="mt-3">
-                            <a href="/shop" class="rounded-0 btn btn-white border-1 border-dark">GO SHOPPING</a>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h2>Your Wallet Balance:<br>₹  <%= user[0].wallet %></h2>
+                               
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="/walletHistory"><button class="btn rounded" style="background-color: rgb(81, 86, 238); color: white;" >Transaction History</button></a>
+                            <button class="btn btn-success rounded float-right" data-bs-toggle="modal" data-bs-target="#form" >Add Wallet</button>
                         </div>
                     </div>
-                    <% } %>
-                   
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <a href="/shop"><button class="btn rounded" style="margin-bottom: 12px; background-color: rgb(81, 86, 238); color: white;">Continue Shopping</button></a>
+            </div>
         </div>
-    </section>
+   <!-- ==================================================================modal walletAdd=================================================================== -->
+
+<div class="modal fade" id="form" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="margin-top: 154px;">
+        <div class="modal-header">
+          <h4 class="modal-title " id="exampleModalLabel">Add amount to wallet</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="wallet-form">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="email1">Enter Amount</label>
+                <input type="Number" class="form-control" id="amount" aria-describedby="emailHelp" placeholder="eg:1000" required>
+                <p id="err" class="text-danger"></p>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn rounded" style="background-color: grey;" data-bs-dismiss="modal">CANCEL</button>
+          <button type="submit" class="btn rounded" style="background-color: rgb(0, 104, 179);">ADD</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </main>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    const err = document.getElementById('err')
+    document.getElementById('wallet-form').addEventListener('submit',(e) =>{
+        e.preventDefault()
+
+        const amount = document.getElementById('amount').value.trim()
+        if( !amount ) {
+            e.preventDefault()
+        }
+        if( amount < 0 ) {
+            e.preventDefault()
+            err.innerHTML = 'Amount cannot be negative!'
+        }
+
+        $.ajax({
+            url: '/profile/addMoneyToWallet',
+            method: 'post',
+            data: { amount },
+            success: (res) => {
+                if(res.status){
+                    console.log('opening razorpay');
+                    razorpayPayment(res.payment)
+                }else{
+                    console.log('status false redirecting to walletHistory');
+                    location.href = '/wallet'
+                }
+            }
+        });
+
+    });
+    function razorpayPayment(order) {
+            var options = {
+                "key": "rzp_test_iIL0fxIFCvKlo5", // Enter the Key ID generated from the Dashboard
+                "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "M LIVE",
+                "description": "Test Transaction",
+                "image": "/assets/logo-images/",
+                "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": function (response) {
+                    verifyPayment(response, order)
+                },
+                "prefill": {
+                    "name": "Farzin Ahammmed",
+                    "email": "farzin@example.com",
+                    "contact": "7994371306"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+        function verifyPayment(payment, order) {
+                console.log(payment,order);
+                $.ajax({
+                    url: '/verifyWalletpayment',
+                    method: 'post',
+                    data: {
+                        payment,
+                        order
+                    },
+                    success: (res) => {
+                        if (res.status) {
+                            location.href = '/walletHistory'
+                        } else{
+                            location.href = '/wallet'
+                            alert('Payment Failed');
+                        }
+                    }
+                })
+            }
+  </script>
 
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>

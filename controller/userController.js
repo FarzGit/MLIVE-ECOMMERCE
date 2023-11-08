@@ -793,7 +793,7 @@ const postVerifyWalletPayment = async(req,res)=>{
 // =====================================================================getWallet==========================================================
 
 
-const getWallet = async(req,res)=>{
+const getWalletHistory = async(req,res)=>{
   try{
 
     const user = req.session.user_id;
@@ -804,7 +804,22 @@ const getWallet = async(req,res)=>{
     if (cartData && cartData.products) {
         req.session.cartCount = cartData.products.length
     }
-    res.render('wallet', { user: userData, cartCount: req.session.cartCount })
+    res.render('walletHistory', { user: userData, cartCount: req.session.cartCount })
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+const getWallet = async(req,res)=>{
+  try{
+
+    const user = req.session.user_id
+    const userData = await User.find({_id:user})
+    console.log("userData id :",userData);
+
+    res.render('wallet',{user:userData})
 
   }catch(error){
     console.log(error);
@@ -841,6 +856,7 @@ module.exports = {
   deleteUserAddress,
   postAddMoneyToWallet,
   postVerifyWalletPayment,
-  getWallet
+  getWallet,
+  getWalletHistory
   
 };
