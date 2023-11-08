@@ -36,13 +36,19 @@
                       <td class="align-middle"><%=orders.products[i].quantity%></td>
                       <td class="align-middle">₹ <%- (orders.products[i].productId.price) * (orders.products[i].quantity) %></td>
                       <td class="align-middle action-column">
-                        <button class="btn btn-danger cancel-product mall-btn" onclick="cancelOrder('<%= orders._id %>','<%= orders.products[i].productId._id %>')">
-                          <% if (orders.products[i].OrderStatus === 'Canceled') { %>
-                            Canceled
+
+                        <% if (orders.products[i].OrderStatus !== 'Cancelled') { %>
+                          <% if (orders.products[i].OrderStatus === 'Delivered' || orders.products[i].OrderStatus === 'OutforDelivery') { %>
+                              <button class="btn  rounded-pill return-product mall-btn" style="background-color: rgb(148, 148, 148); color: white;" onclick="returnOrder('<%= orders._id %>','<%= orders.products[i].productId._id %>')">Return</button>
                           <% } else { %>
-                            Cancel
+                              <button class="btn btn-danger cancel-product mall-btn" onclick="cancelOrder('<%= orders._id %>','<%= orders.products[i].productId._id %>')">Cancel</button>
                           <% } %>
-                        </button>
+                      <% } else { %>
+                          <p class="text-danger">Cancelled</p>
+                      <% } %>
+                      
+
+                        
                       </td>
                     </tr>
                   

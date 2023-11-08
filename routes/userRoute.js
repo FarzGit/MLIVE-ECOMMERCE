@@ -16,7 +16,7 @@ userRoute.use(
 const userController = require("../controller/userController")
 const cartController = require("../controller/cartController")
 const orderController =require("../controller/orderController")
-const walletController = require("../controller/walletController")
+
 
 userRoute.set("view engine", "ejs");
 userRoute.set("views", "./views/users");
@@ -80,8 +80,9 @@ userRoute.post('/editCheckoutAddress',userAuth.isLogin,orderController.editCheck
 
 
 
-
-// userRoute.get('/wallet',userAuth.isLogin,walletController.loadWallet)
+userRoute.get('/wallet',userAuth.isLogin,userController.getWallet)
+userRoute.post('/profile/addMoneyToWallet',userAuth.isLogin,userController.postAddMoneyToWallet)
+userRoute.post('/verifyWalletpayment',userAuth.isLogin,userController.postVerifyWalletPayment)
 
 
 

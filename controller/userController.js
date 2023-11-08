@@ -9,6 +9,15 @@ const categoryDb = require('../models/categoryModel');
 const addressDb = require('../models/userAddressModel')
 const Swal = require('sweetalert2');
 const { AwsInstance } = require("twilio/lib/rest/accounts/v1/credential/aws");
+const Razorpay =require('razorpay')
+const crypto =require('crypto')
+const cartDb = require('../models/cartModel')
+
+
+var instance = new Razorpay({
+  key_id: process.env.KEY_ID,
+  key_secret: process.env.KEY_SECRET
+})
 
 
 // require("dotenv").config();
@@ -687,19 +696,120 @@ const deleteUserAddress = async (req, res) => {
 }
 
 
-// =====================================================================changeUserPassFromProfile=====================================================
+// =====================================================================postAddMoneyToWallet=====================================================
 
 
-// const changePassword = async(req,res)=>{
-//   try{
-//       console.log(req.body.newPassword)
-//   }catch(error){
-//     console.log(error);
-//   }
-// }
+const postAddMoneyToWallet = async(req,res)=>{
+  try{
+
+    console.log("entered add money to wallet");
+     
+    const {amount} = req.body
+    const  id = crypto.randomBytes(8).toString('hex')
+
+    var options = {
+      amount: amount*100,
+      currency:'INR',
+      receipt: "hello"+id
+  }
+
+
+  instance.orders.create(options, (err, order) => {
+    if(err){
+        res.json({status: false})
+    }else{
+        res.json({ status: true, payment:order })
+    }
+
+})
 
 
 
+  }catch(error){
+    console.log(error);
+  }
+
+}
+
+
+
+
+// =====================================================================postVerifyWalletPayment=====================================================
+
+
+
+const postVerifyWalletPayment = async(req,res)=>{
+  try{
+
+    console.log("entered into post verify wallet payment");
+
+    const userId = req.session.user_id
+
+    const details = req.body;
+    const amount = parseInt(details.order.amount)/100
+        let hmac = crypto.createHmac('sha256',process.env.KEY_SECRET)
+
+
+        hmac.update(
+          details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id
+      )
+      hmac = hmac.digest('hex')
+      if(hmac == details.payment.razorpay_signature){
+          
+        const walletHistory = {
+          transactionDate: new Date(),
+          transactionDetails: 'Deposited via Razorpay',
+          transactionType: 'Credit',
+          transactionAmount: amount,
+          currentBalance: !isNaN(userId.wallet) ? userId.wallet + amount : amount
+      }
+          await User.findByIdAndUpdate(
+              {_id: userId},
+              {
+                  $inc:{
+                      wallet: amount
+                  },
+                  $push:{
+                      walletHistory
+                  }
+              }
+          );
+          console.log('udddd')
+          res.json({status: true})
+      }else{
+          res.json({status: false})
+      }
+
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+
+
+
+// =====================================================================getWallet==========================================================
+
+
+const getWallet = async(req,res)=>{
+  try{
+
+    const user = req.session.user_id;
+    const userData = await User.findOne({_id: user });
+    console.log("userData is",userData);
+    req.session.cartCount = 0
+    let cartData = await cartDb.findOne({ user: userData._id })
+    if (cartData && cartData.products) {
+        req.session.cartCount = cartData.products.length
+    }
+    res.render('wallet', { user: userData, cartCount: req.session.cartCount })
+
+  }catch(error){
+    console.log(error);
+  }
+}
 
 
 
@@ -729,5 +839,8 @@ module.exports = {
   loadEditAddress,
   updateUserAddress,
   deleteUserAddress,
-  // changePassword
+  postAddMoneyToWallet,
+  postVerifyWalletPayment,
+  getWallet
+  
 };

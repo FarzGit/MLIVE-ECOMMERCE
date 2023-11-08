@@ -237,7 +237,7 @@ const placeOrder = async(req,res)=>{
       console.log("entered onlinePayment");
 
       var options ={
-        amount : totalAmount,
+        amount : totalAmount *100,
         currency: 'INR',
         receipt : "" + orderId
       }
@@ -269,7 +269,8 @@ const verifyPayment = async(req,res)=>{
     const cartData = await cartDb.findOne({user:req.session.user_id})
     const products = cartData.products
     const details = req.body;
-    const hmac = crypto.createHmac("sha256", rzp_test_iIL0fxIFCvKlo5);
+    console.log("details is:",details);
+    const hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
 
     hmac.update(
       details.payment.razorpay_order_id +
@@ -277,6 +278,7 @@ const verifyPayment = async(req,res)=>{
         details.payment.razorpay_payment_id
     );
     const hmacValue = hmac.digest("hex");
+    console.log("hmacValue",hmacValue);
 
     if (hmacValue === details.payment.razorpay_signature) {
       for (let i = 0; i < products.length; i++) {
