@@ -390,7 +390,7 @@
       },
       success: (response) => {
         if (response.codsuccess == true) {
-          location.href = '/orderPlaced';
+          location.href = `/orderPlaced/${response.orderid}`;
         } else {
           swal.fire({
             positon: "center",

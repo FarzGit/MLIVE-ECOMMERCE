@@ -69,9 +69,16 @@
                                       </h6>
                                       
                                       <hr class="m-0 p-0 my-3">
-                                      <% if (product.orderDetails.OrderStatus !== "canceled") { %>
+                                      <% if (product.orderDetails.OrderStatus !== "Returned") { %>
+
+                                      <% if (product.orderDetails.OrderStatus !== "Cancelled") { %>
                                         <button data-bs-toggle="modal" data-bs-target="#modCancel" class="btn btn-danger p-3" style="background-color: red;">Cancel Order</button>
-                                      <% } %>
+                                      <% }else{%>
+                                        <h5 class="text-danger fw-300">Canceled</h5>
+                                     <% } %>
+                                      <%}else{%>
+                                        <h5 class="text-danger fw-300">Returned</h5>
+                                      <%}%>
                                       
 
                                               <div class="col-12">
@@ -89,7 +96,11 @@
 
                   </div>
 
-                  <%if(product.orderDetails.OrderStatus!="Cancelled"){%>
+                  <%if(product.orderDetails.OrderStatus ==="Returned"){%>
+
+                 <% }else{%>            
+
+                  <%if(product.orderDetails.OrderStatus!=="Cancelled"){%>
                       <div class="container-fluid d-flex flex-column justify-content-center ">
 
                           <div class="card row col-12 my-3 mx-auto p-2"
@@ -161,6 +172,7 @@
                               </div>
                           </div>
                           <%}%>
+                 <%}%>
 
 
 

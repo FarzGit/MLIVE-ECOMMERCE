@@ -23,6 +23,20 @@
   .status-out-for-delivery {
     color: yellow;
   }
+
+  
+
+  .pending-status {
+  color: #FFA500; /* Orange color for Pending */
+}
+
+.success-status {
+  color: rgb(26, 255, 0); /* Green color for Success */
+}
+
+.failed-status {
+  color: #FF0000; /* Red color for Failed */
+}
 </style>
 
 <body class="g-sidenav-show bg-gray-200">
@@ -67,15 +81,12 @@
                         <td class="color"><%= orders[i].orderDetails.quantity %></td>
                         <td class="color">₹<%= orders[i].orderDetails.totalAmount %></td>
                         <td class="color">
-                          <p
-                            <% if (orders[i].orderDetails.paymentStatus == "Pending") { %>
-                              class="btn-inverse-warning"
-                            <% } else if (orders[i].orderDetails.paymentStatus == "Success") { %>
-                              class="btn-inverse-success"
-                            <% } else if (orders[i].orderDetails.paymentStatus == "Failed") { %>
-                              class="btn-inverse-danger"
-                            <% } %>
-                          ><%= orders[i].orderDetails.paymentStatus %></button>
+                          <p class="payment-status 
+                            <% if (orders[i].orderDetails.paymentStatus == "Pending") { %>pending-status<% } 
+                            else if (orders[i].orderDetails.paymentStatus == "Success") { %>success-status<% } 
+                            else if (orders[i].orderDetails.paymentStatus == "Failed") { %>failed-status<% } %>">
+                            <%= orders[i].orderDetails.paymentStatus %>
+                          </p>
                         </td>
                         <td>
                           <p

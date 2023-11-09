@@ -1,0 +1,239 @@
+<style>
+    /* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #08070a;
+}
+.wrapper{
+  width: 450px;
+  height: 288px;
+  padding: 30px;
+  background: #fff;
+  border-radius: 9px;
+  transition: height 0.2s ease;
+}
+.wrapper.active{
+  height: 537px;
+}
+.wrapper .upload-box{
+  height: 225px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 2px dashed #afafaf;
+}
+.wrapper.active .upload-box{
+  border: none;
+}
+.upload-box p{
+  font-size: 1.06rem;
+  margin-top: 20px;
+}
+.wrapper.active .upload-box p{
+  display: none;
+}
+.wrapper.active .upload-box img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.wrapper .content{
+  opacity: 0;
+  margin-top: 28px;
+  pointer-events: none;
+}
+.wrapper.active .content{
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.5s 0.05s ease;
+}
+.content .row{
+  display: flex;
+  justify-content: space-between;
+}
+.content .row .column{
+  width: calc(100% / 2 - 15px);
+}
+.row .column label{
+  font-size: 1.06rem;
+}
+.sizes .column input{
+  width: 100%;
+  height: 49px;
+  outline: none;
+  margin-top: 7px;
+  padding: 0 15px;
+  font-size: 1.06rem;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+}
+.sizes .column input:focus{
+  padding: 0 14px;
+  border: 2px solid #927DFC;
+}
+.content .checkboxes{
+  margin-top: 20px;
+}
+.checkboxes .column{
+  display: flex;
+  align-items: center;
+}
+.checkboxes .column input{
+  width: 17px;
+  height: 17px;
+  margin-right: 9px;
+  accent-color: #927DFC;
+}
+.content .download-btn{
+  width: 100%;
+  color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.06rem;
+  border-radius: 5px;
+  padding: 15px 0;
+  margin: 30px 0 10px;
+  background: #927DFC;
+  text-transform: uppercase;
+}
+</style>
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Image Resizer JavaScript | CodingNepal</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    </head>
+    <body>
+  
+
+        
+          <div class="wrapper">
+           <a href="./add_products" style="font-size: small;text-decoration: none; font-weight: 500;"><<< Go back</a>
+           &nbsp;
+           &nbsp;
+           &nbsp;
+           &nbsp;
+           &nbsp;
+           &nbsp;
+           <a style="font-size: small;font-weight: 800;"><span style="color:rgb(46, 202, 88) ;">Green</span> energy</a>
+           &nbsp;
+           &nbsp;
+           &nbsp;
+           &nbsp;
+           &nbsp;
+           
+           <a href="./imageCropper" style="font-size: small; text-decoration: none;font-weight: 500;">Next image >>></a>
+        <div class="upload-box">
+        <input type="file" accept="image/*" hidden>
+        <img src="upload-icon.svg" alt="">
+        <p>Browse File to Upload</p>
+      </div>
+      <div class="content">
+        <div class="row sizes">
+          <div class="column width">
+            <label>Width</label>
+            <input type="number">
+          </div>
+          <div class="column height">
+            <label>Height</label>
+            <input type="number">
+          </div>
+        </div>
+        <div class="row checkboxes">
+          <div class="column ratio">
+            <input type="checkbox" id="ratio" checked>
+            <label for="ratio">Lock aspect ratio</label>
+          </div>
+          <div class="column quality">
+            <input type="checkbox" id="quality">
+            <label for="quality">Reduce quality</label>
+          </div>
+        </div>
+        <button class="download-btn">Download Image</button>
+      </div>
+
+    </div>
+
+  </body>
+  <script>
+    const uploadBox = document.querySelector(".upload-box"),
+previewImg = uploadBox.querySelector("img"),
+fileInput = uploadBox.querySelector("input"),
+widthInput = document.querySelector(".width input"),
+heightInput = document.querySelector(".height input"),
+ratioInput = document.querySelector(".ratio input"),
+qualityInput = document.querySelector(".quality input"),
+downloadBtn = document.querySelector(".download-btn");
+
+let ogImageRatio;
+
+const loadFile = (e) => {
+    const file = e.target.files[0]; // getting first user selected file
+    if(!file) return; // return if user hasn't selected any file
+    previewImg.src = URL.createObjectURL(file); // passing selected file url to preview img src
+    previewImg.addEventListener("load", () => { // once img loaded
+        widthInput.value = previewImg.naturalWidth;
+        heightInput.value = previewImg.naturalHeight;
+        ogImageRatio = previewImg.naturalWidth / previewImg.naturalHeight;
+        document.querySelector(".wrapper").classList.add("active");
+    });
+}
+
+widthInput.addEventListener("keyup", () => {
+    // getting height according to the ratio checkbox status
+    const height = ratioInput.checked ? widthInput.value / ogImageRatio : heightInput.value;
+    heightInput.value = Math.floor(height);
+});
+
+heightInput.addEventListener("keyup", () => {
+    // getting width according to the ratio checkbox status
+    const width = ratioInput.checked ? heightInput.value * ogImageRatio : widthInput.value;
+    widthInput.value = Math.floor(width);
+});
+
+const resizeAndDownload = () => {
+    const canvas = document.createElement("canvas");
+    const a = document.createElement("a");
+    const ctx = canvas.getContext("2d");
+
+    // if quality checkbox is checked, pass 0.5 to imgQuality else pass 1.0
+    // 1.0 is 100% quality where 0.5 is 50% of total. you can pass from 0.1 - 1.0
+    const imgQuality = qualityInput.checked ? 0.5 : 1.0;
+
+    // setting canvas height & width according to the input values
+    canvas.width = widthInput.value;
+    canvas.height = heightInput.value;
+
+    // drawing user selected image onto the canvas
+    ctx.drawImage(previewImg, 0, 0, canvas.width, canvas.height);
+    
+    // passing canvas data url as href value of <a> element
+    a.href = canvas.toDataURL("image/jpeg", imgQuality);
+    a.download = new Date().getTime(); // passing current time as download value
+    a.click(); // clicking <a> element so the file download
+}
+
+downloadBtn.addEventListener("click", resizeAndDownload);
+fileInput.addEventListener("change", loadFile);
+uploadBox.addEventListener("click", () => fileInput.click());
+  </script>
+</html>

@@ -68,6 +68,7 @@ userRoute.get('/orderPlaced/:id',orderController.orderPlacedPageLoad)
 userRoute.get('/orders',userAuth.isLogin,orderController.loadOrderPage)
 userRoute.get('/orderDetails',userAuth.isLogin,orderController.orderDetails)
 userRoute.post('/orderCancel',orderController.cancelOrder)
+userRoute.post('/productReturn',userAuth.isLogin,orderController.productReturn)
 userRoute.post('/verifyPayment',userAuth.isLogin, orderController.verifyPayment)
 
 

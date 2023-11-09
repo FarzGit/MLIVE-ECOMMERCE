@@ -6,6 +6,7 @@ const orderDb = require('../models/orderModel')
 const { ObjectId } = require('mongoose').Types;
 const Razorpay = require('razorpay')
 const crypto = require("crypto");
+const { log } = require('console')
 
 var instance = new Razorpay({
   key_id : process.env.KEY_ID ,
@@ -269,7 +270,7 @@ const verifyPayment = async(req,res)=>{
     const cartData = await cartDb.findOne({user:req.session.user_id})
     const products = cartData.products
     const details = req.body;
-    console.log("details is:",details);
+    // console.log("details is:",details);
     const hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
 
     hmac.update(
@@ -278,9 +279,10 @@ const verifyPayment = async(req,res)=>{
         details.payment.razorpay_payment_id
     );
     const hmacValue = hmac.digest("hex");
-    console.log("hmacValue",hmacValue);
+    // console.log("hmacValue",hmacValue);
 
     if (hmacValue === details.payment.razorpay_signature) {
+      // console.log('jjj',hmacValue === details.payment.razorpay_signature);
       for (let i = 0; i < products.length; i++) {
         const productId = products[i].productId;
         const quantity = products[i].quantity;
@@ -289,10 +291,11 @@ const verifyPayment = async(req,res)=>{
           { $inc: { quantity: -quantity } }
         );
       }
-      await orderDb.findByIdAndUpdate(
+      const result =await orderDb.findByIdAndUpdate(
         { _id: details.order.receipt },
-        { $set: {  OrderStatus : "placed" , statusLevel: 1 } }
+        { $set: {  'products.$[].paymentStatus':'success' } }
       );
+      console.log("result is :",result);
 
       await orderDb.findByIdAndUpdate(
         { _id: details.order.receipt },
@@ -561,6 +564,63 @@ const cancelOrder = async (req,res)=>{
 }
 
 
+const productReturn = async(req,res)=>{
+  try{
+    console.log('entered in product return');
+    const orderId = req.body.orderid
+    const returnAmout = req.body.totalPrice
+    const returnReason = req.body.reason
+    const amount = parseInt(returnAmout)
+    const orderData = await orderDb.findOne({_id:orderId})
+    const products = orderData.products
+    const userData = await userDb.findOne({})
+    let totalWalletBalance = userData.wallet + amount
+
+    const result = await userDb.findByIdAndUpdate(
+      {_id:req.session.user_id},
+      {
+        $inc:{wallet:amount},
+        $push:{
+          walletHistory:{
+            transactionDate: new Date(),
+            transactionAmount: amount,
+            transactionDetails: "Returned Product Amount Credited.",
+            transactionType:"credit",
+            currentBalance:totalWalletBalance
+          },
+        },
+      },
+      {new: true}
+    );
+    
+    if(result){
+      const updatedData = await orderDb.updateOne(
+        {_id:orderId},
+        {$set:{"products.$[].returnOrderStatus.reason":returnReason , "products.$[].OrderStatus":"Returned","products.$[].statusLevel":6 }}
+      )
+      if(updatedData){
+        for(i=0 ; i<products.length; i++){
+          const productId = products[i].productId;
+          const quantity = products[i].quantity;
+          await productDb.findByIdAndUpdate(
+            {_id:productId},
+            {$inc:{quantity:quantity}}
+          )
+        }
+        res.redirect('/orders')
+      }else{
+        console.log('order Not Updated');
+      }
+    }else{
+      console.log('user not found');
+    }
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
 
 
 
@@ -577,7 +637,8 @@ module.exports={
     loadCheckoutEditAddress,
     editCheckoutAddress,
     cancelOrder,
-    verifyPayment
+    verifyPayment,
+    productReturn
     
 
 }

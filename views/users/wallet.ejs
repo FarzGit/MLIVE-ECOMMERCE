@@ -91,7 +91,7 @@
         if( !amount ) {
             e.preventDefault()
         }
-        if( amount < 0 ) {
+        if( amount <= 0 ) {
             e.preventDefault()
             err.innerHTML = 'Amount cannot be negative!'
         }

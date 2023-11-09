@@ -715,6 +715,7 @@ const postAddMoneyToWallet = async(req,res)=>{
 
 
   instance.orders.create(options, (err, order) => {
+    console.log("oreder is :",order);
     if(err){
         res.json({status: false})
     }else{
