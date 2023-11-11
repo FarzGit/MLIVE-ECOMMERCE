@@ -162,6 +162,7 @@ const placeOrder = async(req,res)=>{
     const userId = req.session.user_id
     const address = req.body.address
     const cartData = await cartDb.findOne({user: userId})
+    // const cartProducts = cartData.products
     // const products = cartData.products
     const total = parseInt(req.body.total)
     // console.log("total is :",total);
@@ -172,6 +173,10 @@ const placeOrder = async(req,res)=>{
     const uniNum = Math.floor(Math.random() * 900000) + 100000;
     const status = paymentMethod === "COD" ? "placed" : "pending";
     const statusLevel = status === "placed" ? 1: 0;
+    const walletBalance = userData.wallet
+    let totalWalletBalance = userData.wallet - total
+    const productId = req.query.productId;
+
 
     
 
@@ -246,8 +251,55 @@ const placeOrder = async(req,res)=>{
         res.json({order})
     })
 
+    }else if(paymentMethod === 'wallet'){
+
+      if(walletBalance >= totalAmount){
+        const result = await userDb.findOneAndUpdate(
+          {_id:userId},
+          {
+            $inc:{wallet: -totalAmount},
+            $push:{
+
+              walletHistory:{
+                transactionDate: new Date(),
+                transactionAmount: total,
+                transactionDetails: "Purchased Product Amount .",
+                transactionType:"Debit",
+                currentBalance:totalWalletBalance
+              },
+
+            }
+          },{new:true}
+        )
+     log("oderid :",orderId)
+       const orderUpdate= await orderDb.findByIdAndUpdate(
+          { _id: orderId },
+          { $set: { "products.$[].paymentStatus": "success" } }
+          
+        );
+
+        // log("orderUpdate:",orderUpdate)
+        if(result){
+          const updated = await cartDb.deleteOne({ user: req.session.user_id });
+            for (let i = 0; i < cartProducts.length; i++) {
+              const productId = cartProducts[i].productId;
+              const quantity = cartProducts[i].quantity;
+              await productDb.findOneAndUpdate(
+                { _id: productId },
+                { $inc: { quantity: -quantity } }
+              );
+            }
+            res.json({ success: true, orderid });
+            log("updated:",updated)
+        }
+        
+      }else{
+        res.json({ walletFailed: true });
+      }
+
+
     }
-    console.log("end of online payment");
+    
     
       }
       
@@ -279,7 +331,7 @@ const verifyPayment = async(req,res)=>{
         details.payment.razorpay_payment_id
     );
     const hmacValue = hmac.digest("hex");
-    // console.log("hmacValue",hmacValue);
+    console.log("hmacValue",hmacValue);
 
     if (hmacValue === details.payment.razorpay_signature) {
       // console.log('jjj',hmacValue === details.payment.razorpay_signature);
@@ -521,43 +573,98 @@ const editCheckoutAddress = async(req,res)=>{
 }
 
 const cancelOrder = async (req,res)=>{
-  console.log('hi');
   try {
-    const { orderId, productId } = req.body;
-    // orderId = orderId.toString
-    console.log(orderId);
 
-    const order = await orderDb.findById(orderId);
+    const orderId = req.query.orderid
+    const userId = req.session.user_id
+    const cancelReason = req.body.reason
+    const cancelAmount = req.body.totalPrice
+    const amount = parseInt(cancelAmount)
+    const orderData = await orderDb.findOne({_id : orderId})
+    const products = orderData.products
+    const userData = await userDb.findOne({})
+    let totalWalletBalance = userData.wallet + amount
+    const productIdToCancel = req.query.productId;
 
-    // console.log(order);
+    log("productId is :",productIdToCancel)
 
-    if (!order) {
-      return res.status(404).json({ message: "Order not found." });
+    
+
+    // log(products[0].paymentStatus)
+    // log("orderId is :",orderId)
+    // log("userId is :",userId)
+    // log("reason is :",cancelReason)
+    // log("cancelAmount is :",cancelAmount)
+
+    if(orderData.paymentMethod !== 'COD' && products[0].paymentStatus !== 'pending'){
+      const refundOption = "" + req.body.refundOption;
+      log(" out entered")
+      if(refundOption === 'Wallet'){
+        log("entered")
+          const user = await userDb.findById(userId)
+          const result = await userDb.findOneAndUpdate(
+            {_id:userId},
+            {
+              $inc:{wallet:amount},
+              $push:{
+                walletHistory:{
+                transactionDate: new Date(),
+                transactionAmount: amount,
+                transactionDetails: "Cancelled Product Amount Credited",
+                transactionType:"Credit",
+                currentBalance:totalWalletBalance
+                }
+              }
+            },
+            {new:true}
+          )
+          if(result){
+
+            const updatedData = await orderDb.updateOne(
+              {_id:orderId , "products.productId": productIdToCancel },
+              {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0 }}
+            )
+            log(updatedData)
+
+            if(updatedData){
+              for(i=0 ; i<products.length; i++){
+                const productId = products[i].productId;
+                const quantity = products[i].quantity;
+                await productDb.findByIdAndUpdate(
+                  {_id:productId},
+                  {$inc:{quantity:quantity}}
+                )
+              }
+              res.redirect('/orders')
+            }
+
+          }
+      }
+
+    }else if (orderData.paymentMethod === 'COD' || products[0].paymentStatus !== 'pending'){
+
+      const updatedData = await orderDb.updateOne(
+        {_id:orderId},
+        {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0 }}
+      )
+      if(updatedData){
+        for(i=0 ; i<products.length; i++){
+          const productId = products[i].productId;
+          const quantity = products[i].quantity;
+          await productDb.findByIdAndUpdate(
+            {_id:productId},
+            {$inc:{quantity:quantity}}
+          )
+        }
+        res.redirect('/orders')
+      }
+
     }
 
-    // Find the product within the order by its ID (using .toString() for comparison)
-    const productInfo = order.products.find(
-      (product) => product.productId.toString() === productId
-    );
-    console.log(productInfo);
-    productInfo.OrderStatus = "Cancelled";
-    productInfo.updatedAt = Date.now()
-    const result = await order.save();
+    
 
-    const quantity = productInfo.quantity
-    // console.log("quantity",quantity);
-    const proId = productInfo.productId
-    // console.log("proId",proId);
 
-    const updateQuantity = await productDb.findOneAndUpdate(
-      {_id:proId},
-      {$inc:{quantity:quantity}}
-    )
-
-    console.log(updateQuantity);
-
-    // console.log(result);
-    res.json({ cancel: 1 });
+    
   } catch (error) {
     console.log(error.message);
   }
@@ -567,14 +674,19 @@ const cancelOrder = async (req,res)=>{
 const productReturn = async(req,res)=>{
   try{
     console.log('entered in product return');
-    const orderId = req.body.orderid
+    const orderId = req.query.orderid
+    log("orderId is:",orderId)
     const returnAmout = req.body.totalPrice
     const returnReason = req.body.reason
     const amount = parseInt(returnAmout)
     const orderData = await orderDb.findOne({_id:orderId})
+    log("orderData is :",orderData)
     const products = orderData.products
     const userData = await userDb.findOne({})
     let totalWalletBalance = userData.wallet + amount
+    const productIdToCancel = req.query.productId;
+
+    log("productId is :",productIdToCancel)
 
     const result = await userDb.findByIdAndUpdate(
       {_id:req.session.user_id},
@@ -585,7 +697,7 @@ const productReturn = async(req,res)=>{
             transactionDate: new Date(),
             transactionAmount: amount,
             transactionDetails: "Returned Product Amount Credited.",
-            transactionType:"credit",
+            transactionType:"Credit",
             currentBalance:totalWalletBalance
           },
         },
@@ -595,8 +707,8 @@ const productReturn = async(req,res)=>{
     
     if(result){
       const updatedData = await orderDb.updateOne(
-        {_id:orderId},
-        {$set:{"products.$[].returnOrderStatus.reason":returnReason , "products.$[].OrderStatus":"Returned","products.$[].statusLevel":6 }}
+        {_id:orderId, "products.productId": productIdToCancel },
+        {$set:{"products.$.returnOrderStatus.reason":returnReason , "products.$.OrderStatus":"Returned","products.$.statusLevel":6 }}
       )
       if(updatedData){
         for(i=0 ; i<products.length; i++){

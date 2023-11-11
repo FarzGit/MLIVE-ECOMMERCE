@@ -61,6 +61,15 @@ const orderSchema = new mongoose.Schema({
         }
         
       },
+      cancelOrderStatus:{
+        status:{
+          type:String
+        },
+        reason:{
+          type:String
+        }
+        
+      },
      
       
       updatedAt:{

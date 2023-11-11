@@ -335,7 +335,17 @@
             if (response.success === true) {
               
               window.location.href =  `/orderPlaced/${response.orderid}`
-            } else {
+            }else if(response.walletFailed == true){
+              swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Insufficient Balance In Your Wallet",
+            showConfirmButton: false,
+            showCancelButton: false,
+            timer: 1500,
+          });
+
+            }else {
               razorPayment(response.order)
             }
           }

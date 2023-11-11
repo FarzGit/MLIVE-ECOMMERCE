@@ -2,8 +2,11 @@ const adminDb = require("../models/adminModel");
 const categoryDb = require("../models/categoryModel");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const orderDb = require("../models/orderModel")
-const productDb = require("../models/productModel")
+const orderDb = require("../models/orderModel");
+const productDb = require("../models/productModel");
+
+
+// =======================================================loadAdminLoginPage================================================================
 
 const loadAdminLogin = async (req, res) => {
   try {
@@ -12,6 +15,9 @@ const loadAdminLogin = async (req, res) => {
     log(error);
   }
 };
+
+// =======================================================Verify Admin Login================================================================
+
 
 const verifyAdminLogin = async (req, res) => {
   try {
@@ -34,6 +40,10 @@ const verifyAdminLogin = async (req, res) => {
   }
 };
 
+
+// =======================================================rendering the admin home================================================================
+
+
 const loadAdminHome = async (req, res) => {
   try {
     res.render("adminHome");
@@ -42,15 +52,16 @@ const loadAdminHome = async (req, res) => {
   }
 };
 
+// =======================================================rendering the category page================================================================
+
+
+
 const loadCategoryPage = async (req, res) => {
   try {
-
-
     const perPage = 5; // Number of products per page
     let page = parseInt(req.query.page) || 1;
     const totalProducts = await categoryDb.countDocuments({});
     const totalPages = Math.ceil(totalProducts / perPage);
-
 
     if (page < 1) {
       page = 1;
@@ -63,19 +74,22 @@ const loadCategoryPage = async (req, res) => {
       .skip((page - 1) * perPage)
       .limit(perPage);
 
-   
-
-    res.render("Category", { 
-      categoryData: categoryDetails ,
+    res.render("Category", {
+      categoryData: categoryDetails,
       currentPage: page,
       pages: totalPages,
-    
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 };
+
+
+
+// =======================================================rendering the addCategory page================================================================
+
+
 
 const loadAddCategory = async (req, res) => {
   try {
@@ -84,6 +98,10 @@ const loadAddCategory = async (req, res) => {
     console.log(error);
   }
 };
+
+
+// =======================================================posting category ================================================================
+
 
 const addCategory = async (req, res) => {
   try {
@@ -114,6 +132,9 @@ const addCategory = async (req, res) => {
   }
 };
 
+// =======================================================rendering the editCategory================================================================
+
+
 const loadEditCategory = async (req, res) => {
   try {
     const id = req.query.id;
@@ -126,6 +147,9 @@ const loadEditCategory = async (req, res) => {
     console.log(error);
   }
 };
+
+// =======================================================post the editCategory================================================================
+
 
 const editCategory = async (req, res) => {
   try {
@@ -144,6 +168,9 @@ const editCategory = async (req, res) => {
     console.log(error);
   }
 };
+
+// ============================================list or unlist the category ===========================================================================
+
 
 const listOrNot = async (req, res) => {
   try {
@@ -189,18 +216,17 @@ const getAllUserData = async (req, res) => {
 const blockUnblock = async (req, res) => {
   try {
     const id = req.query.id;
-    const user = await User.findById(id);                                         
+    const user = await User.findById(id);
     console.log("user id is : ", user);
 
     const userData = await User.findById({ _id: id });
 
     if (userData.is_blocked === true) {
       await User.updateOne({ _id: id }, { $set: { is_blocked: false } });
-      
     }
-    if(user){
-      if(req.session.user_id === id){
-        req.session.user_id = null
+    if (user) {
+      if (req.session.user_id === id) {
+        req.session.user_id = null;
       }
     }
     if (userData.is_blocked === false) {
@@ -219,8 +245,7 @@ const blockUnblock = async (req, res) => {
   }
 };
 
-
-const loaduserOrders = async(req,res)=>{
+const loaduserOrders = async (req, res) => {
   try {
     const orders = await orderDb.find();
 
@@ -230,13 +255,11 @@ const loaduserOrders = async(req,res)=>{
       for (const productInfo of order.products) {
         const productId = productInfo.productId;
 
-        const product = await productDb.findById(productId).select(
-          "productName images price"
-        );
-        const userDetails = await User.findById(order.userId).select(
-          "email"
-        );
-        
+        const product = await productDb
+          .findById(productId)
+          .select("productName images price");
+        const userDetails = await User.findById(order.userId).select("email");
+
         if (product) {
           // Push the order details with product details into the array
           productWiseOrdersArray.push({
@@ -245,12 +268,12 @@ const loaduserOrders = async(req,res)=>{
             orderDetails: {
               _id: order._id,
               userId: order.userId,
-              deliveryDetails: order.deliveryDetails  ,
+              deliveryDetails: order.deliveryDetails,
               date: order.date,
               totalAmount: productInfo.quantity * product.price,
               OrderStatus: productInfo.OrderStatus,
               StatusLevel: productInfo.statusLevel,
-              paymentStatus:productInfo.paymentStatus,
+              paymentStatus: productInfo.paymentStatus,
               paymentMethod: order.paymentMethod,
               quantity: productInfo.quantity,
             },
@@ -258,18 +281,17 @@ const loaduserOrders = async(req,res)=>{
         }
       }
     }
-    
+
     res.render("userOrders", { orders: productWiseOrdersArray });
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
-const adminOrderFullDetails = async (req,res)=>{
+const adminOrderFullDetails = async (req, res) => {
   try {
-
     const { orderId, productId } = req.query;
-  
+
     const order = await orderDb.findById(orderId);
 
     // if (!order) {
@@ -280,10 +302,10 @@ const adminOrderFullDetails = async (req,res)=>{
     const productInfo = order.products.find(
       (product) => product.productId.toString() === productId
     );
-    const product = await productDb.findById(productId).select(
-      "productName image price"
-    );
-    
+    const product = await productDb
+      .findById(productId)
+      .select("productName image price");
+
     const productOrder = {
       orderId: order._id,
       product: product,
@@ -300,14 +322,16 @@ const adminOrderFullDetails = async (req,res)=>{
         quantity: productInfo.quantity,
       },
     };
-  
-    res.render("orderFullDetails", { product: productOrder, orderId, productId });
+
+    res.render("orderFullDetails", {
+      product: productOrder,
+      orderId,
+      productId,
+    });
   } catch (error) {
     console.log(error.message);
   }
-}
-
-
+};
 
 const changeOrderStatus = async (req, res) => {
   try {
@@ -340,7 +364,7 @@ const changeOrderStatus = async (req, res) => {
     const result = await order.save();
 
     console.log(result);
-  
+
     res.redirect(
       `/admin/orderFullDetails?orderId=${orderId}&productId=${productId}`
     );
@@ -348,9 +372,6 @@ const changeOrderStatus = async (req, res) => {
     console.log(error.message);
   }
 };
-
-
-
 
 const adminCancelOrder = async (req, res) => {
   try {
@@ -374,7 +395,9 @@ const adminCancelOrder = async (req, res) => {
 
       return res.json({ cancel: 1, message: "Order successfully cancelled" });
     } else {
-      return res.status(404).json({ message: "Product not found in the order." });
+      return res
+        .status(404)
+        .json({ message: "Product not found in the order." });
     }
   } catch (error) {
     console.log(error.message);
@@ -382,14 +405,9 @@ const adminCancelOrder = async (req, res) => {
   }
 };
 
-
-
-
-
-
 const adminLogout = async (req, res) => {
   try {
-    req.session.admin_id=false
+    req.session.admin_id = false;
     res.redirect("/admin");
   } catch (error) {
     console.log(error);
@@ -412,5 +430,5 @@ module.exports = {
   loaduserOrders,
   adminOrderFullDetails,
   changeOrderStatus,
-  adminCancelOrder
+  adminCancelOrder,
 };
