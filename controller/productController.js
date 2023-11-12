@@ -6,7 +6,7 @@ const sharp = require('sharp')
 const path = require("path");
 const { log } = require('console')
 
-const {ObjectId} = require('mongodb')
+const { ObjectId } = require("mongodb")
 
 
 
@@ -30,7 +30,7 @@ const loadProducts = async (req, res) => {
       .limit(perPage)
       
 
-    console.log('products', products);
+    // console.log('products', products);
 
     res.render('Products', {
       product: products,
@@ -48,14 +48,14 @@ const loadProducts = async (req, res) => {
 const loadAdminProductDetails = async(req,res)=>{
   try{
 
-    console.log(" entered into the productdetails  ")
+    // console.log(" entered into the productdetails  ")
 
     const id =  req.query.id
 
     console.log("id is :",id);
 
     const product = await productDb.findById({_id:id})
-    console.log(product);
+    // console.log(product);
 
     res.render('adminViewProductDetails',{product:product})
     
@@ -91,6 +91,8 @@ const loadAdminProductDetails = async(req,res)=>{
       const quantity = req.body.quantity
       const brand = req.body.brand
 
+    
+
       const image =[]
 
       for(i = 0; i < req.files.length; i++){
@@ -112,8 +114,8 @@ const loadAdminProductDetails = async(req,res)=>{
       
    
       const result = await newProduct.save()
-      console.log('result'+result);
-      console.log(result);
+      // console.log('result'+result);
+      // console.log(result);
       res.redirect('/admin/Product')
 
   }catch(error){
@@ -131,7 +133,7 @@ const loadEditProduct = async (req, res) => {
     const cartData = await categoryDb.find();
      
     const product = await productDb.findById({ _id: id })
-        console.log(product);
+        // console.log(product);
 
         res.render('editProduct', { product,cartData})
 
@@ -143,9 +145,9 @@ const loadEditProduct = async (req, res) => {
 
 const editProduct = async (req,res)=>{
   try{
-           console.log(req.body);
+          //  console.log(req.body);
      const id = req.body.id
-     console.log(id);
+    //  console.log(id);
     
     const productName = req.body.productName
       const category = req.body.category
@@ -171,7 +173,7 @@ const editProduct = async (req,res)=>{
           brand:brand,
           image:image
         }})
-        console.log(req.body);
+        // console.log(req.body);
 
         if(result){
           res.redirect('/admin/Product')

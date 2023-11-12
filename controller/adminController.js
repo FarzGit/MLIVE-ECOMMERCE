@@ -4,6 +4,246 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const orderDb = require("../models/orderModel");
 const productDb = require("../models/productModel");
+const { findIncome, countSales, findSalesData, findSalesDataOfYear, findSalesDataOfMonth, formatNum } = require('../helpers/orderHelper')
+
+
+
+
+// =======================================================rendering the admin home================================================================
+
+
+const loadAdminHome = async (req, res) => {
+  try {
+
+    const today = new Date();
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const firstDayOfPreviousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const jan1OfTheYear =  new Date(today.getFullYear(), 0, 1);
+
+    const totalIncome = await findIncome()
+    const thisMonthIncome = await findIncome(firstDayOfMonth)
+    const thisYearIncome = await findIncome(jan1OfTheYear)
+
+    const totalUsersCount = formatNum(await User.find({}).count())
+    const usersOntheMonth = formatNum(await User.find({updatedAt:{$gte: firstDayOfMonth}}).count())
+
+    const totalSalesCount = formatNum(await countSales()) 
+    const salesOnTheYear = formatNum(await countSales(jan1OfTheYear)) 
+    const salesOnTheMonth = formatNum(await countSales(firstDayOfMonth)) 
+    const salesOnPrevMonth = formatNum(await countSales( firstDayOfPreviousMonth, firstDayOfPreviousMonth ))
+
+    let salesYear = 2023 
+    // console.log(req.query.salesYear);  
+    if(req.query.salesYear){
+      salesYear = parseInt(req.query.salesYear)
+    }
+
+    if(req.query.year){
+      salesYear = parseInt(req.query.year)
+      displayValue = req.query.year
+      xDisplayValue = 'Months'
+    }
+
+    let monthName = ''
+        if(req.query.month){
+            salesMonth = 'Weeks',
+            monthName = getMonthName(req.query.month)
+            displayValue = `${salesYear} - ${monthName}`
+        }
+
+        const totalYears = await orderDb.aggregate([
+          {$group:{_id:{createdAt:{$dateToString:{format: '%Y', date: '$createdAt'}}}}},
+          { $sort: {'_id:createdAt': -1 }}
+        ])
+
+
+        const displayYears =[]
+
+        totalYears.forEach((year)=>{
+          displayYears.push(year._id.createdAt)
+        })
+
+
+        console.log("displayYears",displayYears);
+
+
+
+
+        let orderData
+        
+        if(req.query.year && req.query.month){
+          orderData = await findSalesDataOfMonth(salesYear, req.query.month)
+          console.log("///\\\\ :",orderData);
+        }else if(req.query.year && !req.query.month){
+          orderData = await findSalesDataOfYear(salesYear)
+        }else{
+          orderData = await findSalesData()
+        }
+
+        let months =[]
+        let sales = []
+       
+
+        if(req.query.year && req.query.month){
+          // console.log("entered")
+
+          orderData.forEach((year) => { months.push(`Week ${year._id.weekNumber}`) })
+          orderData.forEach((sale) => { sales.push(Math.round(sale.sales)) })
+
+      }else if(req.query.year && !req.query.month){
+
+          orderData.forEach((month) => {months.push(getMonthName(month._id.createdAt))})
+          orderData.forEach((sale) => { sales.push(Math.round(sale.sales))})
+
+      }else{
+
+          orderData.forEach((year) => { months.push(year._id.createdAt) })
+          orderData.forEach((sale) => { sales.push(Math.round(sale.sales)) })
+
+      }
+
+
+      console.log("sales is :",sales);
+      console.log("months is :",months);
+      let totalSales = sales.reduce((acc,curr) => acc += curr , 0)
+      // console.log("totalSale is:",totalSales)
+
+      let categories = []
+      let categorySales = []
+
+      const categoryData = await orderDb.aggregate([
+                      {$match:{"products.OrderStatus":"Delivered"}},
+                      {$unwind:"$products"},
+                      {
+                        $lookup:{
+                            from: 'products', 
+                            localField: 'products.productId',
+                            foreignField: '_id',
+                            as: 'populatedProduct'
+                        }
+                      },
+                      {
+                        $unwind: '$populatedProduct'
+                      },
+                      {
+                        $lookup: {
+                            from: 'categories', 
+                            localField: 'populatedProduct.category',
+                            foreignField: '_id',
+                            as: 'populatedCategory'
+                        }
+                    },
+                    {
+                      $unwind: '$populatedCategory'
+                    },
+                    {
+                      $group: {
+                          _id: '$populatedCategory.name', sales: { $sum: '$totalAmount' } // Assuming 'name' is the field you want from the category collection
+                      }
+                  }
+
+
+
+
+      ]);
+
+      // console.log("categoryData is :",categoryData);
+
+     
+
+
+      categoryData.forEach((cat) => {
+        categories.push(cat._id),
+        categorySales.push(cat.sales)
+    })
+
+    // console.log("categorySales:", categorySales)
+    // console.log("categories:", categories)
+
+
+    let paymentData = await orderDb.aggregate([
+      { 
+          $unwind: "$products" }, // unwind the products array
+      { 
+          $match: { 
+              "products.OrderStatus": "Delivered", 
+              paymentMethod: { $exists: true } 
+          }
+      },
+      { 
+          $group: { 
+              _id: '$paymentMethod', 
+              count: { $sum: 1 }
+          }
+      }
+  ]);
+
+  // console.log("paymentData:",paymentData);
+
+        let paymentMethods = []
+        let paymentCount = []
+
+        paymentData.forEach((data) => {
+          paymentMethods.push(data._id)
+          paymentCount.push(data.count)
+      })
+
+
+
+      let orderDataToDownload = await orderDb.find({ "products.OrderStatus": "Delivered" }).sort({ createdAt: 1 }).populate('products.productId');
+      if(req.query.fromDate && req.query.toDate){
+        const { fromDate, toDate } = req.query
+        orderDataToDownload = await orderDb.find({ "products.OrderStatus": "Delivered", createdAt: { $gte: fromDate, $lte: toDate }}).sort({ createdAt: 1 })
+
+    }
+
+
+    res.render("adminHome",{
+      totalUsersCount, 
+      usersOntheMonth,
+      totalSalesCount,
+      salesOnTheYear,
+      totalIncome,
+      thisMonthIncome,
+      thisYearIncome,
+      salesOnTheMonth,
+      salesOnPrevMonth,
+      salesYear,
+      displayYears,
+      totalSales,
+      months,
+      sales,
+      categories,
+      categorySales,
+      paymentMethods,
+      paymentCount,
+      orderDataToDownload
+
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+function getMonthName(monthNumber) {
+
+  if(typeof monthNumber === 'string'){
+      monthNumber = parseInt(monthNumber)
+  }
+
+  if (monthNumber < 1 || monthNumber > 12) {
+      return "Invalid month number";
+  }
+
+  const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+  ];
+  
+  return monthNames[monthNumber - 1];
+}
 
 
 // =======================================================loadAdminLoginPage================================================================
@@ -41,16 +281,7 @@ const verifyAdminLogin = async (req, res) => {
 };
 
 
-// =======================================================rendering the admin home================================================================
 
-
-const loadAdminHome = async (req, res) => {
-  try {
-    res.render("adminHome");
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 // =======================================================rendering the category page================================================================
 

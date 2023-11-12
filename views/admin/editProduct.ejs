@@ -58,7 +58,7 @@
                       <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
                       <select name="category" class="form-control form-style" required>
                         <% for(i in cartData){%>
-                          <option <% if(product.category==cartData[i].name ){%>selected<%}%>
+                          <option value="<%=cartData[i]._id%>" <% if(product.category==cartData[i].name ){%>selected<%}%>
                               <% if(cartData[i].is_active==false) {%>
                                 disabled
                                 <%}%>

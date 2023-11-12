@@ -74,7 +74,7 @@
                                       <% if (product.orderDetails.OrderStatus !== "Returned") { %>
 
                                       <% if (product.orderDetails.OrderStatus !== "Cancelled") { %>
-                                        <button data-bs-toggle="modal" data-bs-target="#modCancel" class="btn btn-danger p-3" style="background-color: red;">Cancel Order</button>
+                                        <button data-bs-toggle="modal" data-bs-target="#cancelAdmin" class="btn btn-danger p-3" style="background-color: red;">Cancel Order</button>
                                       <% }else{%>
                                         <h5 class="text-danger fw-300">Canceled</h5>
                                      <% } %>
@@ -196,7 +196,7 @@
 
 
 
-     <div class="modal fade" id="modCancel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="cancelAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content" style="background-color: #edf7ff;">
               <div class="modal-header">

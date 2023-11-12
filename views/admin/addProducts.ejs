@@ -61,7 +61,7 @@
                         <option   selected>Select Category</option>
                         <span class="error" style="color: red;"></span>
                         <% for(let i=0;i< cartData.length;i++){ %>
-                        <option>
+                        <option  value="<%=cartData[i]._id%>">
                           <%= cartData[i].name %>
                         </option>
                         <% } %>
