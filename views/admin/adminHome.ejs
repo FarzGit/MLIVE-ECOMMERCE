@@ -512,67 +512,62 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   var salesPerMonthElements = document.getElementById('salesData').innerHTML;
-  var salesData = salesPerMonthElements.split(',')
+  var salesData = salesPerMonthElements.split(',').map(Number);
 
   var salesMonths = document.getElementById('monthData').innerHTML;
   var monthData = salesMonths.split(',');
 
+  let yearOfSale = document.getElementById('salesYear').textContent;
 
-  let yearOfSale = document.getElementById('salesYear').textContent
-
-
-  console.log("salesPerMonthElements :",salesPerMonthElements)
-  console.log("salesMonths :",salesMonths)
-  console.log("yearOfSale :",yearOfSale)
-
-  
-
+  console.log("salesData:", salesData);
+  console.log("monthData:", monthData);
+  console.log("yearOfSale:", yearOfSale);
 
   var options = {
-      series: [{
-          name: "Sales",
-          data: salesData
-
-      }],
-      chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-              enabled: false
-          }
-      },
-      dataLabels: {
-          enabled: false
-      },
-      stroke: {
-          curve: 'straight'
-      },
-      title: {
-          text: `Sales of the each month in year ${yearOfSale}`,
-          align: 'left'
-      },
-      grid: {
-          row: {
-              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-              opacity: 0.5
-          },
-      },
-      xaxis: {
-          categories: monthData,
-          title: {
-              text: 'months'
-          }
-      },
-      yaxis: {
-          title: {
-              text: 'sales'
-          }
+    series: [{
+      name: "Sales",
+      data: salesData
+    }],
+    chart: {
+      height: 350,
+      type: 'line',
+      zoom: {
+        enabled: false
       }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight'
+    },
+    title: {
+      text: `Sales of the each month in year ${yearOfSale}`,
+      align: 'left'
+    },
+    grid: {
+      row: {
+        colors: ['#f3f3f3', 'transparent'],
+        opacity: 0.5
+      },
+    },
+    xaxis: {
+      categories: monthData,
+      title: {
+        text: 'months'
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'sales'
+      }
+    }
   };
 
   var chart = new ApexCharts(document.querySelector("#chart"), options);
   chart.render();
 });
+
 </script>
 
 

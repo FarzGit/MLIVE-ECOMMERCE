@@ -135,7 +135,7 @@ const addToCart = async (req, res) => {
             // console.log("stockAvailale",stockAvailale.quantity);
             
             if(stockAvailale.quantity < quantity + count){
-                res.json({changeSuccess:true})
+                res.json({ changeSuccess: false, check: true })
                 return;
             }else{
                 await cartDb.updateOne(

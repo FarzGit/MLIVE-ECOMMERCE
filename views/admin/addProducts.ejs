@@ -9,6 +9,30 @@
     border-radius: 5px;
     margin-left: 15px;
   }
+
+  .image-preview-container {
+    position: relative;
+    margin-top: 10px;
+  }
+
+  .image-preview {
+    width: 100%;
+    height: auto;
+    max-height: 200px; /* Set a maximum height for the preview */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .delete-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: none;
+  }
 </style>
 
 <body class="g-sidenav-show bg-gray-200">
@@ -100,16 +124,12 @@
                         <div class="col-lg-12 col-md-6 rounded-image-preview">
                           <label class="upload__btn ms-3">
                             <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
-                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
+                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile">
                             <span class="error" style="color: red; margin-left: 15px; font-size: 10px;"></span>
                           </label>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>  
+                        <div class="image-preview-wrapper" style="width:250px; height:250px; display: flex; flex-direction: row;"></div>
 
-                <div class="d-flex justify-content-center">
                   <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add Product</button>
                 </div>
               </form>
@@ -130,7 +150,59 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
-  
+  $(document).ready(function () {
+    // Function to update image preview
+    function readURL(input) {
+      if (input.files) {
+        var files = input.files;
+        for (var i = 0; i < files.length; i++) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            var imagePreview = '<div class="image-preview-container">' +
+                                '<img class="image-preview" src="' + e.target.result + '" alt="Image Preview">' +
+                                '<button class="delete-image-btn" onclick="deleteImage(this)">Delete</button>' +
+                                '</div>';
+            $('.image-preview-wrapper').append(imagePreview);
+          }
+          reader.readAsDataURL(files[i]);
+        }
+      }
+    }
+
+    // Update image preview when files are selected
+    $("#formFile").change(function () {
+      $('.image-preview-wrapper').empty(); // Clear existing previews
+      readURL(this);
+    });
+
+    // Show/hide delete button on hover
+    $(document).on('mouseenter', '.image-preview-container', function() {
+      $(this).find('.delete-image-btn').show();
+    }).on('mouseleave', '.image-preview-container', function() {
+      $(this).find('.delete-image-btn').hide();
+    });
+
+    // Function to delete individual image
+    window.deleteImage = function (btn) {
+      var container = $(btn).parent('.image-preview-container');
+      var fileName = container.find('img').attr('src');
+      
+      // Update the input field by removing the corresponding file
+      var fileInput = $('#formFile')[0];
+      var files = fileInput.files;
+      for (var i = 0; i < files.length; i++) {
+        if (files[i].name === fileName) {
+          var newFiles = Array.from(files);
+          newFiles.splice(i, 1);
+          fileInput.files = newFiles;
+          break;
+        }
+      }
+      
+      // Remove the image preview container
+      container.remove();
+    };
+  });
 </script>
   
     

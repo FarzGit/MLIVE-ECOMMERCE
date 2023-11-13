@@ -102,9 +102,12 @@ const loadAdminHome = async (req, res) => {
 
       }
 
+        
 
-      console.log("sales is :",sales);
-      console.log("months is :",months);
+
+      console.log("orderData:", orderData);
+      console.log("sales is:", sales);
+      console.log("months is:", months);
       let totalSales = sales.reduce((acc,curr) => acc += curr , 0)
       // console.log("totalSale is:",totalSales)
 

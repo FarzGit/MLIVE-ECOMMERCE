@@ -38,6 +38,8 @@
           <div class="col-lg-9">
             <table class="table table-cart table-mobile">
               <thead>
+                <% if (cart && cart.length > 0) { %> <% cart.forEach((data) => {
+                  %>
                 <tr>
                   <th class="d-flex align-items-center justify-content-center">Product</th>
                   <th >Price</th>
@@ -48,8 +50,7 @@
               </thead>
 
               <tbody>
-                <% if (cart && cart.length > 0) { %> <% cart.forEach((data) => {
-                %>
+               
                 <tr>
                   <td class="product-col">
                     <div class="product">
@@ -100,10 +101,12 @@
               </tbody>
               <% }); %> <% }else{%>
                 
-                cart is empty
+                <h1 class="d-flex justify-content-center">CART IS EMPTY</h1>
               
               <%}%>
+             
             </table>
+           
 
             <!-- <div class="cart-bottom">
                                 <div class="cart-discount">
@@ -121,6 +124,7 @@
                             </div> -->
           </div>
           <aside class="col-lg-3">
+            <% if (cart && cart.length > 0){%>
             <div class="summary summary-cart">
               <h3 class="summary-title">Cart Total</h3>
 
@@ -176,21 +180,23 @@
                   </tr>
                 </tbody>
               </table>
+              
+              <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block" >PROCEED TO CHECKOUT</a>
+              <%}%>
 
-              <a
-                href="/checkout"
-                class="btn btn-outline-primary-2 btn-order btn-block"
-                >PROCEED TO CHECKOUT</a>
             </div>
 
             <a href="/shop" class="btn btn-outline-dark-2 btn-block mb-3"
               ><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i
             ></a>
           </aside>
+         
         </div>
+       
       </div>
     </div>
   </div>
+ 
 </main>
 
 
@@ -234,49 +240,49 @@
     }
 
     $.ajax({
-        url: '/cart-quantity',
-        method: 'post',
-        encoded: true,
-        data: {
-            product: productId,
-            user: userId,
-            count: count,
-            quantity: quantity
+    url: '/cart-quantity',
+    method: 'post',
+    encoded: true,
+    data: {
+        product: productId,
+        user: userId,
+        count: count,
+        quantity: quantity
+    }
+}).done(data => {
+    if (data.changeSuccess) {
+        const newQuantity = quantity + count;
+        quantityElement.innerText = newQuantity;
+
+        // Enable the "minus" button if the quantity is greater than 0
+        const minusButton = quantityElement.previousElementSibling;
+        if (newQuantity <= 0) {
+            minusButton.style.pointerEvents = 'none';
+            minusButton.style.opacity = 0.5;
+        } else {
+            minusButton.style.pointerEvents = 'auto';
+            minusButton.style.opacity = 1;
         }
-    }).done(data => {
-        if (data) {
-            const newQuantity = quantity + count;
-            quantityElement.innerText = newQuantity;
 
-            // Enable the "minus" button if the quantity is greater than 0
-            const minusButton = quantityElement.previousElementSibling;
-            if (newQuantity <= 0) {
-                minusButton.style.pointerEvents = 'none';
-                minusButton.style.opacity = 0.5;
-            } else {
-                minusButton.style.pointerEvents = 'auto';
-                minusButton.style.opacity = 1;
-            }
-
-            $('#reloadDiv').load('/cart #reloadDiv');
-        }else if(data.check){
-            swal.fire({
+        $('#reloadDiv').load('/cart #reloadDiv');
+    } else if (data.check) {
+        // This block will execute if the product is out of stock
+        swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Out of stock",
           });
-        } 
-        
-        else {
-            swal.fire({
+    } else {
+        swal.fire({
             position: "center",
             icon: "warning",
             text: response.message,
             timer: 1500,
             showConfirmButton: false,
         });
-        }
-    });
+    }
+});
+
 }
   
 </script>

@@ -645,7 +645,7 @@ const cancelOrder = async (req,res)=>{
 
       const updatedData = await orderDb.updateOne(
         {_id:orderId},
-        {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0 }}
+        {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0  }}
       )
       if(updatedData){
         for(i=0 ; i<products.length; i++){
@@ -705,26 +705,51 @@ const productReturn = async(req,res)=>{
       {new: true}
     );
     
-    if(result){
+    if (result) {
+      let updateQuery;
+      if (orderData.paymentMethod === "COD") {
+        // Update logic for "cod" payment method
+        updateQuery = {
+          $set: {
+            "products.$.returnOrderStatus.reason": returnReason,
+            "products.$.OrderStatus": "Returned",
+            "products.$.statusLevel": 6,
+            "products.$.paymentStatus": "Refund",
+            // Add additional fields for cod payment method if needed
+          },
+        };
+      } else {
+        // Default update logic for other payment methods
+        updateQuery = {
+          $set: {
+            "products.$.returnOrderStatus.reason": returnReason,
+            "products.$.OrderStatus": "Returned",
+            "products.$.statusLevel": 6,
+            "products.$.paymentStatus": "Refund",
+          },
+        };
+      }
+
       const updatedData = await orderDb.updateOne(
-        {_id:orderId, "products.productId": productIdToCancel },
-        {$set:{"products.$.returnOrderStatus.reason":returnReason , "products.$.OrderStatus":"Returned","products.$.statusLevel":6, "products.$.paymentStatus": "Refund" }}
-      )
-      if(updatedData){
-        for(i=0 ; i<products.length; i++){
+        { _id: orderId, "products.productId": productIdToCancel },
+        updateQuery
+      );
+
+      if (updatedData) {
+        for (let i = 0; i < products.length; i++) {
           const productId = products[i].productId;
           const quantity = products[i].quantity;
           await productDb.findByIdAndUpdate(
-            {_id:productId},
-            {$inc:{quantity:quantity}}
-          )
+            { _id: productId },
+            { $inc: { quantity: quantity } }
+          );
         }
-        res.redirect('/orders')
-      }else{
-        console.log('order Not Updated');
+        res.redirect('/orders');
+      } else {
+        console.log('Order not updated');
       }
-    }else{
-      console.log('user not found');
+    } else {
+      console.log('User not found');
     }
 
   }catch(error){
