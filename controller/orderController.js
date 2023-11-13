@@ -622,7 +622,7 @@ const cancelOrder = async (req,res)=>{
 
             const updatedData = await orderDb.updateOne(
               {_id:orderId , "products.productId": productIdToCancel },
-              {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0 }}
+              {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0, "products.$.paymentStatus":"Refund" }}
             )
             log(updatedData)
 
@@ -708,7 +708,7 @@ const productReturn = async(req,res)=>{
     if(result){
       const updatedData = await orderDb.updateOne(
         {_id:orderId, "products.productId": productIdToCancel },
-        {$set:{"products.$.returnOrderStatus.reason":returnReason , "products.$.OrderStatus":"Returned","products.$.statusLevel":6 }}
+        {$set:{"products.$.returnOrderStatus.reason":returnReason , "products.$.OrderStatus":"Returned","products.$.statusLevel":6, "products.$.paymentStatus": "Refund" }}
       )
       if(updatedData){
         for(i=0 ; i<products.length; i++){

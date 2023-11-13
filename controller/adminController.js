@@ -289,26 +289,16 @@ const verifyAdminLogin = async (req, res) => {
 
 const loadCategoryPage = async (req, res) => {
   try {
-    const perPage = 5; // Number of products per page
-    let page = parseInt(req.query.page) || 1;
-    const totalProducts = await categoryDb.countDocuments({});
-    const totalPages = Math.ceil(totalProducts / perPage);
+    
+    
 
-    if (page < 1) {
-      page = 1;
-    } else if (page > totalPages) {
-      page = totalPages;
-    }
+    
 
-    const categoryDetails = await categoryDb
-      .find({})
-      .skip((page - 1) * perPage)
-      .limit(perPage);
+    const categoryDetails = await categoryDb.find({})
 
     res.render("Category", {
       categoryData: categoryDetails,
-      currentPage: page,
-      pages: totalPages,
+      
     });
   } catch (error) {
     console.log(error);

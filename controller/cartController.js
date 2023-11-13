@@ -65,6 +65,7 @@ const addToCart = async (req, res) => {
             const userId = userData._id
             
             const cartData = await cartDb.findOne({user:userId}).populate("products.productId")
+            console.log("cartData :", cartData);
             if (req.session.user_id) {
                 if(cartData){
                     let Total;

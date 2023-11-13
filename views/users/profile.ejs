@@ -201,29 +201,34 @@
                                     </button>
                                 </form>
                                 <hr>
-                                <h6 class="font-monospace">Change Password</h6>
-                                <form action="/changepassword" method="post">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label>Current Password</label>
-                                                <input type="password" name="oldPassword" class="form-control" required>
-                                            </div><!-- End .col-sm-6 -->
-                                            <div class="col-sm-6">
-                                                <label>New Password</label>
-                                                <input type="password" name="oldPassword" class="form-control" required>
-                                            </div><!-- End .col-sm-6 -->
-                                            <div class="col-sm-6">
-                                                <label>Confirm Password</label>
-                                                <input type="password" name="newPassword" class="form-control" required>
-                                            </div><!-- End .col-sm-6 -->
-                                        </div><!-- End .row -->
-                                        <button type="submit" class="btn btn-outline-primary-login">
-                                            <span>CHANGE PASSWORD</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </button>
-                                    </div>
-                                </form>
+                               <h6 class="font-monospace">Change Password</h6>
+                               <div id="error-messages" style="color: red; font-size: 10px;"></div>
+
+                                    <form action="/changepassword" method="post" id="changePasswordForm">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label>Current Password</label>
+                                                    <input type="password" name="currentpassword" class="form-control" required>
+                                                    <span id="error-currentpassword" style="color: red;"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                                <div class="col-sm-6">
+                                                    <label>New Password</label>
+                                                    <input type="password" name="newpassword" class="form-control" required>
+                                                    <span id="error-newpassword" style="color: red; font-size: 10px;"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                                <div class="col-sm-6">
+                                                    <label>Confirm Password</label>
+                                                    <input type="password" name="confirmpassword" class="form-control" required>
+                                                    <span id="error-confirmpassword" style="color: red; font-size: 10px;"></span>
+                                                </div><!-- End .col-sm-6 -->
+                                            </div><!-- End .row -->
+                                            <button type="button" onclick="changePassword()" class="btn btn-outline-primary-login">
+                                                <span>CHANGE PASSWORD</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </form>
                             </div><!-- .End .tab-pane -->
                         </div>
                     </div><!-- End .col-lg-9 -->
@@ -295,6 +300,82 @@
       </div>
     </div>
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function changePassword() {
+        // Collect form data
+        var formData = $('#changePasswordForm').serialize();
+        changePasswordForm
+        // Send AJAX request
+        $.ajax({
+            type: 'POST',
+            url: '/changepassword',
+            data: formData,
+            success: function (data) {
+                // Handle success
+                if (data.success) {
+                    // Redirect to the profile page on success
+                    window.location.href = '/profile';
+                } else {
+                    // Display error messages
+                    $('#error-messages').html(data.message);
+                }
+            },
+            error: function () {
+                // Handle error
+                console.log('Error in AJAX request');
+            }
+        });
+    }
+</script>
+
+
+
+
+
+
+
+<!-- <script>
+    function changePassword() {
+        // Reset error messages
+        document.getElementById('error-currentpassword').textContent = '';
+        document.getElementById('error-newpassword').textContent = '';
+        document.getElementById('error-confirmpassword').textContent = '';
+
+        // Get input values
+        var currentPassword = document.getElementById('changePasswordForm').elements['currentpassword'].value;
+        var newPassword = document.getElementById('changePasswordForm').elements['newpassword'].value;
+        var confirmPassword = document.getElementById('changePasswordForm').elements['confirmpassword'].value;
+
+        // Validate new password and confirm password
+        var passwordRegex = /^(?=.*[A-Za-z])(?=.*[@#$%^&+=])(?!.*\s).{5,}$/;
+
+        if (!passwordRegex.test(newPassword)) {
+            document.getElementById('error-newpassword').textContent = 'Password must contain 5 characters. eg:Example@123';
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            document.getElementById('error-confirmpassword').textContent = 'Passwords do not match.';
+            return;
+        }
+
+        // Your other logic for changing password if needed
+        // ...
+
+        // If everything is valid, submit the form or perform the desired action
+        document.getElementById('changePasswordForm').submit();
+    }
+</script> -->
+
+
+
+
+
+
+
 
 
 

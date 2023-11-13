@@ -7,6 +7,7 @@ const config = require("./config/config");
 const session =require("express-session")
 const dotenv = require('dotenv')
 
+
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
@@ -21,6 +22,13 @@ mongoose.connect(process.env.MONGO_DB);
 //       saveUninitialized: true,
 //     })
 //   );
+
+
+
+app.use((req, res, next) => {
+    res.locals.req = req; 
+    next();
+  });  
 
 
 

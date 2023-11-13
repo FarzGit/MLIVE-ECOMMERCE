@@ -89,7 +89,9 @@
     }
 </style>
 
-<div class="container">
+
+
+<div class="container" style="margin-left: 0px; margin-right: 0px;">
    
     <div class="login-box">
         <h1>Registration</h1>
@@ -151,11 +153,11 @@
       var phoneRegex = /^(?!^(\d)\1{9}$)\d{10}$/;
 
       form.addEventListener('submit', function (event) {
-        let isValid = true;
-        errorMessages.forEach(function (element) {
+          let isValid = true;
+          errorMessages.forEach(function (element) {
           element.innerText = '';
-          element.style.fontSize = '10px'; // Set the font size to 10px
-        });
+          element.style.fontSize = '10px';
+  });
 
         if (fnameInput.value.trim() === '') {
           errorMessages[0].innerText = 'First Name is required.';
@@ -201,9 +203,9 @@
         }
 
         if (!isValid) {
-          event.preventDefault(); // Prevent form submission if there are validation errors
-        }
-      });
+    event.preventDefault(); // Prevent form submission if there are validation errors
+  }
+});
 
       // Real-time validation
       const inputElements = [fnameInput, lnameInput, emailInput, mobileInput, passwordInput, cpasswordInput];
@@ -228,7 +230,7 @@
 
     // <!-- ===============================================================ajaxRequest========================================================================== -->
 
-    $(document).ready(function () {
+   $(document).ready(function () {
   $("#form").submit(function (event) {
     event.preventDefault();
     var formData = $(this).serialize();
@@ -240,20 +242,23 @@
       success: function (response) {
         console.log(response);
 
+        // Clear previous error messages
+        $("#emailErrorMessage, #mobileErrorMessage").text('');
+
+        // Check for server-side validation errors
         if (response.emailError) {
           $("#emailErrorMessage").text(response.emailError);
-        } else {
-          $("#emailErrorMessage").text("");
         }
 
         if (response.mobileError) {
           $("#mobileErrorMessage").text(response.mobileError);
-        } else {
-          $("#mobileErrorMessage").text("");
         }
 
+        // Check if the form is valid before redirecting
         if (response.message === "Success") {
-          window.location.href = "/userOtp";
+  
+            window.location.href = "/userOtp";
+ 
         }
       },
       error: function (error) {
@@ -262,6 +267,8 @@
     });
   });
 });
+
+
 
   </script>
 

@@ -34,14 +34,14 @@
                     <div class="form-group">
                       <label for="productName" class="font-weight-bold pl-3" style="color: #000000;">Product Name</label>
                       <input type="text" class="form-control form-style" name="productName" id="productName" placeholder="Name">
-                      <span class="error" style="color: red;"></span>
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label for="price" class="font-weight-bold pl-3" style="color: #080000;">Price</label>
                       <input type="number" class="form-control form-style" id="price" name="price" placeholder="price" >
-                      <span class="error" style="color: red;"></span>
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                     <div class="form-group">
                       <label for="brand" class="font-weight-bold pl-3" style="color: #000000;">Brand</label>
                       <input type="text" class="form-control form-style" name="brand" id="brand" placeholder="brand" >
-                      <span class="error" style="color: red;"></span>
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                   <div class="col-6">
@@ -59,7 +59,7 @@
                       <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
                       <select name="category" class="form-control form-style" >
                         <option   selected>Select Category</option>
-                        <span class="error" style="color: red;"></span>
+                        <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                         <% for(let i=0;i< cartData.length;i++){ %>
                         <option  value="<%=cartData[i]._id%>">
                           <%= cartData[i].name %>
@@ -75,14 +75,14 @@
                     <div class="form-group">
                       <label for="status" class="font-weight-bold pl-3" style="color: #000000;">Status</label>
                       <input type="text" class="form-control form-style" id="status" name="status" placeholder="status" >
-                      <span class="error" style="color: red;"></span>
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Quantity</label>
                       <input type="number" class="form-control form-style" id="quantity" name="quantity" placeholder="Enter Stock" >
-                      <span class="error" style="color: red;"></span>
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                 </div>
@@ -92,7 +92,7 @@
                   <div class="row">
                     <div class="col-6">
                       <textarea name="description" class="form-control  form-style" id="description" rows="4" ></textarea>
-                      <span class="error" style="color: red;"></span>
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                     <div class="col-6">
                       <div class="form-group">
@@ -101,7 +101,7 @@
                           <label class="upload__btn ms-3">
                             <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
                             <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
-                            <span class="error" style="color: red;"></span>
+                            <span class="error" style="color: red; margin-left: 15px; font-size: 10px;"></span>
                           </label>
                         </div>
                       </div>
@@ -122,82 +122,15 @@
 
 
 
-  <script>
-     document.addEventListener("DOMContentLoaded", function() {
-            const form = document.getElementById("productForm");
-            const productName = document.getElementById("productName");
-            const price = document.getElementById("price");
-            const brand = document.getElementById("brand");
-            const category = document.getElementsByName("category")[0];
-            const status = document.getElementById("status");
-            const quantity = document.getElementById("quantity");
-            const description = document.getElementById("description");
-            const image = document.getElementById("formFile");
-            const errorMessages = document.querySelectorAll(".error");
+ 
 
-            form.addEventListener("submit", function(event) {
-                let isValid = true;
-                errorMessages.forEach(message => message.textContent = "");
 
-                if (!productName.value.trim()) {
-                    displayError(productName, "Product Name is required");
-                    isValid = false;
-                }
 
-                if (parseInt(price.value) <= 0) {
-                    displayError(price, "Price must be greater than 0");
-                    isValid = false;
-                }
 
-                if (!brand.value.trim()) {
-                    displayError(brand, "Brand is required");
-                    isValid = false;
-                }
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-                if (category.selectedIndex === 0) {
-                    displayError(category, "Please select a Category");
-                    isValid = false;
-                }
-
-                if (!status.value.trim()) {
-                    displayError(status, "Status is required");
-                    isValid = false;
-                }
-
-                if (parseInt(quantity.value) <= 0) {
-                    displayError(quantity, "Quantity must be greater than 0");
-                    isValid = false;
-                }
-
-                if (!description.value.trim()) {
-                    displayError(description, "Description is required");
-                    isValid = false;
-                }
-
-                if (!image.files.length) {
-                    displayError(image, "Please upload at least one image");
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    event.preventDefault(); // Prevent form submission
-                }
-            });
-
-            // Function to display error message and add styling
-            function displayError(element, message) {
-                element.nextElementSibling.textContent = message;
-                element.nextElementSibling.style.fontSize = "10px";
-            }
-
-            // Clear error messages when typing in input fields
-            const inputFields = form.querySelectorAll("input, select, textarea");
-            inputFields.forEach(field => {
-                field.addEventListener("input", function() {
-                    this.nextElementSibling.textContent = "";
-                });
-            });
-        });
+<script>
+  
 </script>
   
     

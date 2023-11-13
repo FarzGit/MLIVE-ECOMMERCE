@@ -3,6 +3,7 @@ const userRoute = express()
 const session = require('express-session')
 const  config = require('../config/config')
 const userAuth = require('../middleware/userAuth')
+const Count = require('../middleware/cartCount')
 
 
 userRoute.use(
@@ -12,6 +13,7 @@ userRoute.use(
       saveUninitialized: true,
     })
   );
+  userRoute.use(Count)
 
 const userController = require("../controller/userController")
 const cartController = require("../controller/cartController")
@@ -58,7 +60,7 @@ userRoute.post('/profile',userAuth.isLogin,userController.addAddress)
 userRoute.get('/editAddress',userAuth.isLogin,userController.loadEditAddress)
 userRoute.post('/editAddress',userAuth.isLogin,userController.updateUserAddress)
 userRoute.post('/deleteAddress',userAuth.isLogin,userController.deleteUserAddress)  
-// userRoute.post('/changepassword',userAuth.isLogin,userController.changePassword)
+userRoute.post('/changepassword',userAuth.isLogin,userController.changePassword)
 
 
 userRoute.get('/checkout',userAuth.isLogin,orderController.loadCheckOut)

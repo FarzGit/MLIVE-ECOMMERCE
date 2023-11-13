@@ -27,21 +27,21 @@
               </div>
             </div>
             <div class="card-body px-0 pb-2">
-              <form class="forms-sample" action="/admin/editProduct" method="post" enctype="multipart/form-data" style="background-color: #efefef;">
+              <form class="forms-sample" action="/admin/editProduct" method="post" enctype="multipart/form-data" style="background-color: #efefef;" id="productForm" >
 
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
-                      <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #000000;">Product Name</label>
-                      <input type="text" class="form-control form-style" name="productName" id="exampleInputName1" placeholder="Name" value="<%=product.productName%>" >
-                      <span class="error" style="color: red;"></span>
+                      <label for="productName" class="font-weight-bold pl-3" style="color: #000000;">Product Name</label>
+                      <input type="text" class="form-control form-style" name="productName" id="productName" placeholder="Name" value="<%=product.productName%>">
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
-                      <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #080000;">Price</label>
-                      <input type="number" class="form-control form-style" id="exampleInputName1" name="price" placeholder="price" value="<%=product.price%>" required>
-                      <span class="error" style="color: red;"></span>
+                      <label for="price" class="font-weight-bold pl-3" style="color: #080000;">Price</label>
+                      <input type="number" class="form-control form-style" id="price" name="price" placeholder="price" value="<%=product.price%>">
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                 </div>
@@ -49,23 +49,24 @@
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
-                      <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #000000;">Brand</label>
-                      <input type="text" class="form-control form-style" name="brand" id="exampleInputName1" placeholder="brand" value="<%= product.brand %>" required>
+                      <label for="brand" class="font-weight-bold pl-3" style="color: #000000;">Brand</label>
+                      <input type="text" class="form-control form-style" name="brand" id="brand" placeholder="brand" value="<%= product.brand %>" >
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
-                      <select name="category" class="form-control form-style" required>
-                        <% for(i in cartData){%>
-                          <option value="<%=cartData[i]._id%>" <% if(product.category==cartData[i].name ){%>selected<%}%>
-                              <% if(cartData[i].is_active==false) {%>
-                                disabled
-                                <%}%>
-                                  ><%= cartData[i].name %>
-                          </option>
-                          <%}%>
-                      </select>
+                        <select name="category" class="form-control form-style" required>
+                          <% for(i in cartData){%>
+                            <option value="<%=cartData[i]._id%>" <% if(product.category==cartData[i].name ){%>selected<%}%>
+                                <% if(cartData[i].is_active==false) {%>
+                                  disabled
+                                  <%}%>
+                                    ><%= cartData[i].name %>
+                            </option>
+                            <%}%>
+                        </select> 
                     </div>
                   </div>
                 </div>
@@ -73,52 +74,47 @@
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
-                      <label for="exampleInputName1" class="font-weight-bold pl-3" style="color: #000000;">Status</label>
-                      <input type="text" class="form-control form-style" id="exampleInputName1" name="status" placeholder="status" value="<%=product.status%>" required>
+                      <label for="status" class="font-weight-bold pl-3" style="color: #000000;">Status</label>
+                      <input type="text" class="form-control form-style" id="status" name="status" placeholder="status" value="<%=product.status%>" >
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Quantity</label>
-                      <input type="number" class="form-control form-style" id="exampleInputName1" name="quantity" placeholder="Enter Stock" value="<%=product.quantity %>" required>
+                      <input type="number" class="form-control form-style" id="quantity" name="quantity" placeholder="Enter Stock" value="<%=product.quantity %>" >
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
                 </div>
 
                 <div class="form-group mt-2">
-                  <label for="exampleTextarea1" class="font-weight-bold pl-3 " style="color: #000000;">Description</label>
+                  <label for="description" class="font-weight-bold pl-3 " style="color: #000000;">Description</label>
                   <div class="row">
                     <div class="col-6">
-                      <textarea name="description" class="form-control  form-style" id="exampleTextarea1" rows="6" required>
+                      <textarea name="description" class="form-control  form-style" id="description" rows="4" >
                         <%= product.description || "Enter description here" %>
                       </textarea>
-                    </div>                    
+                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
+                    </div>
                     <div class="col-6">
                       <div class="form-group">
                         
                         <div class="col-lg-12 col-md-6 rounded-image-preview">
                           <label class="upload__btn ms-3">
                             <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
-                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" required>
+                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
+                            <span class="error" style="color: red; margin-left: 15px; font-size: 10px;"></span>
                           </label>
                         </div>
-                        <div class="old-image-preview">
-                          <!-- Display the old image if it exists -->
-                          <% if (product.image) { %>
-                           <% for(let i=0;i<product.image.length;i++){%>
-                            <img style="width: 100px; height: 150px;" src="/static/adminAssets/images/<%=product.image[i] %>" alt="Old Image">
-                            <%}%>
-                          <% } %>
-                        </div>
-                        
                       </div>
                     </div>
                   </div>
                 </div>  
-                <input type="hidden" name="id" value="<%=product._id%>">
+                  <input type="hidden" name="id" value="<%=product._id%>">
 
                 <div class="d-flex justify-content-center">
-                  <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Update</button>
+                  <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add Product</button>
                 </div>
               </form>
             </div>
@@ -130,115 +126,7 @@
 
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const form = document.querySelector('.forms-sample');
-  
-      form.addEventListener('submit', function (event) {
-        let isValid = true;
-  
-        // Product Name Validation
-        const productName = document.querySelector('input[name="productName"]');
-        if (productName.value.trim() === '') {
-          isValid = false;
-          productName.nextElementSibling.textContent = 'Product Name is required';
-        }
-  
-        productName.addEventListener('input', function () {
-          productName.nextElementSibling.textContent = '';
-        });
-  
-        // Price Validation
-        const price = document.querySelector('input[name="price"]');
-        const priceValue = parseFloat(price.value);
-        if (price.value.trim() === '') {
-          isValid = false;
-          price.nextElementSibling.textContent = 'Price is required';
-        } else if (isNaN(priceValue) || priceValue <= 0) {
-          isValid = false;
-          price.nextElementSibling.textContent = 'Price must be a positive number';
-        }
-  
-        price.addEventListener('input', function () {
-          price.nextElementSibling.textContent = '';
-        });
-  
-        // Brand Validation
-        const brand = document.querySelector('input[name="brand"]');
-        if (brand.value.trim() === '') {
-          isValid = false;
-          brand.nextElementSibling.textContent = 'Brand is required';
-        }
-  
-        brand.addEventListener('input', function () {
-          brand.nextElementSibling.textContent = '';
-        });
-  
-        // Category Validation
-        const category = document.querySelector('select[name="category"]');
-        if (category.value === '') {
-          isValid = false;
-          category.nextElementSibling.textContent = 'Category is required';
-        }
-  
-        category.addEventListener('change', function () {
-          category.nextElementSibling.textContent = '';
-        });
-  
-        // Status Validation
-        const status = document.querySelector('input[name="status"]');
-        if (status.value.trim() === '') {
-          isValid = false;
-          status.nextElementSibling.textContent = 'Status is required';
-        }
-  
-        status.addEventListener('input', function () {
-          status.nextElementSibling.textContent = '';
-        });
-  
-        // Quantity Validation
-        const quantity = document.querySelector('input[name="quantity"]');
-        const quantityValue = parseFloat(quantity.value);
-        if (quantity.value.trim() === '') {
-          isValid = false;
-          quantity.nextElementSibling.textContent = 'Quantity is required';
-        } else if (isNaN(quantityValue) || quantityValue <= 0) {
-          isValid = false;
-          quantity.nextElementSibling.textContent = 'Quantity must be a positive number';
-        }
-  
-        quantity.addEventListener('input', function () {
-          quantity.nextElementSibling.textContent = '';
-        });
-  
-        // Description Validation
-        const description = document.querySelector('textarea[name="description"]');
-        if (description.value.trim() === '') {
-          isValid = false;
-          description.nextElementSibling.textContent = 'Description is required';
-        }
-  
-        description.addEventListener('input', function () {
-          description.nextElementSibling.textContent = '';
-        });
-  
-        // Image Validation
-        const image = document.querySelector('input[name="image"]');
-        if (image.files.length === 0) {
-          isValid = false;
-          image.parentElement.nextElementSibling.textContent = 'Image is required';
-        }
-  
-        image.addEventListener('change', function () {
-          image.parentElement.nextElementSibling.textContent = '';
-        });
-  
-        if (!isValid) {
-          event.preventDefault();
-        }
-      });
-    });
-  </script>
+
   
 
     

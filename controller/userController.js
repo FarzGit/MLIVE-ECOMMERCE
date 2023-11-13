@@ -638,6 +638,48 @@ const loadEditAddress = async(req,res)=>{
   }
 }
 
+// ===================================================================ChangePassword==================================================================
+
+
+const changePassword = async (req, res) => {
+  try {
+      const currentpd = req.body.currentpassword;
+      const newpd = req.body.newpassword;
+      const confirmpd = req.body.confirmpassword;
+
+      const user = req.session.user_id;
+      const userData = await User.findOne({ _id: user });
+
+      const oldpd = userData.password;
+
+      if (userData) {
+          const passwordMatch = await bcrypt.compare(currentpd, oldpd);
+
+          if (passwordMatch) {
+              if (newpd === confirmpd) {
+                  const secure = await securePassword(newpd);
+                  const store = await User.updateOne({ _id: user }, { $set: { password: secure } });
+                  console.log('all matched');
+                  res.json({ success: true });
+              } else {
+                  console.log('new and confirm not matched');
+                  res.json({ success: false, message: 'New and Confirm Password do not match.' });
+              }
+          } else {
+              console.log('old and current not matched');
+              res.json({ success: false, message: 'Current Password is incorrect.' });
+          }
+      }
+  } catch (error) {
+      console.log(error);
+      res.json({ success: false, message: 'An error occurred.' });
+  }
+};
+
+
+
+
+
 
 // ===================================================================postEditAddress==================================================================
 
@@ -858,6 +900,7 @@ module.exports = {
   postAddMoneyToWallet,
   postVerifyWalletPayment,
   getWallet,
-  getWalletHistory
+  getWalletHistory,
+  changePassword
   
 };
