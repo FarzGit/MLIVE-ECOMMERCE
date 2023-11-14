@@ -40,11 +40,7 @@ userRoute.post("/reset-password", userController.resetPassword);
 userRoute.get("/logout", userController.userLogout);
 
 userRoute.get("/shop", userAuth.isLogin, userController.loadShop);
-userRoute.get(
-  "/productDetails",
-  userAuth.isLogin,
-  userController.loadProductDetails
-);
+userRoute.get( "/productDetails", userAuth.isLogin, userController.loadProductDetails );
 
 userRoute.get("/profile", userAuth.isLogin, userController.loadProfile);
 

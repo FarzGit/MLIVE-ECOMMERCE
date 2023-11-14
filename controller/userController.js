@@ -269,10 +269,10 @@ const loadlogin = async (req, res) => {
 const verifyLogin = async (req, res) => {
   try {
     const email = req.body.email;
-    console.log(email);
+    // console.log(email);
     const password = req.body.password;
     const userData = await User.findOne({ email: email });
-    console.log("userdata " + userData);
+    // console.log("userdata " + userData);
     if (userData) {
       if (userData.is_blocked == false) {
         const passwordMatch = await bcrypt.compare(password, userData.password);
@@ -439,8 +439,8 @@ const resetPassword = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
-    console.log("user");
-    console.log(req.session.user_id);
+    // console.log("user");
+    // console.log(req.session.user_id);
     const userId = req.session.user_id
     
    
@@ -448,7 +448,7 @@ const loadHome = async (req, res) => {
     
 
     if(userId){
-      console.log("user entered");
+     
       const userData = await User.findById({_id:userId})
       res.render('home',{user:userData})
     }else{
@@ -470,34 +470,116 @@ const loadHome = async (req, res) => {
 
 const loadShop = async (req, res) => {
   try {
-    const userId = req.session.user_id
-    console.log("userId is :", userId);
-    const perPage = 12; // Number of products per page
-    let page = parseInt(req.query.page) || 1; // Get the page from the request query and parse it as an integer
-    const categoryDetails = await categoryDb.find({});
-    const totalProducts = await productDb.countDocuments({ is_active: true });
-    const totalPages = Math.ceil(totalProducts / perPage);
-    const userData = await User.findById({_id:userId})
 
-    // Ensure that the page is within valid bounds
-    if (page < 1) {
-      page = 1;
-    } else if (page > totalPages) {
-      page = totalPages;
+    let page = 1;
+    if (req.query.page) {
+        page = req.query.page;
     }
 
-    const products = await productDb
-      .find({is_active:true})
-      .skip((page - 1) * perPage)
-      .limit(perPage);
+
+    let limit = 12; // Number of products per page
+
+    let sortValue = -1;
+    if (req.query.sortValue) {
+      if (req.query.sortValue === '2') {
+        sortValue = 1;
+      } else if (req.query.sortValue === '1') {
+        sortValue = -1;
+      } else {
+        sortValue = -1;
+      }
+    }
+
+
+      let minPrice = 1;
+      let maxPrice = 20000;
+
+      if (req.query.minPrice) {
+        minPrice = req.query.minPrice;
+    }
+    if (req.query.maxPrice) {
+        maxPrice = req.query.maxPrice;
+    }
+
+    console.log("4444444",req.query.maxPrice, req.query.minPrice)
+
+      let search = ''
+
+      if(req.query.search){
+        search = req.query.search
+      }
+      console.log('Query parameters:', req.query);
+
+      
+      console.log("above search");
+      async function getCategoryIds(search) {
+        
+        const categories = await categoryDb.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } });
+        return categories.map(category => category._id);
+    }
+
+      const query = {
+        is_active: true,
+        $or: [
+          { name: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { brand: { $regex: '.*' + search + '.*', $options: 'i' } } 
+        ],
+        price: { $gte: minPrice, $lte: maxPrice }
+    }
+
+    if (req.query.search) {
+      console.log("entered into the search");
+      search = req.query.search;
+      query.$or.push({
+        'Category': { $in: await getCategoryIds(search) }
+      });
+    }
+
+  if(req.query.category){
+    query.category = req.query.category
+  }
+
+  if(req.query.brand){
+    query.brand = req.query.brand
+  }
+
+     /**.sort({_id:-1 for latest sorting is _id better to change by createdAt:-1}) */
+     let products = await productDb.find(query).populate('category').sort({ createdAt: -1 }).limit(limit * 1).skip((page - 1) * limit);
+     if (req.query.sortValue && req.query.sortValue != 3) {
+      products = await productDb.find(query).populate('category').sort({ price: sortValue }).limit(limit * 1).skip((page - 1) * limit)
+     } else {
+         /**.sort({_id:-1 for latest sorting is _id better to change by createdAt:-1}) */
+         products = await productDb.find(query).populate('category').sort({ createdAt: sortValue }).limit(limit * 1).skip((page - 1) * limit)
+     }
+
+    const userId = req.session.user_id
+    console.log("userId is :", userId);
+    
+    const categoryDetails = await categoryDb.find({});
+    const totalProducts = await productDb.countDocuments({ is_active: true });
+    let pageCount = Math.ceil(totalProducts / limit)
+    const userData = await User.findById({_id:userId})
+    const brands = await productDb.aggregate([{$group:{_id:"$brand"}}])
+
+    
+
 
     res.render('shop', {
       catData: categoryDetails,
       product: products,
       currentPage: page,
-      pages: totalPages,
+      pageCount,
       user: userId,
-      user:userData
+      user:userData,
+      brands,
+      brand:req.query.brand,
+      sortValue:req.query.sortVlaue,
+      minPrice: req.query.minPrice,
+      maxPrice: req.query.maxPrice,
+      search:req.query.search,
+      category: req.query.category,
+      
+
     });
   } catch (error) {
     console.log(error);
@@ -689,7 +771,7 @@ const updateUserAddress = async(req,res)=>{
     const addressId =req.body.id
     
     const userId = req.session.user_id
-    console.log(userId);
+    // console.log(userId);
     
 
 
@@ -723,13 +805,13 @@ const updateUserAddress = async(req,res)=>{
 
 const deleteUserAddress = async (req, res) => {
   try {
-    console.log("delete User Enter");
+    // console.log("delete User Enter");
     const id = req.body.id; // Use req.body.id to access the addressId
-    console.log(id);
+    // console.log(id);
     const userId = req.session.user_id;
-    console.log(userId);
+    // console.log(userId);
     const deleteAddress = await addressDb.updateOne({ userId: userId }, { $pull: { addresses: { _id: id } } });
-    console.log(deleteAddress);
+    // console.log(deleteAddress);
 
     res.json({ remove: true });
   } catch (error) {
@@ -744,7 +826,7 @@ const deleteUserAddress = async (req, res) => {
 const postAddMoneyToWallet = async(req,res)=>{
   try{
 
-    console.log("entered add money to wallet");
+    // console.log("entered add money to wallet");
      
     const {amount} = req.body
     const  id = crypto.randomBytes(8).toString('hex')
@@ -757,7 +839,7 @@ const postAddMoneyToWallet = async(req,res)=>{
 
 
   instance.orders.create(options, (err, order) => {
-    console.log("oreder is :",order);
+    // console.log("oreder is :",order);
     if(err){
         res.json({status: false})
     }else{
@@ -784,7 +866,7 @@ const postAddMoneyToWallet = async(req,res)=>{
 const postVerifyWalletPayment = async(req,res)=>{
   try{
 
-    console.log("entered into post verify wallet payment");
+    // console.log("entered into post verify wallet payment");
 
     const userId = req.session.user_id
 
@@ -817,7 +899,7 @@ const postVerifyWalletPayment = async(req,res)=>{
                   }
               }
           );
-          console.log('udddd')
+          // console.log('udddd')
           res.json({status: true})
       }else{
           res.json({status: false})
@@ -841,7 +923,7 @@ const getWalletHistory = async(req,res)=>{
 
     const user = req.session.user_id;
     const userData = await User.findOne({_id: user });
-    console.log("userData is",userData);
+    // console.log("userData is",userData);
     req.session.cartCount = 0
     let cartData = await cartDb.findOne({ user: userData._id })
     if (cartData && cartData.products) {
@@ -860,7 +942,7 @@ const getWallet = async(req,res)=>{
 
     const user = req.session.user_id
     const userData = await User.find({_id:user})
-    console.log("userData id :",userData);
+    // console.log("userData id :",userData);
 
     res.render('wallet',{user:userData})
 
@@ -868,6 +950,8 @@ const getWallet = async(req,res)=>{
     console.log(error);
   }
 }
+
+
 
 
 

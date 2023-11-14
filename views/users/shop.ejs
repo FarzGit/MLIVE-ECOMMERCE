@@ -3,13 +3,18 @@
 
 
 
-<section class="bg0 p-t-23 p-b-130">
+<section class="bg0 p-t-23 p-b-130" >
     <div class="container">
         <!-- <div class="p-b-10">
             <h3 class="ltext-103 cl5">
                 Product Overview
             </h3>
         </div> -->
+
+        <form class="d-flex" role="search">
+            <input class="form-control me-2 w-100 " type="search" placeholder="Search" name="search" aria-label="Search">
+            <button class="btn btn-outline-dark" type="submit" style="height: 40px;"><i class="bi bi-search" ></i></button>
+          </form>
     
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
@@ -18,11 +23,11 @@
                 </button>
     
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
-                    Women
+                    Formals
                 </button>
     
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">
-                    Men
+                    Cauals
                 </button>
     
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
@@ -33,9 +38,7 @@
                     Shoes
                 </button>
     
-                <!-- <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
-                    Watches
-                </button> -->
+               
             </div>
     
             <div class="flex-w flex-c-m m-tb-10">
@@ -45,146 +48,171 @@
                      Filter
                 </div>
     
-                <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+                <!-- <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search " >
                     <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
                     <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
                     Search
-                </div>
+                </div> -->
             </div>
             
             <!-- Search product -->
-            <div class="dis-none panel-search w-full p-t-10 p-b-15">
+            <!-- <div class="dis-none panel-search w-full p-t-10 p-b-15">
                 <div class="bor8 dis-flex p-l-15">
                     <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                         <i class="zmdi zmdi-search"></i>
                     </button>
     
-                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
+                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search" placeholder="Search">
                 </div>	
-            </div>
+            </div> -->
     
             <!-- Filter -->
             <div class="dis-none panel-filter w-full p-t-10">
-                <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
-                    <div class="filter-col1 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Sort By
-                        </div>
-    
-                        <ul>
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Default
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Casuals
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Formals
-                                </a>
-                            </li>
-    
-                            <!-- <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 ">
-                                    Newness
-                                </a>
-                            </li> -->
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: Low to High
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: High to Low
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-    
-                    <div class="filter-col2 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Price
-                        </div>
-    
-                        <ul>
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    All
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $0.00 - $50.00
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $50.00 - $100.00
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $100.00 - $150.00
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $150.00 - $200.00
-                                </a>
-                            </li>
-    
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $200.00+
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-    
-                    
-    
-                    <div class="filter-col4 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Tags
-                        </div>
-    
-                        <div class="flex-w p-t-4 m-r--5">
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Fashion
-                            </a>
-    
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Lifestyle
-                            </a>
-    
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Denim
-                            </a>
-    
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Streetstyle
-                            </a>
-    
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Crafts
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+        <div class="filter-col1 p-r-15 p-b-27">
+            <div class="mtext-102 cl2 p-b-15">
+                Categories
             </div>
+
+            <ul>
+                <%catData.forEach((cat)=>{%>
+
+                <li class="p-b-6">
+                    <% if(category==cat._id) { %>
+                    <a href="?category=<%=cat._id%>&sortValue=<%=sortValue%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>"
+                        style="color:#f44072;">
+                        <%=cat.name %>
+                    </a>
+                    <% } else { %>
+                    <a href="?category=<%=cat._id%>&sortValue=<%=sortValue%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>"
+                        style="color: #636363;">
+                        <%=cat.name %>
+                    </a>
+                    <% } %>
+                </li>
+                <% })%>
+            </ul>
+        </div>
+
+        <div class="filter-col1 p-r-15 p-b-27">
+            <div class="mtext-102 cl2 p-b-15">
+                Brands
+            </div>
+        
+            <ul>
+                <% brands.forEach((brand) => { %>
+                    <li class="p-b-6">
+                        <% if(brand == brand._id) { %>
+                            <a href="?brand=<%= brand._id %>&sortValue=<%= sortValue %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&search=<%= search %>" style="color: #f44072;">
+                                <%= brand._id %>
+                            </a>
+                        <% } else { %>
+                            <a href="?brand=<%= brand._id %>&sortValue=<%= sortValue %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&search=<%= search %>" style="color: #636363;">
+                                <%= brand._id %>
+                            </a>
+                        <% } %>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+
+        <div class="filter-col2 p-r-15 p-b-27">
+            <div class="mtext-102 cl2 p-b-15">
+                Price
+            </div>
+
+            <ul>
+
+                <li class="p-b-6">
+                    <% if(maxPrice==3999){ %>
+                    <p><a href="?minPrice=0&maxPrice=3999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f44072;">₹0 - ₹3999</a></p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=0&maxPrice=3999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹0 - ₹3999</a></p>
+                    <% } %>
+                    <% if(maxPrice==8999){ %>
+                    <p><a href="?minPrice=4000&maxPrice=8999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f44072;">₹4000 - ₹8999</a>
+                    </p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=4000&maxPrice=8999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹4000 - ₹8999</a>
+                    </p>
+                    <% } %>
+                    <% if(maxPrice==13999){ %>
+                    <p><a href="?minPrice=9000&maxPrice=13999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f44072;">₹9000 - ₹13999</a></p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=9000&maxPrice=13999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹9000 - ₹13999</a></p>
+                    <% } %>
+                    <% if(maxPrice==18999){ %>
+                    <p><a href="?minPrice=14000&maxPrice=18999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f44072;">₹14000 - ₹18999</a></p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=14000&maxPrice=18999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹14000 - ₹18999</a></p>
+                    <% } %>
+                    <% if(minPrice==19000){ %>
+                    <p><a href="?minPrice=19000&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f44072;">₹19000+</a>
+                    </p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=19000&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹19000+</a>
+                    </p>
+                    <% } %>
+                </li>
+            </ul>
+        </div>
+
+        <div class="filter-col4 p-b-27">
+            <div class="mtext-102 cl2 p-b-15">
+                Sort:
+            </div>
+
+            <div class="flex-w p-t-4 ">
+                <% if(sortValue&&sortValue==3) {%>
+                <a href="?sortValue=3&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                    style="color:#f44072;">
+                    Latest
+                </a>
+                <%}else{%>
+                    <a href="?sortValue=3&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                        style="color: #636363;">
+                        Latest
+                    </a>
+
+                <%}%>
+                <% if(sortValue&&sortValue==2) {%>
+                <a href="?sortValue=2&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                    Price Low to High
+                </a>
+                <%}else{%>
+                    <a href="?sortValue=2&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                        style="color: #636363;">
+                        Price Low to High
+                    </a>
+
+               <% }%>
+               <% if(sortValue&&sortValue==1) {%>
+                <a href="?sortValue=1&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                    Price High to Low
+                </a>
+            <%}else{%>
+                <a href="?sortValue=1&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                    style="color: #636363;">
+                    Price High to Low
+                </a>
+           <% }%>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
     
         <div class="row isotope-grid">
@@ -242,27 +270,18 @@
         </div>                  
     
         <!-- Pagination -->
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="/shop?page=<%= currentPage - 1 %>" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <% for (let i = 1; i <= pages; i++) { %>
-                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                  <a class="page-link" href="/shop?page=<%= i %>"><%= i %></a>
-                </li>
-              <% } %>
-              <li class="page-item <%= currentPage === pages ? 'disabled' : '' %>">
-                <a class="page-link" href="/shop?page=<%= currentPage + 1 %>" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
+        <nav aria-label="...">
+            <ul class="pagination justify-content-end">
+                <% for (let i=1; i <=pageCount; i++) { %>
+                    <li class="page-item <%= locals.currentPage == i ? 'active' : '' %>">
+                        <a class="page-link bg-dark <%= locals.currentPage == i ? 'text-white' : 'text-secondary' %>"
+                            href="/shop?page=<%= i %>&sortValue=<%= sortValue %>&category=<%= category %>&brand=<%= brand %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&search=<%= search %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
             </ul>
-          </nav>
+        </nav>
 
           <!-- Pagination End -->
         
@@ -270,6 +289,7 @@
     </section>
 
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
@@ -326,6 +346,32 @@
 
 
 
+
+
+$(document).ready(function () {
+        // Listen for input changes in the search bar
+        $('#searchInput').on('input', function () {
+            const searchText = $(this).val().toLowerCase();
+
+            // Loop through each row in the table and hide/show based on search text
+            $('#user-table tbody tr').each(function () {
+                const row = $(this);
+
+                // Check if any cell in the row contains the search text
+                const found = row.find('td').toArray().some(function (cell) {
+                    const cellText = $(cell).text().toLowerCase();
+                    return cellText.includes(searchText);
+                });
+
+                // Show or hide the row accordingly
+                if (found) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        });
+    });
 
 
     </script>
