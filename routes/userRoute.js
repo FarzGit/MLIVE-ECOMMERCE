@@ -5,6 +5,7 @@ const config = require("../config/config");
 const userAuth = require("../middleware/userAuth");
 const Count = require("../middleware/cartCount");
 
+
 userRoute.use(
   session({
     secret: config.sessionSecret,
@@ -17,7 +18,7 @@ userRoute.use(Count);
 const userController = require("../controller/userController");
 const cartController = require("../controller/cartController");
 const orderController = require("../controller/orderController");
-
+const couponController = require("../controller/couponController");
 userRoute.set("view engine", "ejs");
 userRoute.set("views", "./views/users");
 
@@ -40,38 +41,22 @@ userRoute.post("/reset-password", userController.resetPassword);
 userRoute.get("/logout", userController.userLogout);
 
 userRoute.get("/shop", userAuth.isLogin, userController.loadShop);
-userRoute.get( "/productDetails", userAuth.isLogin, userController.loadProductDetails );
+userRoute.get("/productDetails",userAuth.isLogin,userController.loadProductDetails);
 
 userRoute.get("/profile", userAuth.isLogin, userController.loadProfile);
 
 userRoute.get("/cart", userAuth.isLogin, cartController.loadCart);
 userRoute.post("/addTocart", userAuth.isLogin, cartController.addToCart);
 userRoute.post("/cart-quantity", userAuth.isLogin, cartController.cartQuantity);
-userRoute.post(
-  "/remove-product",
-  userAuth.isLogin,
-  cartController.removeProduct
-);
+userRoute.post("/remove-product",userAuth.isLogin,cartController.removeProduct);
 
 // userRoute.get('/address',userAuth.isLogin,userController.loadAddress)
 userRoute.post("/profile", userAuth.isLogin, userController.addAddress);
 
 userRoute.get("/editAddress", userAuth.isLogin, userController.loadEditAddress);
-userRoute.post(
-  "/editAddress",
-  userAuth.isLogin,
-  userController.updateUserAddress
-);
-userRoute.post(
-  "/deleteAddress",
-  userAuth.isLogin,
-  userController.deleteUserAddress
-);
-userRoute.post(
-  "/changepassword",
-  userAuth.isLogin,
-  userController.changePassword
-);
+userRoute.post("/editAddress",userAuth.isLogin,userController.updateUserAddress);
+userRoute.post("/deleteAddress",userAuth.isLogin,userController.deleteUserAddress);
+userRoute.post("/changepassword",userAuth.isLogin,userController.changePassword);
 
 userRoute.get("/checkout", userAuth.isLogin, orderController.loadCheckOut);
 // userRoute.post('/removeAddress', userAuth.isLogin, orderController.removeAddress)
@@ -80,48 +65,21 @@ userRoute.get("/orderPlaced/:id", orderController.orderPlacedPageLoad);
 userRoute.get("/orders", userAuth.isLogin, orderController.loadOrderPage);
 userRoute.get("/orderDetails", userAuth.isLogin, orderController.orderDetails);
 userRoute.post("/orderCancel", orderController.cancelOrder);
-userRoute.post(
-  "/productReturn",
-  userAuth.isLogin,
-  orderController.productReturn
-);
-userRoute.post(
-  "/verifyPayment",
-  userAuth.isLogin,
-  orderController.verifyPayment
-);
+userRoute.post( "/productReturn",userAuth.isLogin,orderController.productReturn);
+userRoute.post( "/verifyPayment",userAuth.isLogin,orderController.verifyPayment);
 
-userRoute.post(
-  "/checkoutAddress",
-  userAuth.isLogin,
-  orderController.addCheckoutAddress
-);
-userRoute.get(
-  "/editCheckoutAddress",
-  userAuth.isLogin,
-  orderController.loadCheckoutEditAddress
-);
-userRoute.post(
-  "/editCheckoutAddress",
-  userAuth.isLogin,
-  orderController.editCheckoutAddress
-);
+userRoute.post( "/checkoutAddress", userAuth.isLogin, orderController.addCheckoutAddress);
+userRoute.get("/editCheckoutAddress",userAuth.isLogin,orderController.loadCheckoutEditAddress);
+userRoute.post("/editCheckoutAddress",userAuth.isLogin,orderController.editCheckoutAddress);
 
-userRoute.get(
-  "/walletHistory",
-  userAuth.isLogin,
-  userController.getWalletHistory
-);
-userRoute.post(
-  "/profile/addMoneyToWallet",
-  userAuth.isLogin,
-  userController.postAddMoneyToWallet
-);
-userRoute.post(
-  "/verifyWalletpayment",
-  userAuth.isLogin,
-  userController.postVerifyWalletPayment
-);
+userRoute.get("/walletHistory",userAuth.isLogin,userController.getWalletHistory);
+userRoute.post("/profile/addMoneyToWallet",userAuth.isLogin,userController.postAddMoneyToWallet );
+userRoute.post("/verifyWalletpayment",userAuth.isLogin,userController.postVerifyWalletPayment);
 userRoute.get("/wallet", userAuth.isLogin, userController.getWallet);
+
+
+userRoute.get("/coupon",userAuth.isLogin,couponController.couponUserPageLoad)
+userRoute.post("/couponApply",userAuth.isLogin, couponController.ApplyCoupon);
+userRoute.post("/deleteCoupon",userAuth.isLogin, couponController.deleteAppliedCoupon);
 
 module.exports = userRoute;

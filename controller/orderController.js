@@ -3,6 +3,7 @@ const cartDb = require('../models/cartModel')
 const addressDb = require('../models/userAddressModel')
 const productDb = require('../models/productModel')
 const orderDb = require('../models/orderModel')
+const couponDb = require('../models/couponModel')
 const { ObjectId } = require('mongoose').Types;
 const Razorpay = require('razorpay')
 const crypto = require("crypto");
@@ -176,6 +177,10 @@ const placeOrder = async(req,res)=>{
     const walletBalance = userData.wallet
     let totalWalletBalance = userData.wallet - total
     const productId = req.query.productId;
+    const code = req.body.code;
+
+    const couponData = await couponDb.findOne({couponCode: code})
+
 
 
     
@@ -221,6 +226,9 @@ const placeOrder = async(req,res)=>{
 
     if(orderData){
       if (paymentMethod === 'COD') {
+
+        const dec = await couponDb.updateOne({couponCode:req.session.code},{$inc:{usersLimit: -1}})
+        const userUsed = await couponDb.updateOne({couponCode:req.session.code},{$push:{usedUsers:userId}})
         console.log("entered into cod");
         await cartDb.deleteOne({ user: req.session.user_id });
         for (const item of cartData.products) {
@@ -232,6 +240,13 @@ const placeOrder = async(req,res)=>{
       //  console.log(result)
         }
         res.json({ success: true ,orderid });
+
+        if(req.session.code){
+          const coupon = await couponDb.findOne({couponCode:req.session.code});
+          const disAmount = coupon.discountAmount;
+          await orderDb.updateOne({_id:orderid},{$set:{discount:disAmount}},{upsert:true});
+          res.json({success:true,orderid})
+        }
       }else {
         const orderId = orderData._id;
         // console.log("orderId id :", orderId);
@@ -252,6 +267,9 @@ const placeOrder = async(req,res)=>{
     })
 
     }else if(paymentMethod === 'wallet'){
+
+      const dec = await couponDb.updateOne({couponCode:req.session.code},{$inc:{usersLimit: -1}})
+        const userUsed = await couponDb.updateOne({couponCode:req.session.code},{$push:{usedUsers:userId}})
 
       if(walletBalance >= totalAmount){
         const result = await userDb.findOneAndUpdate(
@@ -277,6 +295,13 @@ const placeOrder = async(req,res)=>{
           { $set: { "products.$[].paymentStatus": "success" } }
           
         );
+
+        if(req.session.code){
+          const coupon = await couponDb.findOne({couponCode:req.session.code});
+          const disAmount = coupon.discountAmount;
+          await orderDb.updateOne({_id:orderid},{$set:{discount:disAmount}},{upsert:true});
+          res.json({success:true,orderid})
+        }
 
         // log("orderUpdate:",orderUpdate)
         if(result){
@@ -347,6 +372,8 @@ const verifyPayment = async(req,res)=>{
         { _id: details.order.receipt },
         { $set: {  'products.$[].paymentStatus':'success' } }
       );
+      const dec = await couponDb.updateOne({couponCode:req.session.code},{$inc:{usersLimit: -1}})
+        const userUsed = await couponDb.updateOne({couponCode:req.session.code},{$push:{usedUsers:req.session.user_id}})
       console.log("result is :",result);
 
       await orderDb.findByIdAndUpdate(
@@ -355,8 +382,13 @@ const verifyPayment = async(req,res)=>{
       );
       await cartDb.deleteOne({ user: req.session.user_id });
       const orderid = details.order.receipt;
-
-      
+          
+      if(req.session.code){
+        const coupon = await couponDb.findOne({couponCode:req.session.code});
+        const disAmount = coupon.discountAmount;
+        await orderDb.updateOne({_id:orderid},{$set:{discount:disAmount}},{upsert:true});
+        res.json({ codsuccess: true, orderid });
+      }
      
       res.json({ codsuccess: true, orderid });
 

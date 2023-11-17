@@ -1,0 +1,328 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+<style>
+  .form-style {
+    width: 550px;
+    height: 42px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 15px;
+    padding-left: 10px;
+  }
+
+  .image-preview-container {
+    position: relative;
+    margin-top: 10px;
+  }
+
+  .image-preview {
+    width: 100%;
+    height: auto;
+    max-height: 200px; /* Set a maximum height for the preview */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .delete-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: none;
+  }
+</style>
+
+<body class="g-sidenav-show bg-gray-200">
+  <%- include("../admin/layouts/adminSideBar.ejs") %>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 elemDesign">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-capitalize ps-3">EDIT COUPON</h6>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <% var dateFrom=new Date(coupon.validFrom); %>
+            <% var dateTo=new Date(coupon.validTo); %>
+             
+              <form class="forms-sample" action="/admin/editcouponManagement?id=<%= coupon._id %>" method="post"  style="background-color: #efefef;"  id="productForm">
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="productName" class="font-weight-bold pl-3" style="color: #000000;">Coupon Name</label>
+                      <input type="text" class="form-control form-style" name="couponName" id="couponName" value="<%= coupon.couponName %>" placeholder="Enter Coupon Name">
+                      <div id="couponNameError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="price" class="font-weight-bold pl-3" style="color: #080000;">Coupon Code</label>
+                      <input type="text" class="form-control form-style" id="couponCode" name="couponCode" value="<%= coupon.couponCode %>" placeholder="Enter Coupon Code" >
+                      <div id="couponCodeError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="brand" class="font-weight-bold pl-3" style="color: #000000;">Dicount Amount</label>
+                      <input type="text" class="form-control form-style" name="discountAmount" id="discountAmount" value="<%= coupon.discountAmount %>" placeholder="Enter Dicount Amount" >
+                      <div id="couponDiscountError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="col-6">
+                        <div class="form-group">
+                          <label for="brand" class="font-weight-bold pl-3" style="color: #000000;">ValidFrom</label>
+                          <input type="date" class="form-control form-style" name="validFrom" id="validFrom" value="<%=dateFrom.toISOString().slice(0, 10) %>" placeholder="ValidFrom" style="margin-left: 0px;" >
+                          <div id="couponValidFromError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="status" class="font-weight-bold pl-3" style="color: #000000;">ValidTo</label>
+                      <input type="date" class="form-control form-style" id="validTo" name="validTo" value="<%=dateTo.toISOString().slice(0, 10) %>" placeholder="ValidTo" >
+                      <div id="couponValidToError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label class="font-weight-bold pl-3" style="color: #000000;">minimumSpend</label>
+                      <input type="number" class="form-control form-style" id="minimumSpend" name="minimumSpend" value="<%= coupon.minimumSpend %>" placeholder="Enter Minimum Spend" >
+                      <div id="couponMinimumSpendError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="status" class="font-weight-bold pl-3" style="color: #000000;">usersLimit</label>
+                        <input type="text" class="form-control form-style" id="usersLimit" name="usersLimit" value="<%= coupon.usersLimit %>" placeholder="Enter User Limit" >
+                        <div id="couponUserLimitError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                      </div>
+                    </div>                          
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label class="font-weight-bold pl-3" style="color: #000000;">Description</label>
+                        <input type="text" class="form-control form-style" id="description" name="description" value="<%= coupon.description %>" placeholder="Enter Description" >
+                        <div id="couponDiscriptionError" style="color: red;  margin-left: 15px; font-size: 10px;"></div>
+                      </div>
+                    </div>
+                  </div>
+                <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5" style="margin-left: 525px; margin-bottom: 15px;">UPDATE COUPON</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+ 
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<!-- Your existing HTML and styles remain unchanged -->
+
+<script>
+  $(document).ready(function () {
+    // Function to clear error message on input
+    function clearErrorOnInput(inputField, errorElement) {
+      inputField.on("input", function () {
+        errorElement.text("");
+      });
+    }
+
+    $("#productForm").submit(function (event) {
+      // Clear previous error messages
+      $(".error").text("");
+
+      // Validate Coupon Name
+      var couponName = $("#couponName");
+      var couponNameValue = couponName.val().trim();
+
+      // Check if couponName is not empty
+      if (couponNameValue === "") {
+        $("#couponNameError").text("Coupon Name is required");
+        event.preventDefault();
+      }
+
+      // Check if couponName contains more than one space
+      if (/\s{2,}/.test(couponNameValue)) {
+        $("#couponNameError").text("Coupon Name cannot contain more than one space");
+        event.preventDefault();
+      }
+
+      // Check if couponName starts with a space
+      if (/^\s/.test(couponNameValue)) {
+        $("#couponNameError").text("Coupon Name cannot start with a space");
+        event.preventDefault();
+      }
+
+      clearErrorOnInput(couponName, $("#couponNameError"));
+
+
+
+// Validate Coupon Code
+var couponCode = $("#couponCode");
+var couponCodeValue = couponCode.val().trim();
+
+// Check if couponCode is not empty
+if (couponCodeValue === "") {
+    $("#couponCodeError").text("Coupon Code is required");
+    event.preventDefault();
+} else {
+    // Check if couponCode contains any spaces
+    if (/\s/.test(couponCodeValue)) {
+        $("#couponCodeError").text("Coupon Code cannot contain spaces");
+        event.preventDefault();
+    }
+
+    // Check if couponCode is at least 7 characters and at most 12 characters
+    if (couponCodeValue.length < 7 || couponCodeValue.length > 12) {
+        $("#couponCodeError").text("Coupon Code must be between 7 and 12 characters");
+        event.preventDefault();
+    }
+
+    // Check if couponCode contains only alphanumeric characters
+    if (!/^[a-zA-Z0-9]+$/.test(couponCodeValue)) {
+        $("#couponCodeError").text("Coupon Code must contain only alphanumeric characters");
+        event.preventDefault();
+    }
+}
+
+clearErrorOnInput(couponCode, $("#couponCodeError"));
+
+
+      // Validate Valid From
+var validFrom = $("#validFrom").val().trim();
+
+// Check if validFrom is empty
+if (validFrom === "") {
+    $("#couponValidFromError").text("Valid From date is required");
+    event.preventDefault();
+}
+
+clearErrorOnInput($("#validFrom"), $("#couponValidFromError"));
+
+      // Validate Valid To
+var validTo = $("#validTo").val().trim();
+
+// Check if validTo is empty
+if (validTo === "") {
+    $("#couponValidToError").text("Valid To date is required");
+    event.preventDefault();
+} else {
+    // Check if validTo is not less than validFrom
+    if (new Date(validTo) < new Date(validFrom)) {
+        $("#couponValidToError").text("Valid To date must be equal or later than Valid From date");
+        event.preventDefault();
+    }
+}
+
+clearErrorOnInput($("#validTo"), $("#couponValidToError"));
+
+      // Validate Minimum Spend
+var minimumSpend = $("#minimumSpend").val().trim();
+
+// Check if minimumSpend is empty
+if (minimumSpend === "") {
+    $("#couponMinimumSpendError").text("Minimum Spend is required");
+    event.preventDefault();
+} else {
+    // Check if minimumSpend is not a number or is less than or equal to 0
+    var parsedMinimumSpend = parseFloat(minimumSpend);
+    if (isNaN(parsedMinimumSpend) || parsedMinimumSpend <= 0) {
+        $("#couponMinimumSpendError").text("Minimum Spend must be a positive number");
+        event.preventDefault();
+    }
+}
+
+clearErrorOnInput($("#minimumSpend"), $("#couponMinimumSpendError"));
+
+      // Validate Users Limit
+var usersLimit = $("#usersLimit").val().trim();
+
+// Check if usersLimit is empty
+if (usersLimit === "") {
+    $("#couponUserLimitError").text("User Limit is required");
+    event.preventDefault();
+} else {
+    // Check if usersLimit is a positive integer
+    var parsedUsersLimit = parseInt(usersLimit, 10);
+
+    if (isNaN(parsedUsersLimit) || parsedUsersLimit <= 0 || parsedUsersLimit % 1 !== 0) {
+        $("#couponUserLimitError").text("User Limit must be a positive integer");
+        event.preventDefault();
+    }
+}
+
+clearErrorOnInput($("#usersLimit"), $("#couponUserLimitError"));
+
+  // Validate Discount Amount
+var discountAmount = $("#discountAmount").val().trim();
+var minimumSpend = parseFloat($("#minimumSpend").val());
+
+// Check if discountAmount is empty
+if (discountAmount === "") {
+    $("#couponDiscountError").text("Discount Amount is required");
+    event.preventDefault();
+} else {
+    // Check if discountAmount is not a number or is less than 0
+    var parsedDiscountAmount = parseFloat(discountAmount);
+    if (isNaN(parsedDiscountAmount) || parsedDiscountAmount <= 0) { 
+        $("#couponDiscountError").text("Discount Amount must be a Positive number");
+        event.preventDefault();
+    } else {
+        // Check if discountAmount is greater than the Minimum Spend
+        if (parsedDiscountAmount > minimumSpend) {
+            $("#couponDiscountError").text("Discount Amount cannot be greater than Minimum Spend");
+            event.preventDefault();
+        }
+    }
+}
+
+clearErrorOnInput($("#discountAmount"), $("#couponDiscountError"));
+
+      // Validate Description
+var description = $("#description").val().trim();
+
+// Check if description is empty
+if (description === "") {
+    $("#couponDiscriptionError").text("Description is required");
+    event.preventDefault();
+}
+
+clearErrorOnInput($("#description"), $("#couponDiscriptionError"));
+
+    });
+  });
+</script>
+
+
+
+
+
+  
+    
+      <%- include("../admin/layouts/adminFooter.ejs") %>

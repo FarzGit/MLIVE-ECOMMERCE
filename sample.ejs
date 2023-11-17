@@ -1,0 +1,153 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="">
+    <label for="checkout-discount-input" class="text-truncate"
+      >Have a coupon? <span>Enter your code below.</span></label
+    >
+  </div>
+  <div class="cart-discount">
+    
+      <div class="input-group mb-5">
+        <input
+          type="text"
+          class="form-control"
+          
+          name="code"
+          id="code"
+          placeholder="coupon code"
+          style="
+            height: 40px;
+            border: 1px dotted #000;
+            padding-left: 10px;
+          "
+        />
+        
+        <button
+        id="unApply"
+          class="btn btn-outline-dark"
+          style="margin: 0; width: 70px; height: 40px; display: none;"
+          onclick="unApplycoupon($('#code').val())"
+        >
+        <i class="fa-solid fa-trash"></i>
+        </button>
+        
+          <button
+          id="apply"
+          class="btn btn-outline-dark"
+          style="margin: 0; width: 70px; height: 40px; "
+          onclick="applycoupon($('#code').val())"
+        >
+          <i class="icon-long-arrow-right"></i>
+        </button>
+        
+      </div>
+  </div>
+
+
+
+
+
+                                                    <script>
+                                                        //=========delete applied coupon=========
+                                                        function unApplycoupon(code) {
+                                                         const amount = document.getElementById('total1').innerHTML;
+                                                         $.ajax({
+                                                           url: "/deleteAppliedCoupon",
+                                                           data:{
+                                                             code:code,
+                                                             amount: amount
+                                                           },
+                                                           method: "post",
+                                                           success: (response)=>{
+                                                             if(response.success){
+                                                               document.getElementById('total1').innerHTML = response.disTotal
+                                                               
+                                                               document.getElementById('apply').style.display = "block"
+                                                               document.getElementById('unApply').style.display = "none"
+                                                               Swal.fire({
+                                                                 icon: 'warning',
+                                                                 title: 'Deleted !!',
+                                                                 text: 'Applied coupon is deleted.'
+                                                               })
+                                                             }
+                                                           }
+                                                         })
+                                                       }
+                                                     
+                                                     
+                                                       function applycoupon(code) {
+                                                         
+                                                         const amount = document.getElementById('total1').innerHTML;
+                                                        
+                                                         
+                                                         $.ajax({
+                                                           url: "/applyCoupon",   
+                                                           data: {
+                                                             code: code,
+                                                             amount: amount
+                                                           },
+                                                           method: "post",
+                                                           success: (response) => {
+                                                             if (response.user) {
+                                                               Swal.fire({
+                                                                 icon: 'error',
+                                                                 title: 'Oops !!',
+                                                                 text: 'This coupon already used!'
+                                                               })
+                                                             }else if (response.cartAmount) {
+                                                               Swal.fire({
+                                                                 icon: 'warning',
+                                                                 title: 'Oops !!',
+                                                                 text: 'You cant use the coupon...Buy more'
+                                                               })
+                                                             } else if (response.amountOkey) {
+                                                              console.log(response);
+                                                               document.getElementById('total1').innerHTML = response.disTotal
+                                                               
+                                                               document.getElementById('apply').style.display = "none"
+                                                               document.getElementById('unApply').style.display = ""
+                                                               Swal.fire({
+                                                                 position: 'center',
+                                                                 icon: 'success',
+                                                                 title: 'Discount redeemed',
+                                                                 showConfirmButton: false,
+                                                                 timer: 1500
+                                                               })
+                                                               
+                                                             } else {
+                                                               Swal.fire({
+                                                                 icon: 'error',
+                                                                 title: 'Oops !!!',
+                                                                 text: 'Invalid Coupon!!!'
+                                                               })
+                                                             }
+                                                           }
+                                                         })
+                                                       }
+                                                     
+                                                     </script>
+
+
+
+
+
+
+
+
+
+                                                     

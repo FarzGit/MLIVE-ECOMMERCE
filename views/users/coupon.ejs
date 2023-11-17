@@ -1,0 +1,111 @@
+
+<%- include('../users/mainLayout/mainHeader.ejs')%>
+
+        <main class="main">
+            <!-- <div class="page-header text-center " style="background-image: url('/user/images/page-header-bg.jpg')">
+                <div class="container">
+                    <h1 class="page-title text-white"><i class="fa-solid fa-gift">&nbsp; </i>Offers</h1>
+                </div>
+            </div> -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a>Your Account</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Offers</li>
+
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="container-fluid d-flex flex-column justify-content-center py-5">
+
+
+                <div class="row p-2 col-12 d-flex justify-content-center" >
+                    
+                    <% for(let i in coupons){ %>
+                        <% var dateTo=new Date(coupons[i].validTo); %>
+                    
+                      <% var redeemed = null; %>
+
+                      <% for (var j = 0; j < coupons[i].usedUsers.length; j++) { %>
+                          <% var usersId = coupons[i].usedUsers[j]; %>
+                          <% if (usersId.toString() === user.toString()) { %>
+                              <% redeemed = usersId; %>
+                              <% break; %>
+                          <% } %>
+                      <% } %>
+
+                    <div class="card  m-2 col-md-5 col-10 p-4 pt-3" style="background: #F3F3F9; border-radius: 10px;">
+                        <div class="card-body ">
+                            <h5 class="text-danger"><%if(redeemed!==null){%><i class="fa-solid fa-medal"></i> Redeemed<%}%></h5>
+                            
+                            <h6 class="card-title mb-1<%if(redeemed!==null){%> text-light<%}%>"  style="font-size: 25px;">
+                                <i class="fa-solid fa-gift"></i>
+                                <%=coupons[i].couponCode%>
+                                
+                            </h6>
+                            <p class="card-text"><%= coupons[i].description%>
+                            </p>
+                            <p class="card-text">Redeem upto <span class="text-dark">₹<%=coupons[i].discountAmount%></span>
+                            </p>
+                            <hr class="m-0 p-0 my-3">
+                            <div>
+                                <p style="font-size: 10px;"> <b>T&C: </b>Coupon requires a <%=coupons[i].minimumSpend%> minimum purchase. Use the code at checkout. Cannot be combined with other promotions. Limited-time offer."</p>
+
+                            </div>
+                            <div class="d-flex justify-content-end ">
+                                <%if(redeemed==null){%>
+                                <p class="text-dark" type="button" >expire on</p>
+                                <p class="mx-3">:</p>
+                                <p class="text-danger" type="button"   ><%= dateTo.toLocaleDateString() %></p>
+                                
+                                <%}%>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <%}%>
+                   
+                    
+                    <%if(coupons.length==0){%>
+                    
+                        <div class="card  m-2 col-md-5 col-10 p-4 pt-3" style="background: #F3F3F9; border-radius: 10px;">
+                            <div class="card-body ">
+                               
+                                
+                                <h6 class="card-title mb-1 text-center text-light"  style="font-size: 25px;">
+                                    <i class="fa-solid fa-gift"></i>
+                                    No Offers
+                                </h6>
+                                
+                            </div>
+                        </div>
+                        <%}%>
+                   
+
+
+
+
+
+                </div>
+
+
+
+
+            </div>
+
+
+        </main>
+
+        
+
+        <%- include('../users/mainLayout/mainFooter.ejs')%>
+
+
+
+
+
+
+
+
+

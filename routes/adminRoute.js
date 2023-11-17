@@ -4,9 +4,12 @@ const session = require("express-session");
 const config = require("../config/config");
 const adminController = require("../controller/adminController");
 const productController = require("../controller/productController");
+const couponController = require("../controller/couponController");
 const adminAuth = require('../middleware/adminAuth')
 const path = require("path");
 const multer = require("multer");
+
+
 
 
 
@@ -57,6 +60,8 @@ adminRoute.use(
   })
 );
 
+
+
 adminRoute.set("view engine", "ejs");
 adminRoute.set("views", "./views/admin");
 
@@ -88,6 +93,16 @@ adminRoute.get("/userOrders",adminAuth.isLogin,adminController.loaduserOrders)
 adminRoute.get("/orderFullDetails",adminAuth.isLogin,adminController.adminOrderFullDetails)
 adminRoute.post('/orderFullDetails/changeStatus',adminAuth.isLogin,adminController. changeOrderStatus )
 adminRoute.post('/adminCancelOrder', adminAuth.isLogin, adminController.adminCancelOrder);
+
+
+
+
+adminRoute.get('/couponManagement',adminAuth.isLogin,couponController.loadCouponMangements);
+adminRoute.get('/addcouponManagement',adminAuth.isLogin,couponController.loadAddCouponMangements)
+adminRoute.post('/addcouponManagement',adminAuth.isLogin,couponController.addNewCoupon)
+adminRoute.get('/editcouponManagement',adminAuth.isLogin,couponController.loadEditCouponMangements)
+adminRoute.post('/editcouponManagement',adminAuth.isLogin,couponController.editCoupon)
+adminRoute.get('/deletecouponManagement',adminAuth.isLogin,couponController.deleteCoupon)
 
 
 
