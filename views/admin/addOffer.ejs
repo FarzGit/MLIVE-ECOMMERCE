@@ -1,0 +1,135 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+<body class="g-sidenav-show bg-gray-200">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header d-flex justify-content-center">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <img src="/static/adminAssets/images/icons/mlive logo white.png" alt="main_logo">
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="home">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="category">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Categories</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="customer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Customers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="product">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">view_in_ar</i>
+            </div>
+            <span class="nav-link-text ms-1">Products</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="userOrders">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+            </div>
+            <span class="nav-link-text ms-1">Orders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="couponManagement">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Coupons</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white active bg-gradient-primary" href="offer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Offers</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-9 elemDesign" style="width: 1320px;">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                
+                <h6 class="text-white text-capitalize ps-3">ADD OFFER</h6>
+              </div>
+            </div>
+            
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                    
+                        <form action="/admin/addOffer" method="post" class="p-4">
+    
+                            <div class="form-outline mb-3 row input-group input-group-outline  ">
+                                <div class=" col-md-6 col-12 mb-3">
+                                    <label for="name">Offer Name</label>
+                                    <input type="text" id="name" class="form-control form-control-md rounded-0"
+                                    placeholder="Enter Offer Name" name="name" required/>
+                                    <small id="nameErr" class="error"></small>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <label for="discount">Discount %</label>
+                                    <input type="number" id="discount" class="form-control form-control-md rounded-0" placeholder="Enter Discount" name="percentage" required/>
+                                    <small id="discountErr" class="error"></small>
+                                </div>
+                            </div>
+                            <div class="form-outline mb-3 row input-group input-group-outline ">
+                                <div class=" col-md-6 col-12 mb-3">
+                                    <label for="startingDate">Select Starting Date</label>
+                                    <input type="date" id="startingDate"
+                                        class="form-control form-control-md rounded-0" name="startingDate" required/>
+                                    <small id="startingDateErr" class="error"></small>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <label for="expiryDate">Select Expiry Date</label>
+                                    <input type="date" id="expiryDate" class="form-control form-control-md rounded-0" name="expiryDate" required/>
+                                    <small id="expiryDateErr" class="error"></small>                                     
+                                </div>
+                            </div>
+                            <div class="text-center my-2">
+                                <button class="btn btn-dark btn-md rounded-pill px-5 py-2 login-btn" type="submit" onclick="return validateOffer()">ADD</button>
+                            </div>
+    
+                        </form>
+                </div>
+              </div>
+
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3 elemDesign">
+          <!-- Sidebar content for medium and large screens -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <%- include("../admin/layouts/adminFooter.ejs") %>
+</body>

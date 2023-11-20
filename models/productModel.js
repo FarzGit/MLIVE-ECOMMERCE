@@ -43,7 +43,14 @@ const productSchema = new mongoose.Schema({
     type:Boolean,
     default:true
     
-  }
+  },
+  offer : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'offer'
+},
+discountedPrice:{
+  type:Number
+},
   
 
 },{

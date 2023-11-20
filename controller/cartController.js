@@ -23,7 +23,7 @@ const addToCart = async (req, res) => {
                 if (productExist != -1) {
                     const cartData = await cartDb.findOne({ user: userId, "products.productId": productId },
                         { "products.productId.$": 1, "products.quantity": 1 })
-
+zz
                     const [{ quantity: quantity }] = cartData.products
 
                     if (productData.quantity <= quantity) {
@@ -34,7 +34,14 @@ const addToCart = async (req, res) => {
                     }
 
                 } else {
-                    await cartDb.findOneAndUpdate({ user: userId }, { $push: { products: { productId: productId, price: productData.price } } });
+                    await cartDb.findOneAndUpdate({ user: userId }, { $push: { products: { productId: productId, 
+                        price: productData.discountedPrice
+                        ? Math.ceil(productData.discountedPrice) // Use discounted price if available
+                        : productData.price, // Otherwise, use regular price
+                    } 
+                } 
+            }
+            );
                 }
 
 

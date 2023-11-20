@@ -59,7 +59,20 @@
 						</h4>
 
 						<span class="mtext-106 cl2">
-							<%= product.price %>
+							<% if(product.offer && product.offer.percentage>0){%>
+                       
+								<span class="stext-105 cl3 ">
+								  Price:<del>₹<%= product.price %> </del>  
+								</span><br>
+								<span class="stext-105 cl3 ">
+								<span> Offer Price: <span class="text-danger">  ₹<%= Math.ceil(product.discountedPrice) %>   </span></span>
+								</span>
+							</div>
+						   <% }else{%>
+							<p class="stext-102 cl3 p-t-23">
+								Price: ₹<%= product.price %>
+							</p>
+						  <% }%>
 						</span>
 
 						<p class="stext-102 cl3 p-t-23">

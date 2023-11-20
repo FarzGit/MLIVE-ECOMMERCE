@@ -1,0 +1,141 @@
+<%- include('../users/mainLayout/mainHeader.ejs')%>
+
+
+
+
+
+
+<section class="bg0 p-t-104 p-b-116">
+    <div class="container">
+        <div class="flex-w flex-tr">
+            <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+                <form method='post' id='contactForm'>
+                    
+                    <h4 class="mtext-105 cl2 txt-center p-b-30">
+                        Send Us A Message
+                    </h4>
+
+                    <div class="bor8 m-b-20 how-pos4-parent">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-28 p-r-30" id='email' type="text" name='email' placeholder="Your Email Address" Required>
+                    </div>
+
+                    <div class="bor8 m-b-30">
+                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" id='message' name='message' placeholder="How Can We Help?" Required></textarea>
+                    </div>
+
+                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+                        Submit
+                    </button>
+                </form>
+            </div>
+
+            <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
+                <div class="flex-w w-full p-b-42">
+                    <span class="fs-18 cl5 txt-center size-211">
+                        <span class="lnr lnr-map-marker"></span>
+                    </span>
+
+                    <div class="size-212 p-t-2">
+                        <span class="mtext-110 cl2">
+                            Address
+                        </span>
+
+                        <p class="stext-115 cl6 size-213 p-t-18">
+                            M LIVE , 123 Rahmath Street, Calicut Town
+                            City: Calicut
+                            State: Kerala
+                            Pin Code: 682001
+                            Country: India
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex-w w-full p-b-42">
+                    <span class="fs-18 cl5 txt-center size-211">
+                        <span class="lnr lnr-phone-handset"></span>
+                    </span>
+
+                    <div class="size-212 p-t-2">
+                        <span class="mtext-110 cl2">
+                            Lets Talk
+                        </span>
+
+                        <p class="stext-115 cl1 size-213 p-t-18">
+                            +91 9207850184
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex-w w-full">
+                    <span class="fs-18 cl5 txt-center size-211">
+                        <span class="lnr lnr-envelope"></span>
+                    </span>
+
+                    <div class="size-212 p-t-2">
+                        <span class="mtext-110 cl2">
+                            Sale Support
+                        </span>
+
+                        <p class="stext-115 cl1 size-213 p-t-18">
+                            mlivecalicut@gmail.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.17/dist/sweetalert2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    $('#contactForm').submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/contact',
+            method: 'post',
+            data: $('#contactForm').serialize(),
+            success: (res) => {
+                if (res.status == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Your message has been sent!',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // User clicked OK, refresh the page
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred while processing your request.',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        })
+    })
+</script>
+
+
+
+
+
+<%- include('../users/mainLayout/mainFooter.ejs')%>

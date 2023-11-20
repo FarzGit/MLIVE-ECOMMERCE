@@ -39,6 +39,12 @@ userRoute.post("/forgot-password", userController.ForgotPassword);
 userRoute.get("/reset-password", userController.resetLoad);
 userRoute.post("/reset-password", userController.resetPassword);
 userRoute.get("/logout", userController.userLogout);
+userRoute.get('/about',userAuth.isLogin,userController.loadAbout)
+userRoute.get('/contact',userAuth.isLogin,userController.loadContact)
+userRoute.post('/contact',userAuth.isLogin,userController.postContact)
+
+
+
 
 userRoute.get("/shop", userAuth.isLogin, userController.loadShop);
 userRoute.get("/productDetails",userAuth.isLogin,userController.loadProductDetails);

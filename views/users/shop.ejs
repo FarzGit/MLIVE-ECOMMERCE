@@ -220,7 +220,21 @@
             <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
                 <div class="block2">
                     
-                        <div class="block2-pic hov-img0 d-flex align-items-center " style=" height: 323px; background-color: #F7F7F7;" >
+                        <div class="block2-pic hov-img0 d-flex  " style=" height: 323px; background-color: #F7F7F7;" >
+                            <% if(product.offer && product.offer.percentage > 0) { %>
+                                <div class="discount-badge" style="background-color: #ff5733;
+                               color: #f8f8f8;
+                                padding: 5px;
+                                 position: absolute;
+                                 z-index: 1;
+                                width: 74px;">
+                                   
+                                        <span class="stext-103 size-102">
+                                            <%= product.offer.percentage %> % OFF
+                                        </span>
+                                    
+                                </div>
+                                <% } %>
                        
                             <img style="width: 300px; height: 319px;" src="/static/adminAssets/images/<%= product.image[0] %>" alt="IMG-PRODUCT">
                     
@@ -235,13 +249,26 @@
                                     <%= product.brand %>
                                 </span>
                                 <a href="" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                    <%= product.productName %>
-                                     
+                                    <%= product.productName %>   
                                 </a>
                     
-                                <span class="stext-105 cl3">
-                                    <span>&#8377 </span><%= product.price %>
+                                <% if(product.offer && product.offer.percentage>0){%>
+                                    <div class="d-flex justify-content-between">
+                                    
+                                    <span class="stext-105 cl3 " ">
+                                     <p class="text-danger">   ₹<%= Math.ceil(product.discountedPrice) %>   </p>
+                                    </span>
+                                    &nbsp;
+                                    &nbsp;
+                                    <span class="stext-105 cl3 ">
+                                        <del>₹<%= product.price %> </del>  
+                                    </span>
+                                </div>
+                               <% }else{%>
+                                <span class="stext-105 cl3 ">
+                                    ₹<%= product.price %>  
                                 </span>
+                              <% }%>
                             </div>
 
                             

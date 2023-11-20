@@ -544,12 +544,12 @@ const loadShop = async (req, res) => {
   }
 
      /**.sort({_id:-1 for latest sorting is _id better to change by createdAt:-1}) */
-     let products = await productDb.find(query).populate('category').sort({ createdAt: -1 }).limit(limit * 1).skip((page - 1) * limit);
+     let products = await productDb.find(query).populate('category').populate('offer').sort({ createdAt: -1 }).limit(limit * 1).skip((page - 1) * limit);
      if (req.query.sortValue && req.query.sortValue != 3) {
-      products = await productDb.find(query).populate('category').sort({ price: sortValue }).limit(limit * 1).skip((page - 1) * limit)
+      products = await productDb.find(query).populate('category').populate('offer').sort({ price: sortValue }).limit(limit * 1).skip((page - 1) * limit)
      } else {
          /**.sort({_id:-1 for latest sorting is _id better to change by createdAt:-1}) */
-         products = await productDb.find(query).populate('category').sort({ createdAt: sortValue }).limit(limit * 1).skip((page - 1) * limit)
+         products = await productDb.find(query).populate('category').populate('offer').sort({ createdAt: sortValue }).limit(limit * 1).skip((page - 1) * limit)
      }
 
     const userId = req.session.user_id
@@ -596,7 +596,7 @@ const loadProductDetails = async(req,res)=>{
       console.log("haloo");
     const id = req.query.id
     console.log(id);
-    const products = await productDb.findById({_id:id})
+    const products = await productDb.findById({_id:id}).populate('offer')
     
 
     console.log(products);
@@ -952,6 +952,71 @@ const getWallet = async(req,res)=>{
 }
 
 
+const loadAbout = async(req,res)=>{
+  try{
+
+    const userId = req.session.user_id
+    const userData = await User.findById({_id:userId})
+
+
+    res.render('about',{user:userData})
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+
+const loadContact = async(req,res)=>{
+  try{
+
+    const userId = req.session.user_id
+    const userData = await User.findById({_id:userId})
+
+
+    res.render('contact',{user:userData})
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+const postContact = async (req, res, next) => {
+  try {
+      const { email,  message } = req.body;
+      const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          requireTLS: true,
+          auth: {
+              user: 'farzinahammedabc@gmail.com',
+              pass: process.env.SMPT_PASS
+          }
+      });
+      const mailDetails = {
+          from: 'farzinahammedabc@gmail.com',
+          to: process.env.SMTP_MAIL,
+          subject: "customer deals",
+          html: `<h5 style="text-align: center;">Email: ${email}</h5>
+          <h4 style="text-align: center; color: red">Message:</h4>
+          <p style="text-align: center;">${message}</p>
+          `  
+      }
+      transporter.sendMail(mailDetails, function (error, info) {
+          if (error) {
+              next(error);
+              res.json({ status: false })
+          } else {
+              console.log("Contact Form Email sent successfully", info.response);
+              res.json({ status: true })
+          }
+      })
+  } catch (error) {
+      next(error);
+  }
+}
 
 
 
@@ -985,6 +1050,9 @@ module.exports = {
   postVerifyWalletPayment,
   getWallet,
   getWalletHistory,
-  changePassword
+  changePassword,
+  loadAbout,
+  loadContact,
+  postContact
   
 };

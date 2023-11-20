@@ -5,10 +5,12 @@ const config = require("../config/config");
 const adminController = require("../controller/adminController");
 const productController = require("../controller/productController");
 const couponController = require("../controller/couponController");
+const offerController = require("../controller/offerController");
+const bannerController = require("../controller/bannerController");
 const adminAuth = require('../middleware/adminAuth')
+const fileUpload = require('../middleware/fileUpload')
 const path = require("path");
 const multer = require("multer");
-
 
 
 
@@ -104,6 +106,25 @@ adminRoute.get('/editcouponManagement',adminAuth.isLogin,couponController.loadEd
 adminRoute.post('/editcouponManagement',adminAuth.isLogin,couponController.editCoupon)
 adminRoute.get('/deletecouponManagement',adminAuth.isLogin,couponController.deleteCoupon)
 
+
+
+
+adminRoute.get('/offer',adminAuth.isLogin,offerController.loadOffer)
+adminRoute.get("/addOffer",adminAuth.isLogin,offerController.loadaddOffer)
+adminRoute.get("/editOffer/:id",adminAuth.isLogin,offerController.loadEditOffer)
+adminRoute.post("/addOffer",adminAuth.isLogin,offerController.AddOffer)
+adminRoute.post("/editOffer",adminAuth.isLogin,offerController.postEditOffer)
+adminRoute.patch('/cancelOffer',adminAuth.isLogin,offerController.cancelOffer)
+adminRoute.patch('/apply_offer',adminAuth.isLogin,productController.applyProductOffer)
+adminRoute.patch('/remove_offer',adminAuth.isLogin,productController.removeProductOffer)
+// adminRoute.get('/applyOfferProduct',adminAuth.isLogin,offerController.applyOfferProduct)
+
+
+
+
+adminRoute.get('/banner',adminAuth.isLogin,bannerController.BannerPageLoader)
+
+adminRoute.post('/banner',adminAuth.isLogin,fileUpload.uploadBanner.single('image'),bannerController.bannerUpdate)
 
 
 

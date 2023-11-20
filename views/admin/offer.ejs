@@ -1,0 +1,228 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+<body class="g-sidenav-show bg-gray-200">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header d-flex justify-content-center">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <img src="/static/adminAssets/images/icons/mlive logo white.png" alt="main_logo">
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="home">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="category">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Categories</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="customer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Customers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="product">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">view_in_ar</i>
+            </div>
+            <span class="nav-link-text ms-1">Products</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="userOrders">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+            </div>
+            <span class="nav-link-text ms-1">Orders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="couponManagement">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Coupons</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white active bg-gradient-primary" href="offer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Offers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="banner">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Banners</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-9 elemDesign" style="width: 1320px;">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <a href="/admin/addOffer">
+                  <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
+                </a>
+                <h6 class="text-white text-capitalize ps-3">PRODUCT</h6>
+              </div>
+            </div>
+            
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive">
+                <table class="table ">
+                <thead>
+                    <tr>
+                        <th> Offer Name </th>
+                        <th> Starting date </th>
+                        <th> Expiry date </th>
+                        <th> percentage </th>
+                        <th>  </th>
+                        <th> Status </th>
+                        <th>  </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                       <% if( offers && offers.length > 0 ){ %>
+                        <% for ( let offer of offers ) { %>
+                            
+                            <% if( offer.startingDate < now && offer.expiryDate > now && offer.status ) { var active = "Active" } else if( offer.startingDate > now && offer.status ) { var active = "Upcoming"} else if( offer.expiryDate < now && offer.status ) { var active = "Expired"} %>
+
+                            <tr>
+                                <td class="category-name">
+                                    <span class="pl-2"><%= offer.name %></span>
+                                </td>
+                                <td class="category-name">
+                                    <span class="pl-2"><%= offer.startingDate.toLocaleDateString('en-US', { year: 'numeric' ,
+                                        month: 'short' , day: '2-digit' }).replace(/\//g,'-') %></span>
+                                </td>
+                                <td class="category-name">
+                                    <span class="pl-2"><%=  offer.expiryDate.toLocaleDateString('en-US', { year: 'numeric' ,
+                                        month: 'short' , day: '2-digit' }).replace(/\//g,'-')  %></span>
+                                </td>
+                                <td class="category-name">
+                                    <span class="pl-2"><%= offer.percentage %></span>
+                                </td>
+                                
+                                <td>
+                                    <a href="/admin/editOffer/<%= offer._id %>"><button type="button" class="btn btn-dark btn-sm ">Edit<i class="mdi mdi-file-check btn-icon-append"></i>
+                                    </button></a>
+                                </td>
+
+                                <td>
+                                    <% if( offer.status ){ %>
+                                        <span id="active-<%= offer._id%>" class="<% if( active === 'Active' ) {%>text-success<% } else if ( active === 'Upcoming' ) {%>text-primary<% } else {%>text-warning<% } %>"><%= active %></span>                           
+                                    <% } else { %>
+                                        <span class="text-danger">Cancelled</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if( (active === "Active" || active === "Upcoming") && offer.status ) { %>
+                                        <div id="cancel-<%= offer._id %>" style="cursor: pointer;" class="badge"><a class="btn btn-danger btn-sm" onclick="cancelOffer('<%= offer._id %>')">Cancel</a></div>        
+                                    <% } %>                            
+                                </td>
+                            </tr>
+                        <% } %>
+                       <% } %>
+                    
+                    
+                </tbody>
+                </table>
+            </div>
+              </div>
+
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3 elemDesign">
+          <!-- Sidebar content for medium and large screens -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+<script>
+      $('.modalBTN').click( function () {
+        var id = $(this).data('id');
+        var routeURL = '/admin/cancelOffer/'+id
+        $(".modal-footer #confirmBTN").attr('href', routeURL);
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    async function cancelOffer(offerId) {
+        // Show SweetAlert confirmation dialog
+        const confirmed = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to cancel the offer. Do you want to proceed?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel it!'
+        });
+
+        if (!confirmed.value) {
+            // User clicked cancel or closed the dialog
+            return;
+        }
+
+        // User confirmed, proceed with the cancellation
+        console.log('cancelling');
+        const cancelbtn = document.getElementById(`cancel-${offerId}`);
+        const spanbtn = document.getElementById(`active-${offerId}`);
+        const cancelmsg = document.getElementById(`cancelspn-${offerId}`);
+
+        try {
+            const response = await axios.patch('/admin/cancelOffer', { offerId });
+            console.log(response);
+
+            if (response.data.cancelled) {
+                console.log();
+                cancelbtn.style.display = 'none';
+                spanbtn.className = '';
+                spanbtn.innerHTML = 'Cancelled';
+                spanbtn.style.color = '#dc3545';
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+</script>
+
+
+  <%- include("../admin/layouts/adminFooter.ejs") %>
+</body>

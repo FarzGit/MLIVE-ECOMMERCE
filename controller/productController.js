@@ -2,6 +2,7 @@ const productDb = require("../models/productModel");
 const User = require("../models/userModel");
 const categoryDb = require("../models/categoryModel");
 const adminDb = require("../models/adminModel");
+const offerDb =require("../models/offerModel");
 const sharp = require("sharp");
 const path = require("path");
 const { log } = require("console");
@@ -21,12 +22,14 @@ const loadProducts = async (req, res) => {
     //   page = totalPages;
     // }
 
-    const products = await productDb.find({});
-
+    const products = await productDb.find().populate('offer');
+    
+    const availableOffers = await offerDb.find({ status : true, expiryDate : { $gte : new Date() }})
     // console.log('products', products);
 
     res.render("Products", {
       product: products,
+      availableOffers,
     });
   } catch (error) {
     console.error(error);
@@ -188,6 +191,87 @@ const productListorUnlist = async (req, res) => {
   }
 };
 
+
+
+const applyProductOffer = async (req, res) => {
+  try {
+    const productId = req.body.productId;
+    const offerId = req.body.offerId;
+
+    // Assuming you have an Offer model with fields: discountPercentage
+    const offer = await offerDb.findOne({ _id: offerId });
+
+    if (!offer) {
+      return res.json({ success: false, message: 'Offer not found' });
+    }
+
+    const product = await productDb.findOne({ _id: productId }).populate('category')
+
+    if (!product) {
+      return res.json({ success: false, message: 'Product not found' });
+    }
+
+    // Get the category discount, if available
+    const categoryDiscount = product.category && product.category.offer
+      ? await offerDb.findOne({ _id: product.category.offer })
+      : 0;
+      console.log("categoryDiscount",categoryDiscount)
+
+    // Calculate real price and discounted price for the product
+    const discountPercentage = offer.percentage;
+    const originalPrice = parseFloat(product.price);
+    const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
+
+    console.log("categoryDiscount.percentage :",categoryDiscount.percentage )
+    // Check if category offer is available and its discount is greater than product offer
+    if (categoryDiscount && categoryDiscount.percentage > discountPercentage) {
+      console.log("Category offer has greater discount");
+      // You can handle this case as needed, e.g., not applying the product offer
+      return res.json({ success: false, message: 'Category offer has greater discount' });
+    }
+
+    // Update product with offer details
+    await productDb.updateOne(
+      { _id: productId },
+      {
+        $set: {
+          offer: offerId,
+          discountedPrice: discountedPrice,
+        },
+      }
+    );
+
+    const updatedProduct = await productDb.findOne({ _id: productId }).populate('offer');
+    res.json({ success: true, data: updatedProduct });
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/500');
+  }
+};
+
+
+const removeProductOffer = async (req, res) => {
+  try {
+    const { productId } = req.body;
+
+    const remove = await productDb.updateOne(
+      { _id: productId },
+      {
+        $unset: {
+          offer: '',
+          discountedPrice: '',
+          realPrice: '',
+        },
+      }
+    );
+
+    res.json({ success: true ,data:remove });
+  } catch (error) {
+    console.log(error);
+    res.redirect('/500');
+  }
+};
+
 module.exports = {
   loadProducts,
   loadAddProducts,
@@ -196,4 +280,6 @@ module.exports = {
   editProduct,
   productListorUnlist,
   loadAdminProductDetails,
+  applyProductOffer,
+  removeProductOffer
 };
