@@ -1,0 +1,279 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+
+<style>
+    .selected-image {
+    width: 200px;
+    height: auto; /* To maintain the aspect ratio */
+    margin: 5px; /* Optional: Add margin for spacing between images */
+    padding-top: 30px;
+  }
+</style>
+
+<body class="g-sidenav-show bg-gray-200">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header d-flex justify-content-center">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <img src="/static/adminAssets/images/icons/mlive logo white.png" alt="main_logo">
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="home">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="category">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Categories</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="customer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Customers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="product">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">view_in_ar</i>
+            </div>
+            <span class="nav-link-text ms-1">Products</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="userOrders">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+            </div>
+            <span class="nav-link-text ms-1">Orders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="couponManagement">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Coupons</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="offer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Offers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white active bg-gradient-primary" href="banner">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">notifications</i>
+              </div>
+              <span class="nav-link-text ms-1">Banners</span>
+            </a>
+          </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-9 elemDesign" style="width: 1320px;">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <a href="/admin/add_banner">
+                  <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
+                </a>
+                <h6 class="text-white text-capitalize ps-3">BANNER MANAGEMENT</h6>
+              </div>
+            </div>
+            
+            
+            <div class="card-body px-0 pb-2">
+                <div id="errorContainer" class="alert alert-danger" style="display: none;"></div> <!-- Error container -->
+  
+                <form action="/admin/add_banner" method="post" class="p-4" enctype="multipart/form-data">
+    
+                    <div class="form-outline mb-3 row input-group input-group-outline  ">
+                        <div class=" col-md-6 col-12 mb-3">
+                            <label for="name">>Banner Head</label>
+                            <input type="text"  class="form-control form-control-md rounded-0" id="mainHead" name="mainHead" placeholder="Banner Head" required/>
+                            <small id="nameErr" class="error"></small>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label for="discount">Type</label>
+                            <input type="text"  class="form-control form-control-md rounded-0" id="type" name="type" placeholder="Type" required/>
+                            <small id="discountErr" class="error"></small>
+                        </div>
+                    </div>
+                    <div class="form-outline mb-3 row input-group input-group-outline ">
+                        <div class=" col-md-6 col-12 mb-3">
+                            <label for="startingDate">Banner URL</label>
+                            <input type="text"  class="form-control form-control-md rounded-0" id="bannerURL" name="bannerURL" placeholder="https://example.com" required/>
+                            <small id="startingDateErr" class="error"></small>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label for="expiryDate">Image</label>
+                            <div class="input-group col-xs-12">
+                                <input id="images" type="file" name="image" class="upload__inputfile " placeholder="Upload Image" required>
+                                <span class="input-group-append"></span>
+                              </div>
+                              <div id="selectedImagesContainer" class="selected-images-container"></div>
+                            <small id="expiryDateErr" class="error"></small>                                     
+                        </div>
+                    </div>
+                    <div id="openImagePopupDiv"></div>
+                
+                    <div class="text-center my-2">
+                        <button class="btn btn-dark btn-md rounded-pill px-5 py-2 login-btn" type="submit" onclick="return validateOffer()">SUBMIT</button>
+                    </div>
+                
+                </form>
+              </div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3 elemDesign">
+          <!-- Sidebar content for medium and large screens -->
+        </div>
+      </div>
+    </div>
+
+     
+
+
+
+
+
+
+
+  </main>
+
+
+ <script>
+    function handleImageSelect(event) {
+    const files = event.target.files;
+    const selectedImagesContainer = document.getElementById('selectedImagesContainer');
+    selectedImagesContainer.innerHTML = '';
+  
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+  
+      reader.onload = function (e) {
+        const image = document.createElement('img');
+        image.src = e.target.result;
+        image.classList.add('selected-image');
+  
+        // Assign a unique identifier to the image
+        const imageId = 'image_' + i;
+        image.setAttribute('id', imageId);
+  
+        image.addEventListener('click', function () {
+          openImagePopup(e.target.result, imageId);
+        });
+  
+        selectedImagesContainer.appendChild(image);
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  function openImagePopup(imageSrc, imageId) {
+    const popupOverlay = document.createElement('div');
+    popupOverlay.classList.add('image-popup-overlay');
+  
+    const popupContainer = document.createElement('div');
+    popupContainer.classList.add('image-popup-container');
+  
+    const popupImage = document.createElement('img');
+    popupImage.classList.add('image-popup');
+    popupImage.src = imageSrc;
+    popupContainer.appendChild(popupImage);
+  
+    const cropButton = document.createElement('button');
+    cropButton.textContent = 'Crop';
+    cropButton.classList.add('crop-button');
+    cropButton.addEventListener('click', function () {
+      const cropper = new Cropper(popupImage, {
+        aspectRatio: 0, // Allow free-form cropping
+        crop: function (event) {
+          const croppedCanvas = cropper.getCroppedCanvas();
+          // Use the croppedCanvas for further processing or display
+          console.log(croppedCanvas);
+  
+          // Set the data attribute to mark the image as cropped
+          document.getElementById(imageId).dataset.cropped = 'true';
+        },
+      });
+  
+      const saveButton = document.createElement('button');
+      saveButton.textContent = 'Save';
+      saveButton.classList.add('save-button');
+      saveButton.addEventListener('click', function () {
+        const croppedCanvas = cropper.getCroppedCanvas();
+        const croppedImage = croppedCanvas.toDataURL('image/jpeg');
+        // Use the croppedImage for further processing or upload
+  
+        // Replace the original image with the cropped image
+        document.getElementById(imageId).src = croppedImage;
+        // Set the data attribute to mark the image as cropped
+        document.getElementById(imageId).dataset.cropped = 'true';
+  
+        // Remove the popup and overlay
+        document.body.removeChild(popupOverlay);
+      });
+  
+      popupContainer.appendChild(saveButton);
+    });
+  
+    popupContainer.appendChild(cropButton);
+  
+    popupOverlay.appendChild(popupContainer);
+    document.body.appendChild(popupOverlay);
+  
+    popupOverlay.addEventListener('click', function (event) {
+      if (event.target === popupOverlay) {
+        closeImagePopup(popupOverlay);
+      }
+    });
+  }
+  
+  function closeImagePopup(popupOverlay) {
+    document.body.removeChild(popupOverlay);
+  }
+  
+  function cancelForm() {
+    window.location.href = '/admin/banner';
+  }
+  
+  const fileInput = document.getElementById('images');
+  fileInput.addEventListener('change', handleImageSelect);
+ </script>
+
+  <%- include("../admin/layouts/adminFooter.ejs") %>
+</body>
+
+
+
+

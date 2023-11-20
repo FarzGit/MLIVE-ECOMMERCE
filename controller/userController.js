@@ -6,12 +6,13 @@ const config = require("../config/config");
 const otpGenerator = require("otp-generator");
 const productDb = require('../models/productModel')
 const categoryDb = require('../models/categoryModel');
-const addressDb = require('../models/userAddressModel')
+const addressDb = require('../models/userAddressModel');
 const Swal = require('sweetalert2');
 const { AwsInstance } = require("twilio/lib/rest/accounts/v1/credential/aws");
 const Razorpay =require('razorpay')
 const crypto =require('crypto')
 const cartDb = require('../models/cartModel')
+const BannerDB =require('../models/bannerModel')
 
 
 var instance = new Razorpay({
@@ -445,14 +446,14 @@ const loadHome = async (req, res) => {
     
    
     
-    
+   
 
     if(userId){
-     
+      const banners = await BannerDB.find()
       const userData = await User.findById({_id:userId})
-      res.render('home',{user:userData})
+      res.render('home',{user:userData,banners})
     }else{
-      res.render('home',{message:"user logged"})
+      res.render('home',{message:"user logged",banners})
     }
  
    

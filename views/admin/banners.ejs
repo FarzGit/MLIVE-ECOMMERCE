@@ -1,0 +1,275 @@
+<%- include("../admin/layouts/adminHeader.ejs") %>
+
+<style>
+.description-cell {
+  max-width: 100px; /* Set your desired max-width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+
+<body class="g-sidenav-show bg-gray-200">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header d-flex justify-content-center">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <img src="/static/adminAssets/images/icons/mlive logo white.png" alt="main_logo">
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="home">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="category">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Categories</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="customer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Customers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="product">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">view_in_ar</i>
+            </div>
+            <span class="nav-link-text ms-1">Products</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="userOrders">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+            </div>
+            <span class="nav-link-text ms-1">Orders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="couponManagement">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Coupons</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="offer">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Offers</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white active bg-gradient-primary" href="banner">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">notifications</i>
+              </div>
+              <span class="nav-link-text ms-1">Banners</span>
+            </a>
+          </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <%- include("../admin/layouts/adminNavBar.ejs") %>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-9 elemDesign" style="width: 1320px;">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <a href="/admin/add_banner">
+                  <button type="button" class="btn btn-success btn-md float-right mr-5" id="addButton">Add</button>
+                </a>
+                <h6 class="text-white text-capitalize ps-3">BANNER MANAGEMENT</h6>
+              </div>
+            </div>
+            
+            
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive">
+                <table class="table ">
+                  <thead>
+                    <tr >
+                      <th>#</th>
+                      <th class=" d-flex justify-content-center" > Banner</th>
+                      <th style="padding-left: 40px;"> Type </th>
+                      <!-- <th> Description </th> -->
+                      <th style="padding-left: 40px;">URL</th>
+                      <th style="padding-left: 40px;"> Head </th>
+                      <th style="padding-left: 40px;"> Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                 
+                    <% banners.forEach(function(banners, index) { %>
+                      <tr style="height: 140px;">
+                        <td><%= index + 1 %></td>
+                        <td style="padding-block: 50px;">
+                            <img style="width:250px; height: auto;border-radius: 0;"  src="/static/products/banner/<%= banners.image %>" alt="images">
+                        </td>
+                        <td style="padding-block: 50px;" class="description-cell">
+                          <div class="description-content">
+                            <%= banners.typeHead%>
+                          </div>
+                          <p class="toggle-url btn " data-bs-toggle="modal" data-bs-target="#typedetails-<%= banners._id %>">Show More >></p>
+                        </td>
+                        <!-- <td class="description-cell" style="padding-block: 50px;">
+                          <div class="description-content">
+                            <%= banners.description %>
+                          </div>
+                          <p class="toggle-description btn">Show More >></p>
+                        </td> -->
+                        <td class="description-cell" style="padding-block: 50px;">
+                          <div class="description-content">
+                            <%= banners.bannerURL%>
+                          </div>
+                          <p class="toggle-url btn " data-bs-toggle="modal" data-bs-target="#urldetails-<%= banners._id %>">Show More >></p>
+                        </td>
+                          
+                        <td style="padding-block: 50px;" class="description-cell"> 
+                          <div class="description-content" >
+                            &nbsp; &nbsp;  &nbsp;<%= banners.mainHead %> 
+                          </div>
+                           <p class="toggle-url btn " data-bs-toggle="modal" data-bs-target="#headdetails-<%= banners._id %>">Show More >></p>
+                          </td>
+                        <td style="padding-block: 50px;">
+                          <div class="row">
+                            <div><a class="badge badge-primary mr-2" href="/admin/edit-banner/<%= banners._id %>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                </svg></a>
+                            </div>
+
+                          <% if( banners.status ) { %>
+                            <div><a id="delete" class="badge badge-danger" href="/admin/delete-banner/<%= banners._id %>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                </svg></a>
+                            </div>
+
+                          <% } else { %>
+                            <div><a id="restore" class="badge badge-success" href="/admin/restore-banner/<%= banners._id %>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                </svg></a>
+                            </div>
+
+                          <% } %>
+                          </div>
+                        </td>
+
+
+
+                         <!-- ==========modalDeatil -->
+                         <div class="modal fade" id="urldetails-<%= banners._id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title " id="staticBackdropLabel" style="margin-left: 160px;">FULL URL</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <%= banners.bannerURL%>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                               
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="modal fade" id="typedetails-<%= banners._id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title " id="staticBackdropLabel" style="margin-left: 160px;">FULL TYPE DETAILS</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <%= banners.typeHead%>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                               
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="modal fade" id="headdetails-<%= banners._id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title " id="staticBackdropLabel" style="margin-left: 160px;">FULL TYPE DETAILS</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <%= banners.mainHead %> 
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                               
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                      </tr>
+                      
+                      
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3 elemDesign">
+          <!-- Sidebar content for medium and large screens -->
+        </div>
+      </div>
+    </div>
+
+     
+
+
+
+
+
+
+
+  </main>
+
+
+ 
+
+  <%- include("../admin/layouts/adminFooter.ejs") %>
+</body>
+
+
