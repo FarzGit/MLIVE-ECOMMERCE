@@ -453,6 +453,7 @@ const loadHome = async (req, res) => {
       const userData = await User.findById({_id:userId})
       res.render('home',{user:userData,banners})
     }else{
+      const banners = await BannerDB.find()
       res.render('home',{message:"user logged",banners})
     }
  
@@ -462,7 +463,6 @@ const loadHome = async (req, res) => {
     console.log(error);
   }
 };
-
 
 
 
