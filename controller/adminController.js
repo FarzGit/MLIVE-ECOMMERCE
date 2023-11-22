@@ -44,12 +44,12 @@ const loadAdminHome = async (req, res) => {
       xDisplayValue = 'Months'
     }
 
-    let monthName = ''
-        if(req.query.month){
-            salesMonth = 'Weeks',
-            monthName = getMonthName(req.query.month)
-            displayValue = `${salesYear} - ${monthName}`
-        }
+    let monthName = '';
+if(req.query.month){
+    salesMonth = 'Weeks';
+    monthName = getMonthName(req.query.month);
+    displayValue = `${salesYear} - ${monthName}`;
+}
 
         const totalYears = await orderDb.aggregate([
           {$group:{_id:{createdAt:{$dateToString:{format: '%Y', date: '$createdAt'}}}}},

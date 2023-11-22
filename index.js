@@ -21,11 +21,11 @@ mongoose.connect(process.env.MONGO_DB);
 //       resave: false,
 //       saveUninitialized: true,
 //     })
-//   );
+//   ); 
 
 
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { 
     res.locals.req = req; 
     next();
   });  

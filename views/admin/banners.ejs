@@ -75,7 +75,7 @@
           </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white active bg-gradient-primary" href="banner">
+            <a class="nav-link text-white active bg-gradient-primary" href="banners">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">notifications</i>
               </div>
@@ -139,19 +139,19 @@
                           <p class="toggle-description btn">Show More >></p>
                         </td> -->
                         <td class="description-cell" style="padding-block: 50px;">
-                          <div class="description-content">
-                            <%= banners.bannerURL%>
+                          <div class="description-content"  style="padding-left: 38px;">
+                           <%= banners.bannerURL%>
                           </div>
                           <p class="toggle-url btn " data-bs-toggle="modal" data-bs-target="#urldetails-<%= banners._id %>">Show More >></p>
                         </td>
                           
                         <td style="padding-block: 50px;" class="description-cell"> 
-                          <div class="description-content" >
-                            &nbsp; &nbsp;  &nbsp;<%= banners.mainHead %> 
+                          <div class="description-content text-center" >
+                           <%= banners.mainHead %> 
                           </div>
                            <p class="toggle-url btn " data-bs-toggle="modal" data-bs-target="#headdetails-<%= banners._id %>">Show More >></p>
                           </td>
-                        <td style="padding-block: 50px;">
+                        <td style="padding-block: 50px; padding-left: 30px;">
                           <div class="row">
                             <div><a class="badge badge-primary mr-2" href="/admin/edit-banner/<%= banners._id %>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>

@@ -166,10 +166,8 @@ const placeOrder = async(req,res)=>{
     // const cartProducts = cartData.products
     // const products = cartData.products
     const total = parseInt(req.body.total)
-    // console.log("total is :",total);
     const paymentMethod = req.body.payment
     const userData = await userDb.findOne({_id:userId})
-    // console.log("user Data",userData);
     const name = userData.firstName;
     const uniNum = Math.floor(Math.random() * 900000) + 100000;
     const status = paymentMethod === "COD" ? "placed" : "pending";
@@ -450,7 +448,7 @@ const loadOrderPage = async(req,res)=>{
 
     const orderData = await orderDb.find({userId:userId}).sort({date:-1})
 
-    // console.log("orderData :",orderData);
+    
 
     res.render('orders',{user:userData,orders:orderData,cartCount})
 
@@ -606,34 +604,29 @@ const editCheckoutAddress = async(req,res)=>{
 
 const cancelOrder = async (req,res)=>{
   try {
-
+    
+console.log("entered into cancelOrder")
     const orderId = req.query.orderid
+    const productIdToCancel = req.query.productId;
+    console.log('ftgdtgddfy',productIdToCancel);
     const userId = req.session.user_id
     const cancelReason = req.body.reason
     const cancelAmount = req.body.totalPrice
     const amount = parseInt(cancelAmount)
     const orderData = await orderDb.findOne({_id : orderId})
-    const products = orderData.products
     const userData = await userDb.findOne({})
     let totalWalletBalance = userData.wallet + amount
-    const productIdToCancel = req.query.productId;
 
-    log("productId is :",productIdToCancel)
 
     
 
-    // log(products[0].paymentStatus)
-    // log("orderId is :",orderId)
-    // log("userId is :",userId)
-    // log("reason is :",cancelReason)
-    // log("cancelAmount is :",cancelAmount)
+    log("userId is :",userId)
+    console.log("orderData is :",orderData)
 
-    if(orderData.paymentMethod !== 'COD' && products[0].paymentStatus !== 'pending'){
+    if(orderData.paymentMethod !== 'COD'){
       const refundOption = "" + req.body.refundOption;
       log(" out entered")
-      if(refundOption === 'Wallet'){
         log("entered")
-          const user = await userDb.findById(userId)
           const result = await userDb.findOneAndUpdate(
             {_id:userId},
             {
@@ -650,46 +643,54 @@ const cancelOrder = async (req,res)=>{
             },
             {new:true}
           )
+          console.log("result is :",result)
           if(result){
-
-            const updatedData = await orderDb.updateOne(
-              {_id:orderId , "products.productId": productIdToCancel },
-              {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0, "products.$.paymentStatus":"Refund" }}
-            )
-            log(updatedData)
-
-            if(updatedData){
-              for(i=0 ; i<products.length; i++){
-                const productId = products[i].productId;
-                const quantity = products[i].quantity;
-                await productDb.findByIdAndUpdate(
-                  {_id:productId},
-                  {$inc:{quantity:quantity}}
-                )
-              }
-              res.redirect('/orders')
-            }
-
+            console.log('amount ',totalWalletBalance);
+          }else{
+            console.log("user not found");
           }
-      }
 
-    }else if (orderData.paymentMethod === 'COD' || products[0].paymentStatus !== 'pending'){
+           
+          const productInfo = orderData.products.find(
+            (product) => String(product.productId) === String(productIdToCancel)
+          );
+          
+            productInfo.OrderStatus = "Cancelled";
+            productInfo.reason = cancelReason;
+            productInfo.updatedAt = Date.now();
+            await orderData.save();
+          
+       
+                const quantity=productInfo.quantity
+              const productId=productInfo.productId
+       
+             const updateQuantity=await productDb.findByIdAndUpdate({_id:productId},
+              {$inc:{quantity:quantity}})
+       
+              res.redirect("/orders");
 
-      const updatedData = await orderDb.updateOne(
-        {_id:orderId},
-        {$set:{"products.$.cancelOrderStatus.reason":cancelReason , "products.$.OrderStatus":"Cancelled","products.$.statusLevel":0  }}
-      )
-      if(updatedData){
-        for(i=0 ; i<products.length; i++){
-          const productId = products[i].productId;
-          const quantity = products[i].quantity;
-          await productDb.findByIdAndUpdate(
-            {_id:productId},
-            {$inc:{quantity:quantity}}
-          )
-        }
-        res.redirect('/orders')
-      }
+         
+      
+
+    }else if (orderData.paymentMethod === 'COD'){
+        console.log("entere cod :") 
+        const productInfo = orderData.products.find(
+          (product) => String(product.productId) === String(productIdToCancel)
+        );
+        
+          productInfo.OrderStatus = "Cancelled";
+          productInfo.reason = cancelReason;
+          productInfo.updatedAt = Date.now();
+          await orderData.save();
+        
+     
+              const quantity=productInfo.quantity
+            const productId=productInfo.productId
+     
+           const updateQuantity=await productDb.findByIdAndUpdate({_id:productId},
+            {$inc:{quantity:quantity}})
+     
+            res.redirect("/orders");
 
     }
 
@@ -707,18 +708,18 @@ const productReturn = async(req,res)=>{
   try{
     console.log('entered in product return');
     const orderId = req.query.orderid
-    log("orderId is:",orderId)
+   
     const returnAmout = req.body.totalPrice
     const returnReason = req.body.reason
     const amount = parseInt(returnAmout)
     const orderData = await orderDb.findOne({_id:orderId})
-    log("orderData is :",orderData)
+    
     const products = orderData.products
     const userData = await userDb.findOne({})
     let totalWalletBalance = userData.wallet + amount
     const productIdToCancel = req.query.productId;
 
-    log("productId is :",productIdToCancel)
+   
 
     const result = await userDb.findByIdAndUpdate(
       {_id:req.session.user_id},
@@ -790,7 +791,23 @@ const productReturn = async(req,res)=>{
 }
 
 
+const invoice = async (req, res, next) => {
+  try {
+      const orderId = req.query.id;
+      const order = await orderDb.findOne({ _id: orderId }).populate('products.productId')
+      console.log("order is:",order);
+            order.products.forEach(product => {
+        console.log("productId is:", product.productId);
+      });
 
+
+
+      
+      res.render('invoice', { order })
+  } catch (error) {
+      next(error);
+  }
+}
 
 
 
@@ -807,7 +824,8 @@ module.exports={
     editCheckoutAddress,
     cancelOrder,
     verifyPayment,
-    productReturn
+    productReturn,
+    invoice
     
 
 }

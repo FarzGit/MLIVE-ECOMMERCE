@@ -270,10 +270,8 @@ const loadlogin = async (req, res) => {
 const verifyLogin = async (req, res) => {
   try {
     const email = req.body.email;
-    // console.log(email);
     const password = req.body.password;
     const userData = await User.findOne({ email: email });
-    // console.log("userdata " + userData);
     if (userData) {
       if (userData.is_blocked == false) {
         const passwordMatch = await bcrypt.compare(password, userData.password);
@@ -554,7 +552,6 @@ const loadShop = async (req, res) => {
      }
 
     const userId = req.session.user_id
-    console.log("userId is :", userId);
     
     const categoryDetails = await categoryDb.find({});
     const totalProducts = await productDb.countDocuments({ is_active: true });
@@ -622,7 +619,7 @@ const loadProfile = async (req,res)=>{
     // console.log(userAddress);
 
     
-    console.log(userData);
+    
 
     res.render('profile',{user:userData,address: userAddress})
 
@@ -924,7 +921,6 @@ const getWalletHistory = async(req,res)=>{
 
     const user = req.session.user_id;
     const userData = await User.findOne({_id: user });
-    // console.log("userData is",userData);
     req.session.cartCount = 0
     let cartData = await cartDb.findOne({ user: userData._id })
     if (cartData && cartData.products) {
@@ -943,7 +939,6 @@ const getWallet = async(req,res)=>{
 
     const user = req.session.user_id
     const userData = await User.find({_id:user})
-    // console.log("userData id :",userData);
 
     res.render('wallet',{user:userData})
 
