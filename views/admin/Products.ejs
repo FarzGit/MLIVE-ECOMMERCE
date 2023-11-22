@@ -96,7 +96,7 @@
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
-                  <table class="table table-dark">
+                  <table class="table table-dark" id="productTable">
                     <thead>
                       <tr>
                         <th class="text-center">Image</th>
@@ -290,6 +290,19 @@
   // const originalPrice = parseFloat($(`tr[data-product-id="${productId}"] td:nth-child(2)`).text().trim());
   // offerPriceCell.html(originalPrice);
 }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+
+
+<script>
+$('#productTable').DataTable({
+    responsive: true,
+    
+});
 </script>
 
     <%- include("../admin/layouts/adminFooter.ejs") %>

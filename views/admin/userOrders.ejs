@@ -136,13 +136,13 @@
                 <table class="table" id="user-table" style="text-align: center;">
                   <thead>
                     <tr>
-                      <th> User </th>
-                      <th> Order Date</th>
-                      <th> Quantity</th>
-                      <th> Price</th>
-                      <th> Payment Status</th>
-                      <th> Order Status</th>
-                      <th> Action</th>
+                      <th style="text-align: center;"> User </th>
+                      <th style="text-align: center;"> Order Date</th>
+                      <th style="text-align: center;"> Quantity</th>
+                      <th style="text-align: center;"> Price</th>
+                      <th style="text-align: center;"> Payment Status</th>
+                      <th style="text-align: center;"> Order Status</th>
+                      <th style="text-align: center;"> Action</th>
                     </tr>
                   </thead>
                   <tbody style="background-color: #344767;">
@@ -204,5 +204,22 @@
       </div>
     </div>
   </main>
+
+
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+  
+  
+  
+  <script>
+  $('#user-table').DataTable({
+      responsive: true,
+      
+  });
+  </script>
+
+
+
   <%- include("../admin/layouts/adminFooter.ejs") %>
 </body>

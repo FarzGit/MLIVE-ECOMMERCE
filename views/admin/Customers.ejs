@@ -96,21 +96,21 @@
                 <table class="table table-dark">
                   <thead>
                     <tr>
-                      <th>Full Name</th>
-                      <th>Email</th>
-                      <th>Mobile No.</th>
-                      <th>Joined On</th>
-                      <th>Action</th>
+                      <th style="text-align: center;">Full Name</th>
+                      <th style="text-align: center;">Email</th>
+                      <th style="text-align: center;">Mobile No.</th>
+                      <th style="text-align: center;">Joined On</th>
+                      <th style="text-align: center;">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <% for (var i = 0; i < data.length; i++) { %>
                     <tr>
-                      <td><%= data[i].firstName + ' ' + data[i].lastName %></td>
-                      <td><%= data[i].email %></td>
-                      <td><%= data[i].mobile %></td>
-                      <td><%= new Date(data[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
-                      <td>
+                      <td style="text-align: center;"><%= data[i].firstName + ' ' + data[i].lastName %></td>
+                      <td style="text-align: center;"><%= data[i].email %></td>
+                      <td style="text-align: center;"> <%= data[i].mobile %></td>
+                      <td style="text-align: center;"><%= new Date(data[i].createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                      <td style="text-align: center;">
                         
                         <% if (data[i].is_blocked === true) { %>
                           <button type="button" class="btn btn-danger btn-fw" onclick="showConfirmation('<%= data[i]._id %>', 'block')">Blocked</button>

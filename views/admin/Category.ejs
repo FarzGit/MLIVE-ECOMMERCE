@@ -99,24 +99,24 @@
                     <thead>
                       <tr>
                               <% if(categoryData.length>0) {%>
-                          <th style="font-size: large;"> Number </th>
-                          <th style="font-size: large;"> Category Name </th>
-                          <th style="font-size: large;"> Edit </th>
-                          <th style="font-size: large;"> Action </th>
+                          <th style="font-size: large; text-align: center;"> Number </th>
+                          <th style="font-size: large; text-align: center;"> Category Name </th>
+                          <th style="font-size: large; text-align: center;"> Edit </th>
+                          <th style="font-size: large; text-align: center;"> Action </th>
                       </tr>
                     </thead>
                     <tbody>
                         
                       <% categoryData.forEach((data,i)=>{ %>
                         <tr>
-                          <td style="color: rgb(203, 217, 230);">
+                          <td style="color: rgb(203, 217, 230); text-align: center;">
                             <%= i + 1 %>
                           </td>
-                          <td style="color: rgb(194, 208, 220);">
+                          <td style="color: rgb(194, 208, 220); text-align: center;">
                             <%= data.name %>
                           </td>     
-                         <td><a href= "/admin/edit_category?id=<%= data._id %>"><button type="button" class="btn btn-primary btn-sm" style="color: rgb(255, 255, 255);">Edit</button></a></td>
-                         <td>
+                         <td style="text-align: center;"><a href= "/admin/edit_category?id=<%= data._id %>"><button type="button" class="btn btn-primary btn-sm" style="color: rgb(255, 255, 255);">Edit</button></a></td>
+                         <td style="text-align: center;">
                           <% if( data.is_active === true){ %>
                             <a href="/admin/is_active?id=<%= data._id %>">
                           <button type="button" class="btn btn-success btn-md">List</button></a>

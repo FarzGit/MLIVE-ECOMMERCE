@@ -95,15 +95,15 @@
             
             <div class="card-body px-0 pb-2">
               <div class="table-responsive">
-                <table class="table ">
+                <table class="table  " id="offerDataTable">
                 <thead>
                     <tr>
-                        <th> Offer Name </th>
-                        <th> Starting date </th>
-                        <th> Expiry date </th>
-                        <th> percentage </th>
-                        <th>  </th>
-                        <th> Status </th>
+                        <th style="text-align: center;"> Offer Name </th>
+                        <th style="text-align: center;"> Starting date </th>
+                        <th style="text-align: center;"> Expiry date </th>
+                        <th style="text-align: center;"> percentage </th>
+                        <th >  </th>
+                        <th style="text-align: center;"> Status </th>
                         <th>  </th>
 
                     </tr>
@@ -115,34 +115,34 @@
                             <% if( offer.startingDate < now && offer.expiryDate > now && offer.status ) { var active = "Active" } else if( offer.startingDate > now && offer.status ) { var active = "Upcoming"} else if( offer.expiryDate < now && offer.status ) { var active = "Expired"} %>
 
                             <tr>
-                                <td class="category-name">
+                                <td class="category-name" style="text-align: center;">
                                     <span class="pl-2"><%= offer.name %></span>
                                 </td>
-                                <td class="category-name">
+                                <td class="category-name" style="text-align: center;">
                                     <span class="pl-2"><%= offer.startingDate.toLocaleDateString('en-US', { year: 'numeric' ,
                                         month: 'short' , day: '2-digit' }).replace(/\//g,'-') %></span>
                                 </td>
-                                <td class="category-name">
+                                <td class="category-name" style="text-align: center;">
                                     <span class="pl-2"><%=  offer.expiryDate.toLocaleDateString('en-US', { year: 'numeric' ,
                                         month: 'short' , day: '2-digit' }).replace(/\//g,'-')  %></span>
                                 </td>
-                                <td class="category-name">
+                                <td class="category-name" style="text-align: center;">
                                     <span class="pl-2"><%= offer.percentage %></span>
                                 </td>
                                 
-                                <td>
+                                <td style="text-align: center;">
                                     <a href="/admin/editOffer/<%= offer._id %>"><button type="button" class="btn btn-dark btn-sm ">Edit<i class="mdi mdi-file-check btn-icon-append"></i>
                                     </button></a>
                                 </td>
 
-                                <td>
+                                <td style="text-align: center;">
                                     <% if( offer.status ){ %>
                                         <span id="active-<%= offer._id%>" class="<% if( active === 'Active' ) {%>text-success<% } else if ( active === 'Upcoming' ) {%>text-primary<% } else {%>text-warning<% } %>"><%= active %></span>                           
                                     <% } else { %>
                                         <span class="text-danger">Cancelled</span>
                                     <% } %>
                                 </td>
-                                <td>
+                                <td style="text-align: center;">
                                     <% if( (active === "Active" || active === "Upcoming") && offer.status ) { %>
                                         <div id="cancel-<%= offer._id %>" style="cursor: pointer;" class="badge"><a class="btn btn-danger btn-sm" onclick="cancelOffer('<%= offer._id %>')">Cancel</a></div>        
                                     <% } %>                            
@@ -221,6 +221,21 @@
             console.log(error.message);
         }
     }
+</script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+
+
+<script>
+$('#offerDataTable').DataTable({
+    responsive: true,
+    
+});
 </script>
 
 
