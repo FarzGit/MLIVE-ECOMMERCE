@@ -225,6 +225,7 @@ if(req.query.month){
     });
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -256,6 +257,7 @@ const loadAdminLogin = async (req, res) => {
     res.render("adminLogin");
   } catch (error) {
     log(error);
+    res.render("admin500")
   }
 };
 
@@ -280,6 +282,7 @@ const verifyAdminLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -305,7 +308,8 @@ const loadCategoryPage = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.render("admin500")
+    res.render("admin500")
   }
 };
 
@@ -320,6 +324,7 @@ const loadAddCategory = async (req, res) => {
     res.render("addCategory");
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -353,6 +358,7 @@ const addCategory = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -369,6 +375,7 @@ const loadEditCategory = async (req, res) => {
     res.render("editCategory", { data: details });
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -390,6 +397,7 @@ const editCategory = async (req, res) => {
     res.redirect("/admin/category");
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -427,6 +435,7 @@ const loadCustomers = async (req, res) => {
     res.render("Customers", { data: userData });
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -466,6 +475,7 @@ const blockUnblock = async (req, res) => {
     res.redirect("/admin/customer");
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
 
@@ -509,6 +519,7 @@ const loaduserOrders = async (req, res) => {
     res.render("userOrders", { orders: productWiseOrdersArray });
   } catch (error) {
     console.log(error.message);
+    res.render("admin500")
   }
 };
 
@@ -554,6 +565,7 @@ const adminOrderFullDetails = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.render("admin500")
   }
 };
 
@@ -594,6 +606,7 @@ const changeOrderStatus = async (req, res) => {
     );
   } catch (error) {
     console.log(error.message);
+    res.render("admin500")
   }
 };
 
@@ -625,7 +638,7 @@ const adminCancelOrder = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ error: "An error occurred" });
+    res.render("admin500")
   }
 };
 
@@ -635,8 +648,31 @@ const adminLogout = async (req, res) => {
     res.redirect("/admin");
   } catch (error) {
     console.log(error);
+    res.render("admin500")
   }
 };
+
+// const load500Error = async (req, res) => {
+//   try{
+
+//     res.render("admin500")
+
+//   }catch (error) {
+//     console.log(error);
+//   }
+// }
+
+
+const load400Error = async (req, res) => {
+  try{
+
+    res.render("admin404")
+
+  }catch (error) {
+    console.log(error);
+    res.render("admin500")
+  }
+}
 
 module.exports = {
   loadAdminLogin,
@@ -655,4 +691,6 @@ module.exports = {
   adminOrderFullDetails,
   changeOrderStatus,
   adminCancelOrder,
+  // load500Error,
+  load400Error,
 };

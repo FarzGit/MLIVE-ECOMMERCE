@@ -9,6 +9,47 @@
     border-radius: 5px;
     margin-left: 15px;
   }
+
+  .exist_image-preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px; /* Add some spacing between previews */
+  }
+  .image-preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px; /* Add some spacing between previews */
+  }
+
+  .image-preview {
+      max-width: 200px;
+      max-height: 200px;
+      position: relative;
+  }
+
+  .image-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+  }
+
+  .remove-button {
+      display: none;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #ff5c5c;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 4px;
+  }
+
+  .image-preview:hover .remove-button {
+      display: block;
+  }
 </style>
 
 <body class="g-sidenav-show bg-gray-200">
@@ -20,7 +61,7 @@
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12 elemDesign">
-          <div class="card my-4">
+          <div class="card " >
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                 <h6 class="text-white text-capitalize ps-3">EDIT PRODUCT</h6>
@@ -30,14 +71,14 @@
               <form class="forms-sample" action="/admin/editProduct" method="post" enctype="multipart/form-data" style="background-color: #efefef;" id="productForm" >
 
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="productName" class="font-weight-bold pl-3" style="color: #000000;">Product Name</label>
                       <input type="text" class="form-control form-style" name="productName" id="productName" placeholder="Name" value="<%=product.productName%>">
                       <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="price" class="font-weight-bold pl-3" style="color: #080000;">Price</label>
                       <input type="number" class="form-control form-style" id="price" name="price" placeholder="price" value="<%=product.price%>">
@@ -47,14 +88,14 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="brand" class="font-weight-bold pl-3" style="color: #000000;">Brand</label>
                       <input type="text" class="form-control form-style" name="brand" id="brand" placeholder="brand" value="<%= product.brand %>" >
                       <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
                         <select name="category" class="form-control form-style" required>
@@ -72,14 +113,14 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="status" class="font-weight-bold pl-3" style="color: #000000;">Status</label>
                       <input type="text" class="form-control form-style" id="status" name="status" placeholder="status" value="<%=product.status%>" >
                       <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Quantity</label>
                       <input type="number" class="form-control form-style" id="quantity" name="quantity" placeholder="Enter Stock" value="<%=product.quantity %>" >
@@ -91,19 +132,19 @@
                 <div class="form-group mt-2">
                   <label for="description" class="font-weight-bold pl-3 " style="color: #000000;">Description</label>
                   <div class="row">
-                    <div class="col-6">
+                    <div class="col-md-6">
                       <textarea name="description" class="form-control  form-style" id="description" rows="4" >
                         <%= product.description || "Enter description here" %>
                       </textarea>
                       <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6">
                       <div class="form-group">
                         
                         <div class="col-lg-12 col-md-6 rounded-image-preview">
                           <label class="upload__btn ms-3">
                             <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
-                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile" >
+                            <input type="file" id="coverPic" name="image" multiple data-max_length="20" class="upload__inputfile" >
                             <span class="error" style="color: red; margin-left: 15px; font-size: 10px;"></span>
                           </label>
                         </div>
@@ -112,6 +153,16 @@
                   </div>
                 </div>  
                   <input type="hidden" name="id" value="<%=product._id%>">
+
+                  <div class="exist_image-preview-container mt-2">
+                    <% if (product.image) { %>
+                      <% for(let i=0;i<product.image.length;i++){%>
+                       <img style="width: 100px; height: 150px;" src="/static/adminAssets/images/<%=product.image[i] %>" alt="Old Image">
+                       <%}%>
+                     <% } %>
+                  </div>
+
+                  <div class="image-preview-container mt-2"></div>
 
                 <div class="d-flex justify-content-center">
                   <button type="submit" class="btn btn-lg btn-primary mr-2 mt-5">Add Product</button>
@@ -126,7 +177,51 @@
 
 
 
-
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const coverPicInput = document.getElementById('coverPic');
+    const previewContainer = document.querySelector('.image-preview-container');
+    
+    coverPicInput.addEventListener('change', function() {
+    previewContainer.innerHTML = '';
+    
+    Array.from(coverPicInput.files).forEach(function(file) {
+      const reader = new FileReader();
+    
+      reader.onload = function() {
+          const imagePreview = document.createElement('div');
+          imagePreview.classList.add('image-preview');
+    
+          const image = document.createElement('img');
+          image.src = reader.result;
+          image.classList.add('img-fluid');
+    
+          const removeButton = document.createElement('button');
+          removeButton.type = 'button';
+          removeButton.classList.add('remove-button');
+          removeButton.textContent = 'Remove';
+          removeButton.addEventListener('click', function() {
+              imagePreview.remove();
+              // Remove corresponding file from input
+              const dt = new DataTransfer();
+              Array.from(coverPicInput.files).forEach(function(existingFile) {
+                  if (existingFile !== file) {
+                      dt.items.add(existingFile);
+                  }
+              });
+              coverPicInput.files = dt.files;
+          });
+    
+          imagePreview.appendChild(image);
+          imagePreview.appendChild(removeButton);
+          previewContainer.appendChild(imagePreview);
+      }
+    
+      reader.readAsDataURL(file);
+    });
+    });
+    });
+    </script>
   
 
     

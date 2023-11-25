@@ -5,257 +5,621 @@
 
 <!-- Slider -->
 <section class="section-slide">
-<div class="wrap-slick1 rs2-slick1">
-    <div class="slick1">
-        <div class="item-slick1 bg-overlay1" style="background-image: url('/static/products/banner/<%= banners[0].image %>');" data-thumb="/static/products/banner/<%= banners[0].image %>" data-caption="Women’s Wear">
-            <div class="container h-full">
-                <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
-                    <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
-                        <span class="ltext-202 txt-center cl0 respon2">
-                           
-                            <%= banners[0].typeHead %>
-                        </span>
-                    </div>
-                        
-                    <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
-                        <h2 class="ltext-104 txt-center cl0 p-t-22 p-b-40 respon1">
-                            <%= banners[0].mainHead %>
-                        </h2>
-                    </div>
-                        
-                    <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-                        <a href="<%= banners[0].bannerURL %>" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-                            Shop Now
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item-slick1 bg-overlay1" style="background-image: url('/static/products/banner/<%= banners[1].image %>');" data-caption="Men’s Wear">
-            <div class="container h-full">
-                <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
-                    <div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
-                        <span class="ltext-202 txt-center cl0 respon2">
-                            <%= banners[1].typeHead %>
-                        </span>
-                    </div>
-        
-                    <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
-                        <h2 class="ltext-104 txt-center cl0 p-t-22 p-b-40 respon1">
-                            <%= banners[1].mainHead %>
-                        </h2>
-                    </div>
-        
-                    <div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
-                        <a href="<%= banners[1].bannerURL %>" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-                            Shop Now
-                        </a>
+    <div class="wrap-slick1 rs2-slick1">
+        <div class="slick1">
+            <% banners.forEach(function(banner) { %>
+                <div class="item-slick1 bg-overlay1" style="background-image: url('/static/products/banner/<%=banner.image %>')" data-thumb="/static/products/banner/<%=banner.image %>"  data-caption="<%= banner.mainHead %>"   >
+                    <div class="container h-full">
+                        <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
+                            <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
+                                <span class="ltext-202 txt-center cl0 respon2">
+                                    <%= banner.typeHead %>
+                                </span>
+                            </div>
+                            <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
+                                <h2 class="ltext-104 txt-center cl0 p-t-22 p-b-40 respon1">
+                                    <%= banner.mainHead %>
+                                </h2>
+                            </div>
+                            <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
+                                <a href="<%= banner.bannerURL %>" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+                                    Shop Now
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <% }); %>
         </div>
-        
-
-      
-</div>
+        <div class="wrap-slick1-dots p-lr-10"></div>
+    </div>
 </section>
 
 
 <!-- Banner -->
-<div class="sec-banner bg0 p-t-95 p-b-55">
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 p-b-30 m-lr-auto" >
-            <!-- Block1 -->
-            <div class="block1 wrap-pic-w" style="height: 315px;">
-                <img src="/static/products/banner/<%= banners[2].image %>" alt="IMG-BANNER">
+<!-- <div class="sec-banner bg0 p-t-95 p-b-55">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 p-b-30 m-lr-auto">
+			
+				<div class="block1 wrap-pic-w">
+					<img src="/public/adminAssets/product-images/1698734528047-9-fnf8-furo-black-original-imaggkqfsupzqk6t.webp" alt="IMG-BANNER">
 
-                <a href="<%= banners[2].bannerURL %>" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
-                    <div class="block1-txt-child1 flex-col-l">
-                        <span class="block1-name ltext-102 trans-04 p-b-8 text-white">
-                            <%= banners[2].typeHead %>
-                        </span>
+					<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+						<div class="block1-txt-child1 flex-col-l">
+							<span class="block1-name ltext-102 trans-04 p-b-8">
+								Mens
+							</span>
 
-                        <span class="block1-info stext-102 trans-04 text-white">
-                            <%= banners[2].mainHead %>
-                        </span>
-                    </div>
+							<span class="block1-info stext-102 trans-04">
+								New Trend
+							</span>
+						</div>
 
-                    <div class="block1-txt-child2 p-b-4 trans-05">
-                        <a href="<%= banners[2].bannerURL %>"><div class="block1-link stext-101 cl0 trans-09">
-                            Shop Now
-                        </div></a>
-                    </div>
-                </a>
-            </div>
-        </div>
+						<div class="block1-txt-child2 p-b-4 trans-05">
+							<div class="block1-link stext-101 cl0 trans-09">
+								Shop Now
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
 
-        <div class="col-md-6 p-b-30 m-lr-auto">
-            <!-- Block1 -->
-            <div class="block1 wrap-pic-w" style="height: 315px;">
-                <img src="/static/products/banner/<%= banners[3].image %>" alt="IMG-BANNER">
+			<div class="col-md-6 p-b-30 m-lr-auto">
+				
+				<div class="block1 wrap-pic-w">
+					<img src="/public/adminAssets/product-images/1698734528047-9-fnf8-furo-black-original-imaggkqfsupzqk6t.webp" alt="IMG-BANNER">
 
-                <a href="<%= banners[3].bannerURL %>" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
-                    <div class="block1-txt-child1 flex-col-l">
-                        <span class="block1-name ltext-102 trans-04 p-b-8 text-white">
-                            <%= banners[3].typeHead %> 
-                        </span>
+					<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+						<div class="block1-txt-child1 flex-col-l">
+							<span class="block1-name ltext-102 trans-04 p-b-8">
+								Formal
+							</span>
 
-                        <span class="block1-info stext-102 trans-04 text-white">
-                            <%= banners[3].mainHead %>
+							<span class="block1-info stext-102 trans-04">
+								New Trend
+							</span>
+						</div>
 
-                        </span>
-                    </div>
+						<div class="block1-txt-child2 p-b-4 trans-05">
+							<div class="block1-link stext-101 cl0 trans-09">
+								Shop Now
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
 
-                    <div class="block1-txt-child2 p-b-4 trans-05">
-                        <a href="<%= banners[3].bannerURL %>"><div class="block1-link stext-101 cl0 trans-09">
-                            Shop Now
-                        </div></a>
-                    </div>
-                </a>
-            </div>
-        </div>
+			<div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
+			
+				<div class="block1 wrap-pic-w">
+					<img src="/public/userAssets/images/banner-07.jpg" alt="IMG-BANNER">
 
-        <!-- <div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
-            Block1
-            <div class="block1 wrap-pic-w">
-                <img src="/static/userAssets/images/banner-07.jpg" alt="IMG-BANNER">
+					<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+						<div class="block1-txt-child1 flex-col-l">
+							<span class="block1-name ltext-102 trans-04 p-b-8">
+								Casual
+							</span>
 
-                <a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
-                    <div class="block1-txt-child1 flex-col-l">
-                        <span class="block1-name ltext-102 trans-04 p-b-8">
-                            Watches
-                        </span>
+							<span class="block1-info stext-102 trans-04">
+								Spring 2018
+							</span>
+						</div>
 
-                        <span class="block1-info stext-102 trans-04">
-                            Spring 2018
-                        </span>
-                    </div>
+						<div class="block1-txt-child2 p-b-4 trans-05">
+							<div class="block1-link stext-101 cl0 trans-09">
+								Shop Now
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
 
-                    <div class="block1-txt-child2 p-b-4 trans-05">
-                        <div class="block1-link stext-101 cl0 trans-09">
-                            Shop Now
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div> -->
+			<div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
+			
+				<div class="block1 wrap-pic-w">
+					<img src="/public/userAssets/images/banner-08.jpg" alt="IMG-BANNER">
 
-        <!-- <div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
-            Block1
-            <div class="block1 wrap-pic-w">
-                <img src="/static/userAssets/images/banner-08.jpg" alt="IMG-BANNER">
+					<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+						<div class="block1-txt-child1 flex-col-l">
+							<span class="block1-name ltext-102 trans-04 p-b-8">
+								Sports
+							</span>
 
-                <a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
-                    <div class="block1-txt-child1 flex-col-l">
-                        <span class="block1-name ltext-102 trans-04 p-b-8">
-                            Bags
-                        </span>
+							<span class="block1-info stext-102 trans-04">
+								Spring 2018
+							</span>
+						</div>
 
-                        <span class="block1-info stext-102 trans-04">
-                            Spring 2018
-                        </span>
-                    </div>
+						<div class="block1-txt-child2 p-b-4 trans-05">
+							<div class="block1-link stext-101 cl0 trans-09">
+								Shop Now
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
 
-                    <div class="block1-txt-child2 p-b-4 trans-05">
-                        <div class="block1-link stext-101 cl0 trans-09">
-                            Shop Now
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div> -->
+			<div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
+			
+				<div class="block1 wrap-pic-w">
+					<img src="/public/userAssets/images/banner-09.jpg" alt="IMG-BANNER">
 
-        <!-- <div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
-            Block1
-            <div class="block1 wrap-pic-w">
-                <img src="/static/userAssets/images/banner-09.jpg" alt="IMG-BANNER">
+					<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+						<div class="block1-txt-child1 flex-col-l">
+							<span class="block1-name ltext-102 trans-04 p-b-8">
+								Accessories
+							</span>
 
-                <a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
-                    <div class="block1-txt-child1 flex-col-l">
-                        <span class="block1-name ltext-102 trans-04 p-b-8">
-                            Accessories
-                        </span>
+							<span class="block1-info stext-102 trans-04">
+								Spring 2018
+							</span>
+						</div>
 
-                        <span class="block1-info stext-102 trans-04">
-                            Spring 2018
-                        </span>
-                    </div>
+						<div class="block1-txt-child2 p-b-4 trans-05">
+							<div class="block1-link stext-101 cl0 trans-09">
+								Shop Now
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
+<!-- mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm -->
+	<!-- Product -->
+	<section class="bg0 p-t-23 p-b-130">
+		<div class="container">
+			<div class="p-b-10">
+				<h3 class="ltext-103 cl5">
+					Product Overview
+				</h3>
+			</div>
 
-                    <div class="block1-txt-child2 p-b-4 trans-05">
-                        <div class="block1-link stext-101 cl0 trans-09">
-                            Shop Now
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div> -->
-    </div>
-</div>
-</div>
+			<div class="flex-w flex-sb-m p-b-52">
+				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 filter-button category-*">
+						All Products
+					</button>
+					<%category.forEach((cat)=>{%>
 
+					
+						<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".category-<%= cat.name %>">
+						<%= cat.name %>
+					</button>
+				<%})%>
 
+					<!-- <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">
+						Men
+					</button>
 
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
+						Bag
+					</button>
 
-<section class="section-slide">
-    <div class="wrap-slick1 rs2-slick1">
-        <div class="slick1">
-            <div class="item-slick1 bg-overlay1" style="background-image: url('/static/products/banner/<%= banners[4].image %>');" data-thumb="/static/products/banner/<%= banners[0].image %>" data-caption="Women’s Wear">
-                <div class="container h-full">
-                    <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
-                        <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
-                            <span class="ltext-202 txt-center cl0 respon2">
-                               
-                                <%= banners[2].typeHead %>
-                            </span>
-                        </div>
-                            
-                        <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
-                            <h2 class="ltext-104 txt-center cl0 p-t-22 p-b-40 respon1">
-                                <%= banners[2].mainHead %>
-                            </h2>
-                        </div>
-                            
-                        <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-                            <a href="<%= banners[2].bannerURL %>" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-                                Shop Now
-                            </a>
-                        </div>
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">
+						Shoes
+					</button>
+
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
+						Watches
+					</button> -->
+				</div>
+
+				<!-- <div class="flex-w flex-c-m m-tb-10">
+					<div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+						<i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+						<i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						 Filter
+					</div>
+
+					<div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+						<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+						<i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Search
+					</div>
+				</div> -->
+				
+				<!-- Search product -->
+				<!-- <div class="dis-none panel-search w-full p-t-10 p-b-15">
+					<div class="bor8 dis-flex p-l-15">
+						<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+							<i class="zmdi zmdi-search"></i>
+						</button>
+
+						<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
+					</div>	
+				</div> -->
+
+				<!-- Filter -->
+				<!-- <div class="dis-none panel-filter w-full p-t-10">
+					<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+						<div class="filter-col1 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Sort By
+							</div>
+
+							<ul>
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										Default
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										Popularity
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										Average rating
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04 filter-link-active">
+										Newness
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										Price: Low to High
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										Price: High to Low
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="filter-col2 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Price
+							</div>
+
+							<ul>
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04 filter-link-active">
+										All
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										$0.00 - $50.00
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										$50.00 - $100.00
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										$100.00 - $150.00
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										$150.00 - $200.00
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<a href="#" class="filter-link stext-106 trans-04">
+										$200.00+
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="filter-col3 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Color
+							</div>
+
+							<ul>
+								<li class="p-b-6">
+									<span class="fs-15 lh-12 m-r-6" style="color: #222;">
+										<i class="zmdi zmdi-circle"></i>
+									</span>
+
+									<a href="#" class="filter-link stext-106 trans-04">
+										Black
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
+										<i class="zmdi zmdi-circle"></i>
+									</span>
+
+									<a href="#" class="filter-link stext-106 trans-04 filter-link-active">
+										Blue
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
+										<i class="zmdi zmdi-circle"></i>
+									</span>
+
+									<a href="#" class="filter-link stext-106 trans-04">
+										Grey
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
+										<i class="zmdi zmdi-circle"></i>
+									</span>
+
+									<a href="#" class="filter-link stext-106 trans-04">
+										Green
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
+										<i class="zmdi zmdi-circle"></i>
+									</span>
+
+									<a href="#" class="filter-link stext-106 trans-04">
+										Red
+									</a>
+								</li>
+
+								<li class="p-b-6">
+									<span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
+										<i class="zmdi zmdi-circle-o"></i>
+									</span>
+
+									<a href="#" class="filter-link stext-106 trans-04">
+										White
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="filter-col4 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Tags
+							</div>
+
+							<div class="flex-w p-t-4 m-r--5">
+								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Fashion
+								</a>
+
+								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Lifestyle
+								</a>
+
+								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Denim
+								</a>
+
+								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Streetstyle
+								</a>
+
+								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Crafts
+								</a>
+							</div>
+						</div>
+					</div>
+				</div> -->
+			</div>
+
+			<div class="row isotope-grid">
+                <% product.forEach((product)=>{ %>
+                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women category-<%= product.category.name %> " 	>
+                    <div class="block2">
+                        
+                            <div class="block2-pic hov-img0 d-flex  " style=" height: 323px; background-color: #F7F7F7;" >
+                                <% if(product.offer && product.offer.percentage > 0) { %>
+                                    <div class="discount-badge" style="background-color: #ff5733;
+                                   color: #f8f8f8;
+                                    padding: 5px;
+                                     position: absolute;
+                                     z-index: 1;
+                                    width: 74px;">
+                                       
+                                            <span class="stext-103 size-102">
+                                                <%= product.offer.percentage %> % OFF
+                                            </span>
+                                        
+                                    </div>
+                                    <% } %>
+                           
+                                <img style="width: 300px; height: 319px;" src="/static/adminAssets/images/<%= product.image[0] %>" alt="IMG-PRODUCT">
+                        
+                                <a href="/productDetails?id=<%= product._id %>" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                                    Quick View
+                                </a>
+                            </div>
+                        
+                            <div class="block2-txt flex-w flex-t p-t-14 ">
+                                <div class="block2-txt-child1 flex-col-l">
+                                    <span class="stext-105 cl3">
+                                        <%= product.brand %>
+                                    </span>
+                                    <a href="" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                        <%= product.productName %>   
+                                    </a>
+                        
+                                    <% if(product.offer && product.offer.percentage>0){%>
+                                        <div class="d-flex justify-content-between">
+                                        
+                                        <span class="stext-105 cl3 " ">
+                                         <p class="text-danger">   ₹<%= Math.ceil(product.discountedPrice) %>   </p>
+                                        </span>
+                                        &nbsp;
+                                        &nbsp;
+                                        <span class="stext-105 cl3 ">
+                                            <del>₹<%= product.price %> </del>  
+                                        </span>
+                                    </div>
+                                   <% }else{%>
+                                    <span class="stext-105 cl3 ">
+                                        ₹<%= product.price %>  
+                                    </span>
+                                  <% }%>
+                                </div>
+    
+                                
+                        
+                                <div>
+                                    <a onclick="addToCart('<%= product._id %>')" class="add-cart"  >
+                                        <button><img src="static/userAssets/img/326700_cart_shopping_icon.png" style="height: 19px; padding-right: 6px; width: 26px; margin-bottom: 6px;"></button>
+                                        
+                                    </a>
+                                    <a id="wishlist-button" >
+    
+                                        <button><img src="/static/userAssets/images/icons/icon-heart-01.png" style="height: 19px; padding-right: 6px; width: 26px; margin-bottom: 6px;" alt="ICON"></button>
+    
+                                        
+                                       
+                                    </a>
+                                    
+                                </div>
+                            </div>
+    
+                       
+                        
                     </div>
                 </div>
-            </div>
-    
-            <div class="item-slick1 bg-overlay1" style="background-image: url('/static/products/banner/<%= banners[1].image %>');" data-caption="Men’s Wear">
-                <div class="container h-full">
-                    <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
-                        <div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
-                            <span class="ltext-202 txt-center cl0 respon2">
-                                <%= banners[1].typeHead %>
-                            </span>
-                        </div>
-            
-                        <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
-                            <h2 class="ltext-104 txt-center cl0 p-t-22 p-b-40 respon1">
-                                <%= banners[1].mainHead %>
-                            </h2>
-                        </div>
-            
-                        <div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
-                            <a href="<%= banners[1].bannerURL %>" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-                                Shop Now
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-    
-          
-    </div>
-    </section>
+                <% }) %>
+            </div>  
+		</div>
+	</section>
+  <!-- nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -->
+
+	<!-- Footer -->
 
     
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        
+        const wishlistButtons = document.querySelectorAll('#wishlist-button');
+    
+        
+        wishlistButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+    
+                
+                button.classList.add('red-wishlist-button');
+    
+                
+                Swal.fire({
+                    title: 'Item added to your wishlist!',
+                    icon: 'success',
+                });
+            });
+        });
+
+
+        const cartButtons = document.querySelectorAll('#cart-button');
+    
+        
+       
+
+        function addToCart(id) {
+  console.log("addToCart function called with id: " + id);
+  $.ajax({
+    url: "/addTocart",
+    method: "post",
+    encoded: true,
+    data: {
+      id: id
+    },
+  }).done((data) => {
+    if (data) {
+      console.log(data);
+
+      Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'Item has been added to Cart!',
+  showConfirmButton: false,
+  timer: 1000
+})
+    } else {
+      swal("Fail to add");
+    }
+  });
+}
+
+
+
+
+
+$(document).ready(function () {
+        // Listen for input changes in the search bar
+        $('#searchInput').on('input', function () {
+            const searchText = $(this).val().toLowerCase();
+
+            // Loop through each row in the table and hide/show based on search text
+            $('#user-table tbody tr').each(function () {
+                const row = $(this);
+
+                // Check if any cell in the row contains the search text
+                const found = row.find('td').toArray().some(function (cell) {
+                    const cellText = $(cell).text().toLowerCase();
+                    return cellText.includes(searchText);
+                });
+
+                // Show or hide the row accordingly
+                if (found) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        });
+    });
+
+
+    </script>
+
+
+<script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var buttons = document.querySelectorAll('.stext-106');
+        var products = document.querySelectorAll('.isotope-item');
+
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var categoryToFilter = button.getAttribute('data-filter');
+
+                products.forEach(function (product) {
+                    var productCategory = product.getAttribute('data-category');
+
+                    if (categoryToFilter === 'all' || categoryToFilter === productCategory) {
+                        // Show or hide products based on the category
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>

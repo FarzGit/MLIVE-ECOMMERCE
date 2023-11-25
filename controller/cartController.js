@@ -23,7 +23,7 @@ const addToCart = async (req, res) => {
                 if (productExist != -1) {
                     const cartData = await cartDb.findOne({ user: userId, "products.productId": productId },
                         { "products.productId.$": 1, "products.quantity": 1 })
-zz
+
                     const [{ quantity: quantity }] = cartData.products
 
                     if (productData.quantity <= quantity) {

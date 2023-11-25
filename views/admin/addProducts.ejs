@@ -1,6 +1,9 @@
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
 <style>
+
+
+
   .form-style {
     width: 550px;
     height: 42px;
@@ -9,32 +12,48 @@
     border-radius: 5px;
     margin-left: 15px;
     padding-left: 10px;
+
+    
   }
 
   .image-preview-container {
-    position: relative;
-    margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px; /* Add some spacing between previews */
   }
 
   .image-preview {
-    width: 100%;
-    height: auto;
-    max-height: 200px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+      max-width: 200px;
+      max-height: 200px;
+      position: relative;
   }
 
-  .delete-image-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: #fff;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    display: none;
+  .image-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
   }
 
+  .remove-button {
+      display: none;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #ff5c5c;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 4px;
+  }
+
+  .image-preview:hover .remove-button {
+      display: block;
+  }
+
+
+ 
   
 </style>
 
@@ -57,14 +76,14 @@
               <form class="forms-sample" action="/admin/addproduct" method="post" enctype="multipart/form-data" style="background-color: #efefef;" id="productForm">
 
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col">
                     <div class="form-group">
                       <label for="productName" class="font-weight-bold pl-3" style="color: #000000;">Product Name</label>
                       <input type="text" class="form-control form-style" name="productName" id="productName" placeholder="Name">
                       <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col">
                     <div class="form-group">
                       <label for="price" class="font-weight-bold pl-3" style="color: #080000;">Price</label>
                       <input type="number" class="form-control form-style" id="price" name="price" placeholder="price" >
@@ -74,14 +93,14 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col">
                     <div class="form-group">
                       <label for="brand" class="font-weight-bold pl-3" style="color: #000000;">Brand</label>
                       <input type="text" class="form-control form-style" name="brand" id="brand" placeholder="brand" >
                       <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col">
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Category</label>
                       <select name="category" class="form-control form-style" >
@@ -98,14 +117,14 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col">
                     <div class="form-group">
                       <label for="status" class="font-weight-bold pl-3" style="color: #000000;">Status</label>
                       <input type="text" class="form-control form-style" id="status" name="status" placeholder="status" >
                       <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col">
                     <div class="form-group">
                       <label class="font-weight-bold pl-3" style="color: #000000;">Quantity</label>
                       <input type="number" class="form-control form-style" id="quantity" name="quantity" placeholder="Enter Stock" >
@@ -114,96 +133,98 @@
                   </div>
                 </div>
 
-                <div class="form-group mt-2">
-                  <label for="description" class="font-weight-bold pl-3 " style="color: #000000;">Description</label>
-                  <div class="row">
-                    <div class="col-6">
-                      <input name="description" class="form-control  form-style" id="description" rows="4" ></input>
-                      <span class="error" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
-                    </div>
-                    <div class="col-6">
+                <div class="row">
+                  <div class="col">
                       <div class="form-group">
-                        
-                        <div class="col-lg-12 col-md-6 rounded-image-preview">
-                          <label class="upload__btn ms-3">
-                            <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
-                            <input type="file" id="formFile" name="image" multiple data-max_length="20" class="upload__inputfile">
-                            <span class="error" style="color: red; margin-left: 15px; font-size: 10px;"></span>
-                          </label>
-                        </div>
-                        <div class="image-preview-wrapper" style="width:250px; height:250px; display: flex; flex-direction: row;"></div>
+                          <label for="description" class="font-weight-bold pl-3" style="color: #000000;">Description</label>
+                          <div class="row">
+                              <div class="col">
+                                  <input name="description" class="form-control form-style" id="description" rows="4"></input>
+                                  <span class="error" style="color: red; margin-left: 15px; font-size: 10px;"></span>
+                              </div>
+                              <div class="col">
+                                  <div class="form-group">
+                                    <label class="upload__btn ms-3">
+                                      <p class="font-weight-bold pl-1" style="color: #000000;">Upload Images</p>
+                                      <input type="file" id="coverpic" name="image" multiple data-max_length="20" class="upload__inputfile" onchange="displaySelectedImages(this)">
+                                      <span class="error" style="color: red; margin-left: 15px; font-size: 10px;"></span>
+                                    </label>
 
-                  
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">Add Product</button>
-              </form>
+                                    
+
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="image-preview-container mt-2"></div>
+          
+              <div class="d-flex justify-content-center" ><button type="submit" class="btn btn-primary" >Add Product</button></div>
+          </form>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+
   </main>
 
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<script>
-  $(document).ready(function () {
-    // Function to update image preview
-    function readURL(input) {
-      if (input.files) {
-        var files = input.files;
-        for (var i = 0; i < files.length; i++) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            var imagePreview = '<div class="image-preview-container">' +
-                                '<img class="image-preview" src="' + e.target.result + '" alt="Image Preview">' +
-                                '<button class="delete-image-btn" onclick="deleteImage(this)">Delete</button>' +
-                                '</div>';
-            $('.image-preview-wrapper').append(imagePreview);
-          }
-          reader.readAsDataURL(files[i]);
-        }
-      }
-    }
-
-    // Update image preview when files are selected
-    $("#formFile").change(function () {
-      $('.image-preview-wrapper').empty(); // Clear existing previews
-      readURL(this);
-    });
-
-    // Show/hide delete button on hover
-    $(document).on('mouseenter', '.image-preview-container', function() {
-      $(this).find('.delete-image-btn').show();
-    }).on('mouseleave', '.image-preview-container', function() {
-      $(this).find('.delete-image-btn').hide();
-    });
-
-    // Function to delete individual image
-    window.deleteImage = function (btn) {
-      var container = $(btn).parent('.image-preview-container');
-      var fileName = container.find('img').attr('src');
-      
-      // Update the input field by removing the corresponding file
-      var fileInput = $('#formFile')[0];
-      var files = fileInput.files;
-      for (var i = 0; i < files.length; i++) {
-        if (files[i].name === fileName) {
-          var newFiles = Array.from(files);
-          newFiles.splice(i, 1);
-          fileInput.files = newFiles;
-          break;
-        }
-      }
-      
-      // Remove the image preview container
-      container.remove();
-    };
-  });
-</script>
-
-
-
   
+
+  <script>
+     document.addEventListener('DOMContentLoaded', function () {
+    const coverPicInput = document.getElementById('coverpic'); // Fix the ID here
+    const previewContainer = document.querySelector('.image-preview-container');
+
+    coverPicInput.addEventListener('change', function () {
+      previewContainer.innerHTML = '';
+
+      Array.from(coverPicInput.files).forEach(function (file) {
+        const reader = new FileReader();
+
+        reader.onload = function () {
+          const imagePreview = document.createElement('div');
+          imagePreview.classList.add('image-preview');
+
+          const image = document.createElement('img');
+          image.src = reader.result;
+          image.classList.add('img-fluid');
+
+          const removeButton = document.createElement('button');
+          removeButton.type = 'button';
+          removeButton.classList.add('remove-button');
+          removeButton.textContent = 'Remove';
+          removeButton.addEventListener('click', function () {
+            imagePreview.remove();
+            // Remove corresponding file from input
+            const dt = new DataTransfer();
+            Array.from(coverPicInput.files).forEach(function (existingFile) {
+              if (existingFile !== file) {
+                dt.items.add(existingFile);
+              }
+            });
+            coverPicInput.files = dt.files;
+          });
+
+          imagePreview.appendChild(image);
+          imagePreview.appendChild(removeButton);
+          previewContainer.appendChild(imagePreview);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+  });
+  </script>
+
+
+
+
+
+
+
     
       <%- include("../admin/layouts/adminFooter.ejs") %>

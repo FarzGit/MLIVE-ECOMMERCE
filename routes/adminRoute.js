@@ -132,5 +132,14 @@ adminRoute.get('/banners',adminAuth.isLogin,bannerController.loadBanners)
 
 
 
+// adminRoute.get('/adminerror-500',adminController.load500Error)
+adminRoute.get('/*',adminController.load400Error)
+
+
+
+
+
+
+
 
 module.exports = adminRoute;

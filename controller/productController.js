@@ -4,6 +4,7 @@ const categoryDb = require("../models/categoryModel");
 const adminDb = require("../models/adminModel");
 const offerDb =require("../models/offerModel");
 const sharp = require("sharp");
+const fs = require('fs');
 const path = require("path");
 const { log } = require("console");
 
@@ -65,6 +66,10 @@ const loadAddProducts = async (req, res) => {
   }
 };
 
+
+
+
+
 const addProduct = async (req, res) => {
   try {
     const productName = req.body.productName;
@@ -79,6 +84,7 @@ const addProduct = async (req, res) => {
 
     for (i = 0; i < req.files.length; i++) {
       image[i] = req.files[i].filename;
+     
     }
 
     const newProduct = new productDb({
@@ -100,6 +106,12 @@ const addProduct = async (req, res) => {
     console.log(error);
   }
 };
+
+
+
+
+
+
 
 const loadEditProduct = async (req, res) => {
   try {
@@ -134,6 +146,10 @@ const editProduct = async (req, res) => {
     for (i = 0; i < req.files.length; i++) {
       image[i] = req.files[i].filename;
     }
+
+   
+
+
     const result = await productDb.findByIdAndUpdate(
       { _id: id },
       {
@@ -150,6 +166,13 @@ const editProduct = async (req, res) => {
       }
     );
     // console.log(req.body);
+
+    if (req.files.length === 0) {
+      // If no files were uploaded, remove the coverPic property from updateObject
+      delete result.image;
+  }
+
+
 
     if (result) {
       res.redirect("/admin/Product");

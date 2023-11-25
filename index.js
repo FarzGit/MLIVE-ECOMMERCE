@@ -30,7 +30,8 @@ app.use((req, res, next) => {
     next();
   });  
 
-
+  app.set('view engine','ejs');
+  app.set("views", "./views/users"); 
 
 
 app.use("/static",express.static(path.join(__dirname,"public")))
@@ -43,6 +44,10 @@ app.use("/",userRoute)
 
 const adminRoute = require("./routes/adminRoute")
 app.use("/admin",adminRoute)
+
+// app.use('*',(req,res)=>{
+//   res.render('404')
+// })
 
 
 

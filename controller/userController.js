@@ -13,6 +13,8 @@ const Razorpay =require('razorpay')
 const crypto =require('crypto')
 const cartDb = require('../models/cartModel')
 const BannerDB =require('../models/bannerModel')
+const { ObjectId } = require('mongoose').Types;
+
 
 
 var instance = new Razorpay({
@@ -29,6 +31,7 @@ const securePassword = async (password) => {
     return passwordHash;
   } catch (error) {
     console.log(error.message);
+    
   }
 };
 
@@ -102,6 +105,8 @@ const otpSend = async (Fname, email, otp) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).render('500');
+    res.render("500")
   }
 };
 
@@ -112,6 +117,7 @@ const loadOtp = async (req, res) => {
     res.render("userOtp");
   } catch (error) {
     console.log(error.message);
+    res.render("500")
   }
 };
 
@@ -146,6 +152,7 @@ const verifyOtp = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.render("500")
   }
 };
 
@@ -181,6 +188,7 @@ const resendOtp = (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.render("500")
   }
 };
 
@@ -238,7 +246,8 @@ const insertUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.json({ message: "Internal server error" });
+    res.render("500")
+
   }
 };
 
@@ -250,6 +259,7 @@ const loadResgister = async (req, res) => {
     res.render("registration");
   } catch (error) {
     console.log(error.message);
+    res.render("500")
   }
 };
 
@@ -296,6 +306,8 @@ const verifyLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.render("500")
+    
     
   }
 };
@@ -310,7 +322,9 @@ const userLogout = async (req, res) => {
     req.session.user_id = false;
     res.redirect("/login");
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    res.render("500")
+
   }
 };
 
@@ -350,6 +364,7 @@ const sendResetPasswordMail = async (name, email, token) => {
     });
   } catch (error) {
     console.log("error", error.message);
+    res.render("500")
   }
 };
 
@@ -361,6 +376,8 @@ const loadForgotPassword = async (req, res) => {
     res.render("forgotPassword");
   } catch (error) {
     console.error();
+    res.render("500")
+
   }
 };
 
@@ -391,6 +408,8 @@ const ForgotPassword = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/error-500')
+
   }
 };
 
@@ -408,6 +427,8 @@ const resetLoad = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/error-500')
+
   }
 };
 
@@ -428,6 +449,8 @@ const resetPassword = async (req, res) => {
     res.redirect("/login");
   } catch (error) {
     console.log(error);
+    res.render("500")
+
   }
 };
 
@@ -447,18 +470,26 @@ const loadHome = async (req, res) => {
    
 
     if(userId){
+      const category = await categoryDb.find()
       const banners = await BannerDB.find()
       const userData = await User.findById({_id:userId})
-      res.render('home',{user:userData,banners})
+      const product = await productDb.find({is_active:true}).limit(8).populate('category').populate('offer')
+      console.log(product)
+      res.render('home',{user:userData,banners,product,category})
     }else{
       const banners = await BannerDB.find()
-      res.render('home',{message:"user logged",banners})
+      const product = await productDb.find({is_active:true}).limit(8).populate('category').populate('offer')
+
+      const category = await categoryDb.find()
+      res.render('home',{message:"user logged",banners,product,category})
     }
  
    
    
   } catch (error) {
     console.log(error);
+    res.render("500")
+
   }
 };
 
@@ -521,7 +552,11 @@ const loadShop = async (req, res) => {
         is_active: true,
         $or: [
           { name: { $regex: '.*' + search + '.*', $options: 'i' } },
-          { brand: { $regex: '.*' + search + '.*', $options: 'i' } } 
+          { brand: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { productName: { $regex: '.*' + search + '.*', $options: 'i' } },
+
+          
+ 
         ],
         price: { $gte: minPrice, $lte: maxPrice }
     }
@@ -581,6 +616,8 @@ const loadShop = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.render("500")
+
   }
 };
 
@@ -603,6 +640,8 @@ const loadProductDetails = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -625,6 +664,8 @@ const loadProfile = async (req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -645,6 +686,8 @@ const loadAddress = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 
 }
@@ -693,6 +736,7 @@ const addAddress = async(req,res)=>{
     res.redirect("/profile");
   } catch (error) {
     console.log(error.message);
+    res.render("500")
   }
 };
 
@@ -715,6 +759,8 @@ const loadEditAddress = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -752,7 +798,7 @@ const changePassword = async (req, res) => {
       }
   } catch (error) {
       console.log(error);
-      res.json({ success: false, message: 'An error occurred.' });
+      res.render("500")
   }
 };
 
@@ -793,6 +839,8 @@ const updateUserAddress = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 
 }
@@ -814,6 +862,8 @@ const deleteUserAddress = async (req, res) => {
     res.json({ remove: true });
   } catch (error) {
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -850,6 +900,8 @@ const postAddMoneyToWallet = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 
 }
@@ -906,6 +958,8 @@ const postVerifyWalletPayment = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -930,6 +984,8 @@ const getWalletHistory = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -944,6 +1000,8 @@ const getWallet = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -959,6 +1017,8 @@ const loadAbout = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
+
   }
 }
 
@@ -975,6 +1035,7 @@ const loadContact = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render("500")
   }
 }
 
@@ -1015,6 +1076,29 @@ const postContact = async (req, res, next) => {
 }
 
 
+// const error500 = async(req,res)=>{
+//   try{
+
+//     res.render('500')
+
+//   }catch(error){
+//     console.log(error);
+//   }
+// }
+
+
+const error404 = async(req,res)=>{
+  try{
+
+    res.render('404')
+
+  }catch(error){
+    console.log(error);
+  }
+}
+
+
+
 
 
 
@@ -1049,6 +1133,8 @@ module.exports = {
   changePassword,
   loadAbout,
   loadContact,
-  postContact
+  postContact,
+  // error500,
+  error404
   
 };

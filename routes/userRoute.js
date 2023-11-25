@@ -89,4 +89,14 @@ userRoute.get("/coupon",userAuth.isLogin,couponController.couponUserPageLoad)
 userRoute.post("/couponApply",userAuth.isLogin, couponController.ApplyCoupon);
 userRoute.post("/deleteCoupon",userAuth.isLogin, couponController.deleteAppliedCoupon);
 
+
+
+
+// userRoute.get('/error-500',userController.error500)
+
+userRoute.get('*',userController.error404)
+
+
+
+
 module.exports = userRoute;
