@@ -1,7 +1,7 @@
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
 <style>
-  .form-style {
+  /* .form-style {
     width: 550px;
     height: 42px;
     background-color: rgb(255, 255, 255);
@@ -10,7 +10,7 @@
     margin-left: 15px;
     padding-left: 10px;
    
-  }
+  } */
 
   .image-preview-container {
     position: relative;
@@ -55,7 +55,7 @@
               </div>
             </div>
             <div class="card-body px-0 pb-2">
-              <form class="forms-control needs-validation" action="/admin/addcouponManagement" method="post" style="background-color: #efefef;" id="productForm" novalidate>
+              <form class="forms-control needs-validation p-3" action="/admin/addcouponManagement" method="post" style="background-color: #ffffff;" id="productForm" novalidate>
 
                 <div class="row">
                   <div class="col-6">
@@ -82,14 +82,14 @@
                       <span id="couponDiscountError" style="color: red;  margin-left: 15px; font-size: 10px;"></span>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="col-6">
+                  <!-- <div class="col"> -->
+                    <div class="col-6 ">
                         <div class="form-group">
                           <label for="" class="font-weight-bold pl-3" style="color: #000000;">ValidFrom</label>
-                          <input type="date" class="form-control form-style" name="validFrom" id="validFrom"  placeholder="ValidFrom" style="margin-left: 0px;"  >
+                          <input type="date" class="form-control form-style " name="validFrom" id="validFrom"  placeholder="ValidFrom" style="margin-left: 0px;"  >
                           <span id="couponValidFromError" style="color: red;  margin-left: 0px; font-size: 10px; "></span>
                         </div>
-                      </div>
+                      <!-- </div> -->
                   </div>
                 </div>
 

@@ -143,41 +143,37 @@ const editProduct = async (req, res) => {
 
     const image = [];
 
-    for (i = 0; i < req.files.length; i++) {
-      image[i] = req.files[i].filename;
+    
+    if (req.files && req.files.length > 0) {
+      for (let i = 0; i < req.files.length; i++) {
+        image.push(req.files[i].filename);
+      }
     }
 
-   
+    const existingProduct = await productDb.findById(id);
 
+    if(existingProduct){
+      existingProduct.productName = productName;
+      existingProduct.category = category;
+      existingProduct.description = description;
+      existingProduct.price = price;
+      existingProduct.status = status;
+      existingProduct.quantity = quantity;
+      existingProduct.brand = brand;
 
-    const result = await productDb.findByIdAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          productName: productName,
-          category: category,
-          description: description,
-          price: price,
-          status: status,
-          quantity: quantity,
-          brand: brand,
-          image: image,
-        },
+      if (image.length > 0) {
+        existingProduct.image = existingProduct.image.concat(image);
       }
-    );
-    // console.log(req.body);
 
-    if (req.files.length === 0) {
-      // If no files were uploaded, remove the coverPic property from updateObject
-      delete result.image;
-  }
+      const updatedProduct = await existingProduct.save();
 
-
-
-    if (result) {
-      res.redirect("/admin/Product");
-    } else {
-      res.render("editProduct", { message: "something went Wrong" });
+      if(updatedProduct){
+        res.redirect("/admin/Product");
+      }else{
+        res.render("editProduct", { data: existingProduct, message: "something went Wrong" });
+      }
+    }else{
+      res.render('admin/product')
     }
   } catch (error) {
     console.log(error);

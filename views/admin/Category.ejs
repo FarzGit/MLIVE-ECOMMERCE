@@ -2,6 +2,14 @@
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
 
+<style>
+  .tableBody td{
+    background-color:rgb(244, 248, 253);
+    color: black!important;
+  }
+</style>
+
+
 <body class="g-sidenav-show  bg-gray-200">
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header d-flex justify-content-center">
@@ -96,7 +104,7 @@
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0" >
                   <table class="table table-dark">
-                    <thead>
+                    <thead >
                       <tr>
                               <% if(categoryData.length>0) {%>
                           <th style="font-size: large; text-align: center;"> Number </th>
@@ -105,7 +113,7 @@
                           <th style="font-size: large; text-align: center;"> Action </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="tableBody">
                         
                       <% categoryData.forEach((data,i)=>{ %>
                         <tr>

@@ -2,7 +2,11 @@
 <%- include("../admin/layouts/adminHeader.ejs") %>
 
 <style>
-  #tableBody{
+  .tableBody td{
+
+    background-color: rgb(248, 249, 250)!important;
+    color: black!important;
+
     
   }
 </style>
@@ -91,7 +95,7 @@
       <div class="container-fluid py-4">
         <div class="row">
           <div class="col-12 col-md-8 col-lg-9 elemDesign" style=" width: 1320px;">
-            <div class="card my-4">
+            <div class="card my-4 ">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 elemDesign2">
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                   <a href="/admin/addProduct">
@@ -102,7 +106,7 @@
               </div>
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
-                  <table class="table table-dark" id="productTable">
+                  <table class="table table-dark " id="productTable">
                     <thead>
                       <tr>
                         <th class="text-center">Image</th>
@@ -118,7 +122,7 @@
                         <th> </th>
                       </tr>
                     </thead>
-                    <tbody id="tableBody">
+                    <tbody class="tableBody ">
                       <% for (let i = 0; i < product.length; i++) { %>
                         <tr>
                           <td  class="text-center ">
