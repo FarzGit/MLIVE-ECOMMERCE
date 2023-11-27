@@ -626,6 +626,7 @@ const adminCancelOrder = async (req, res) => {
 
     if (productInfo) {
       productInfo.OrderStatus = "Cancelled";
+      productInfo.paymentStatus = "Cancelled";
       productInfo.updatedAt = Date.now();
 
       await order.save();

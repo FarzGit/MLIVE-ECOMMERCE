@@ -443,11 +443,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
@@ -464,6 +460,8 @@ document.addEventListener("DOMContentLoaded", function() {
   var salesData = salesPerMonthElements.split(',').map(Number);
 
   var salesMonths = document.getElementById('monthData').innerHTML;
+  console.log("salesMonths:", salesMonths);
+
   var monthData = salesMonths.split(',');
 
   let yearOfSale = document.getElementById('salesYear').textContent;
@@ -478,12 +476,12 @@ document.addEventListener("DOMContentLoaded", function() {
       data: salesData
     }],
     chart: {
-      height: 350,
-      type: 'line',
-      zoom: {
-        enabled: false
-      }
-    },
+   height: 350,
+   type: 'line',
+   zoom: {
+      enabled: false
+   }
+},
     dataLabels: {
       enabled: false
     },
@@ -502,9 +500,9 @@ document.addEventListener("DOMContentLoaded", function() {
     },
     xaxis: {
       categories: monthData,
-      title: {
-        text: 'months'
-      }
+      // title: {
+      //   text: 'months'
+      // }
     },
     yaxis: {
       title: {

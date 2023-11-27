@@ -71,9 +71,116 @@ const addBanners = async (req, res) => {
     }
 }
 
+const loadeditBanner = async(req,res)=>{
+  try{
+
+    const id=req.query.id
+
+
+    console.log(id)
+
+    const bannerData = await Banner.findById({_id:id})
+
+    res.render("editBanner",{bannerData})
+
+  }catch(error){
+    console.log(error)
+
+  }
+}
+
+
+const editBanner = async(req,res)=>{
+  try{
+
+    const id = req.body.id;
+    const typeHead = req.body.type;
+    const mainHead = req.body.mainHead;
+    const bannerURL = req.body.bannerURL
+    const image = req.file.filename;
+
+    const result = await Banner.findByIdAndUpdate(
+      {_id:id},
+      {
+        $set:{
+          typeHead:typeHead,
+          mainHead:mainHead,
+          bannerURL:bannerURL,
+          image:image
+        }
+      }
+    )
+
+
+    await sharp("public/products/banner/temp/" + req.file.filename)
+    .resize(1552, 872)
+    .toFile("public/products/banner/" + req.file.filename);
+
+  // Resize and save the mobile version of the banner image
+  await sharp("public/products/banner/temp/" + req.file.filename)
+    .resize(720, 600)
+    .toFile("public/products/banner/mobile/" + req.file.filename);
+
+
+    console.log("result is :",result)
+
+    if(result){
+      res.redirect('/admin/banners')
+    }
+
+    
+    
+
+  }catch(error){
+    console.log(error)
+    
+  }
+}
+
+
+const listAndUnList =async (req, res) =>{
+
+  try{
+
+      const id = req.query.id
+
+      const bannerData = await Banner.findById({_id:id})
+
+      // console.log('bannerData is :', bannerData)
+
+
+      if( bannerData.status === true){
+        const list = await Banner.updateOne({_id:id},{status:false})
+
+        if(list){
+          req.session.banner_id = false
+        }
+        res.redirect('/admin/banners')
+      }
+
+      if(bannerData.status === false){
+        const Unlist = await Banner.updateOne({_id:id},{status:true})
+
+        if(Unlist){
+          req.session.banner_id = true
+
+        }
+
+        res.redirect('/admin/banners')
+      }
+
+  }catch(error){
+    console.log(error)
+  }
+
+}
+
 module.exports ={
     loadAddbanner,
     addBanners,
-    loadBanners
+    loadBanners,
+    loadeditBanner,
+    editBanner,
+    listAndUnList
 
 }

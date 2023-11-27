@@ -15,9 +15,7 @@
 </div> -->
 
 <main class="main" id="reloadDiv">
-  <!-- <div class="container">
-            <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
-        </div> -->
+  
 
   <nav aria-label="breadcrumb" class="breadcrumb-nav">
     <div class="container">
@@ -71,7 +69,9 @@
                     <!-- End .product -->
                   </td>
                   <td class="price-col"><%= data.productId.price %></td>
+                  
                   <td class="quantity-col" style="width: 211px;">
+                    <%if(data.productId.quantity != 0){%>
                     <div class="wrap-num-product flex-w m-l-auto m-r-0" style=" margin-right: 54px;" >
                         <a
                             class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
@@ -86,6 +86,9 @@
                             onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)"
                             >+</a>
                     </div>
+                  <%}else{%>
+                    <p class="text-danger text-center">Out of Stock </p>
+                  <%}%>
                   </td>
                   <td class="total-col"><%= data.totalPrice %></td>
                   <td class="remove-col">
@@ -100,28 +103,25 @@
                 
               </tbody>
               <% }); %> <% }else{%>
+
+                <div class="d-flex justify-content-center">
+                  <img  src="/static/extraImages/cartEmpty.png" alt="CART EMPTY" style="height: 273px; padding-top: 69px; padding-left: 385px;">
+
+                </div>
+
+                <div class=" container d-flex justify-content-center ">
+                  <a href="/shop" class=" btn mb-3 mt-3 btn-rounded " style="background-color: rgb(0, 153, 255); width: 190px;">
+                    <span class="fw-600">CONTINUE SHOPPING</span>
+                  </a>
+                </div>
                 
-                <h1 class="d-flex justify-content-center">CART IS EMPTY</h1>
               
               <%}%>
              
             </table>
            
 
-            <!-- <div class="cart-bottom">
-                                <div class="cart-discount">
-                                    <form action="#">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" required placeholder="coupon code">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="fa  icon-refresh"></i></a>
-                            </div> -->
+           
           </div>
           <aside class="col-lg-3">
             <% if (cart && cart.length > 0){%>
@@ -134,45 +134,7 @@
                     <td>Subtotal:</td>
                     <td><%= total %></td>
                   </tr>
-                  <!-- <tr class="summary-shipping">
-                                        <td>Shipping:</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-
-                                    <tr class="summary-shipping-row">
-                                        <td>
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
-                                                <label class="custom-control-label" for="free-shipping">Free Shipping</label>
-                                            </div>
-                                        </td>
-                                        <td>$0.00</td>
-                                    </tr>
-
-                                    <tr class="summary-shipping-row">
-                                        <td>
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
-                                                <label class="custom-control-label" for="standart-shipping">Standart:</label>
-                                            </div>
-                                        </td>
-                                        <td>$10.00</td>
-                                    </tr>
-
-                                    <tr class="summary-shipping-row">
-                                        <td>
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
-                                                <label class="custom-control-label" for="express-shipping">Express:</label>
-                                            </div>
-                                        </td>
-                                        <td>$20.00</td>
-                                    </tr>
-
-                                    <tr class="summary-shipping-estimate">
-                                        <td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
-                                        <td>&nbsp;</td>
-                                    </tr> -->
+             
 
                   <tr class="summary-total">
                     <td>Total:</td>
@@ -181,14 +143,16 @@
                 </tbody>
               </table>
               
-              <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block" >PROCEED TO CHECKOUT</a>
-              <%}%>
+              <a href="/checkout" id="checkoutButton" class="btn btn-outline-primary-2 btn-order btn-block" onclick="checkout()" >PROCEED TO CHECKOUT</a>
+            
 
             </div>
+
 
             <a href="/shop" class="btn btn-outline-dark-2 btn-block mb-3"
               ><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i
             ></a>
+            <%}%>
           </aside>
          
         </div>
@@ -284,7 +248,43 @@
 });
 
 }
+
+
   
+</script>
+
+<script>
+  // Function to handle the checkout process
+  function checkout() {
+    $.ajax({
+      type: "GET",
+      url: "/checkout", // Update the URL to your server endpoint
+      dataType: "json",
+      success: function (response) {
+        // Handle the response from the server
+        if (response.quantity) {
+         
+          swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "products have insufficient stock.",
+          });
+        } else {
+          // Redirect to the checkout page or handle success as needed
+          window.location.href = "/checkout";
+        }
+      },
+      error: function (error) {
+        console.error("Error:", error);
+      },
+    });
+  }
+
+  // Attach the checkout function to the click event of the checkout button
+  $("#checkoutButton").on("click", function (e) {
+    e.preventDefault();
+    checkout();
+  });
 </script>
 
 <%- include('../users/mainLayout/mainFooter.ejs')%>

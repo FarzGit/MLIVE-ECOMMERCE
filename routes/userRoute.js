@@ -94,7 +94,7 @@ userRoute.post("/deleteCoupon",userAuth.isLogin, couponController.deleteAppliedC
 
 // userRoute.get('/error-500',userController.error500)
 
-userRoute.get('*',userController.error404)
+// userRoute.get('*',userController.error404)
 
 
 

@@ -36,6 +36,19 @@ const loadCheckOut = async(req,res)=>{
       let cartQuantity = 0
     if(cart){cartQuantity = cart.products.length}
 
+    for (const item of cartData.products) {
+      const productId =item.productId
+      console.log('Constructed Product ID:',typeof productId);
+      const product = await productDb.findById(productId);
+     console.log('pr',product);
+     console.log('item quantity',item.quantity);
+     console.log('stocj',product.quantity);
+      if (!product || item.quantity > product.quantity) {
+        res.json({quantity:true})
+        return
+      }
+    }
+
 
     const total = await cartDb.aggregate([
                     {
@@ -90,6 +103,8 @@ const loadCheckOut = async(req,res)=>{
       }
     }
 
+    
+
     const proName = cartData.products[proIndex].productId.productName;
 
 
@@ -112,7 +127,9 @@ const loadCheckOut = async(req,res)=>{
               cartQuantity
             });
           } else {
-            res.redirect("/checkout");
+            // res.redirect("/checkout");
+
+            res.json({ success: true });
           }
         } else {
           res.redirect("/profile");
@@ -176,11 +193,14 @@ const placeOrder = async(req,res)=>{
     let totalWalletBalance = userData.wallet - total
     const productId = req.query.productId;
     const code = req.body.code;
+    
 
     const couponData = await couponDb.findOne({couponCode: code})
 
 
-
+if(cartData.length===0){
+  console.log('cart is empty please Recheck your cart')
+}
     
 
 
@@ -656,6 +676,7 @@ console.log("entered into cancelOrder")
           );
           
             productInfo.OrderStatus = "Cancelled";
+            productInfo.paymentStatus = "Refund"
             productInfo.reason = cancelReason;
             productInfo.updatedAt = Date.now();
             await orderData.save();
@@ -679,6 +700,7 @@ console.log("entered into cancelOrder")
         );
         
           productInfo.OrderStatus = "Cancelled";
+          productInfo.paymentStatus = "Cancelled"
           productInfo.reason = cancelReason;
           productInfo.updatedAt = Date.now();
           await orderData.save();

@@ -2,111 +2,169 @@
 
 <style>
     body {
-     font-family: Arial, sans-serif;
-     background-color: #f0f0f0;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     height: 100vh;
-     margin: 0;
- }
- 
- .container {
-     background-color: #f1f1f1;
-     border-radius: 5px;
-     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-     text-align: center;
-     padding: 20px;
-     max-width: 100%;
-     width: 300px;
- }
- 
- .login-box {
-     max-width: 300px;
-     margin: 0 auto;
- }
- 
- h1 {
-     font-size: 24px;
- }
- 
- .input-container {
-     text-align: left;
-     margin-bottom: 10px;
- }
- 
- label {
-     display: block;
-     font-weight: bold;
- }
- 
- input {
-     width: 100%;
-     padding: 10px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
- }
- 
- button {
-     background-color: #EC7E3B;
-     color: #fff;
-     border: none;
-     border-radius: 5px;
-     padding: 10px 20px;
-     cursor: pointer;
-     width: 100%;
-     margin-top: 15px;
- }
- 
- button:hover {
-     background-color: #d2631e;
- }
- 
- .forgot-password {
-     margin-top: 15px;
- }
- 
- /* Media Query for smaller screens */
- @media (max-width: 768px) {
-     .container {
-         width: 90%;
-     }
- 
-     button {
-         width: 100%;
-     }
- }
- </style>
-</head>                     
+    color: #F7F7F7;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.form-control {
+    min-height: 41px;
+    background: #f2f2f2;
+    box-shadow: none !important;
+    border: transparent;
+}
+
+.form-control:focus {
+    background: #e2e2e2;
+}
+
+.form-control,
+.btn {
+    border-radius: 5px;
+}
+
+.signup-form {
+    width: 350px;
+    text-align: center;
+    padding: 30px;
+}
+
+.signup-form h2 {
+    margin: 10px 0 25px;
+}
+
+.signup-form .btn {
+    font-size: 16px;
+    font-weight: bold;
+    background: #0e1111;
+    border: none;
+    outline: none !important;
+}
+
+.signup-form .btn:hover,
+.signup-form .btn:focus {
+    background: #000000;
+}
+
+.signup-form a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.signup-form a:hover {
+    text-decoration: none;
+}
+
+.signup-form form a {
+    color: #000;
+    text-decoration: none;
+}
+
+.signup-form form a:hover {
+    text-decoration: underline;
+}
+
+.login_botten_tag {
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+@media (max-width: 600px) {
+    .signup-form {
+        width: 80%;
+    }
+}
+
+.hai {
+    padding-left: 10% !important;
+    padding-bottom: 5% !important;
+}
+.signup-form {
+    margin-left: 20px; 
+}
+.form-control {
+    border-radius: 10px; 
+    margin-bottom: 10px; 
+}
+@media (max-width: 1000px) {
+    .hihi {
+        display: none !important; 
+    }
+}
+.input-with-border {
+    border: 1px solid rgb(148, 148, 148);
+}
+.sizeForImage{
+    width: 75vh;
+}
+.hihii{
+    width: 100vh;
+}
+  </style>
+</head>
 <body>
-    <div class="container">
-        <div class="login-box">
-            <h1>Login</h1>
-            
 
-            <form action="/login" method="POST" id="form">
-                <div class="input-container">
-                    <label for="email">Enter email</label>
-                    <input type="text" id="email" name="email">
-                    <span class="error text-danger" id="email-error"></span>
-                </div>
-                <div class="input-container">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
-                    <div id="errorMessage" style="color: red; font-size: 12px; font-weight: 300;"></div>
-                    <span class="error text-danger" id="password-error"></span>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6 d-none d-md-block hihi">
+            <img  src="/static/extraImages/loginPage.jpg" alt="Your Photo" class="img-fluid" style="width:75vh; padding-top: 113px;">
+        </div>
+        <div class="col-md-6 col-12 mt-4 hai ml2- pt-5">
+            <div class="signup-form mt-3">
+                <div class="logoimg pb-1 d-flex justify-content-start">
+                    
+                        <p style="color: #000; font-weight:bold ; font-size: 38px;"> Login</p>
+                        
+                        
                 </div>
 
-                <button type="submit">Login</button>
-                <div class="forgot-password">
-                    <a href="/forgot-password">Forgot Password?</a>
-                </div>
-                <div class="text-center">
-                    <p>Not registered? <a href="/register">Sign up</a></p>
-                </div>
-            </form>
+                <div class="logoimg pb-4 ">
+                    
+                  <p style="color: #a9a9a9; padding-right: 71px; margin: 0;">Welcome to mlive shoping cart </p>
+                  <p style="color: #a9a9a9; padding-right: 35px; display: flex;">Please login to your account</p>
+          </div>
+
+          <form action="/login" method="POST" id="form">
+                  <label for="email" style="color: #a9a9a9;  display: flex; font-size: small;">Enter email</label>
+                    <input type="email" class="form-control input-with-border rounded m-0" id="email" name="email" placeholder="Email" >
+                    <span class="error text-danger d-flex" style="font-size: 12px;" id="email-error"></span>
+                  <label for="password"  style="color: #a9a9a9;  display: flex; font-size: small;">Enter password</label>
+
+                    <input type="password" class="form-control input-with-border rounded " id="password" name="password" placeholder="Password"
+                        >
+                        <div id="errorMessage" style="color: red; font-size: 12px; font-weight: 300;" class="d-flex"></div>
+                    <span class="error text-danger d-flex" id="password-error" style="color: red; font-size: 12px; font-weight: 300;"></span>
+
+                    <div class="forgot-password d-flex justify-content-end">
+                        <a href="/forgot-password" class="text-center  small" style="color: #a9a9a9;  ">Forgot Password?</a>
+                    </div>
+                    <div class="form-group">
+                        
+                            <button type="submit" class="btn btn-block mt-4 bg-dark buttensignup text-white">Login</button>
+                    
+                    </div>
+                  
+                    <div class="text-danger mt-3">
+                        
+                    </div>
+                  
+
+                    <p class="text-center text-dark small">Dont't Have An account? <a class="text-primary"
+                            href="/register">
+                        Signup Here!</a></p>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 
 
 

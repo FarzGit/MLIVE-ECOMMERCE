@@ -125,6 +125,9 @@ adminRoute.patch('/remove_offer',adminAuth.isLogin,productController.removeProdu
 adminRoute.get('/add_banner',adminAuth.isLogin,bannerController.loadAddbanner)
 adminRoute.post('/add_banner',fileUpload.uploadBanner.single('image'),adminAuth.isLogin,bannerController.addBanners)
 adminRoute.get('/banners',adminAuth.isLogin,bannerController.loadBanners)
+adminRoute.get('/editBanner',adminAuth.isLogin,bannerController.loadeditBanner)
+adminRoute.post('/editBanner',fileUpload.uploadBanner.single('image'),adminAuth.isLogin,bannerController.editBanner)
+adminRoute.get('/listUnlist',adminAuth.isLogin,bannerController.listAndUnList)
 
 
 

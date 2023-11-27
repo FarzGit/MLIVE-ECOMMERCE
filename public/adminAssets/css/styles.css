@@ -1,0 +1,17 @@
+.page-link {
+    font-size: 7px!important;
+  }
+  .dataTables_info{
+    font-size: 12px;
+    margin-left: 14px;
+  }
+  .dataTables_filter label {
+    margin-right: 20px;
+  }
+  .dataTables_length{
+    margin-left: 20px;
+  }
+ 
+  body {
+    overflow-y: hidden;
+  }

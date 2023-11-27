@@ -471,13 +471,13 @@ const loadHome = async (req, res) => {
 
     if(userId){
       const category = await categoryDb.find()
-      const banners = await BannerDB.find()
+      const banners = await BannerDB.find({status:true})
       const userData = await User.findById({_id:userId})
       const product = await productDb.find({is_active:true}).limit(8).populate('category').populate('offer')
       console.log(product)
       res.render('home',{user:userData,banners,product,category})
     }else{
-      const banners = await BannerDB.find()
+      const banners = await BannerDB.find({status:true})
       const product = await productDb.find({is_active:true}).limit(8).populate('category').populate('offer')
 
       const category = await categoryDb.find()
