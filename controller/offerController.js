@@ -49,6 +49,8 @@ const loadEditOffer = async ( req, res ) => {
 
 const AddOffer = async ( req, res ) => {
     try {
+
+        console.log("entered offer")
         const { search, page } = req.query
         const { startingDate, expiryDate, percentage } = req.body
         const name = req.body.name.toUpperCase()
