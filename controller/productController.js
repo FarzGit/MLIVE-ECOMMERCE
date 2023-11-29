@@ -1,82 +1,79 @@
-const productDb = require("../models/productModel");
-const User = require("../models/userModel");
-const categoryDb = require("../models/categoryModel");
-const adminDb = require("../models/adminModel");
-const offerDb =require("../models/offerModel");
-const sharp = require("sharp");
-const fs = require('fs');
-const path = require("path");
-const { log } = require("console");
+const productDb = require('../models/productModel')
+const User = require('../models/userModel')
+const categoryDb = require('../models/categoryModel')
+const adminDb = require('../models/adminModel')
+const offerDb = require('../models/offerModel')
+const sharp = require('sharp')
+const fs = require('fs')
+const path = require('path')
+const { log } = require('console')
+const { ObjectId } = require('mongodb')
 
-const { ObjectId } = require("mongodb");
+// ==========================================================load the product page===============================================================
 
 const loadProducts = async (req, res) => {
   try {
-    
-    const products = await productDb.find().populate('offer');
-    
-    const availableOffers = await offerDb.find({ status : true, expiryDate : { $gte : new Date() }})
-    // console.log('products', products);
+    const products = await productDb.find().populate('offer')
 
-    res.render("Products", {
+    const availableOffers = await offerDb.find({
+      status: true,
+      expiryDate: { $gte: new Date() }
+    })
+
+    res.render('Products', {
       product: products,
-      availableOffers,
-    });
+      availableOffers
+    })
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
+    console.error(error)
+    res.status(500).send('Internal Server Error')
   }
-};
+}
+
+// ==========================================================load admin Product details product page===============================================================
 
 const loadAdminProductDetails = async (req, res) => {
   try {
-    // console.log(" entered into the productdetails  ")
+    const id = req.query.id
 
-    const id = req.query.id;
+    const product = await productDb.findById({ _id: id }).populate('category')
 
-    // console.log("id is :", id);
-
-    const product = await productDb.findById({ _id: id }).populate("category");
-
-    // console.log("catgyrt:", product.category.name);
-
-    res.render("adminViewProductDetails", { product: product });
+    res.render('adminViewProductDetails', { product: product })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.render('500')
   }
-};
+}
+
+// ==========================================================load add product page admin side===============================================================
 
 const loadAddProducts = async (req, res) => {
   try {
-    const categoryData = await categoryDb.find();
+    const categoryData = await categoryDb.find()
 
-    res.render("addProducts", { cartData: categoryData });
+    res.render('addProducts', { cartData: categoryData })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.render('500')
   }
-};
+}
 
-
-
-
+// ==========================================================post add product from admin side===============================================================
 
 const addProduct = async (req, res) => {
   try {
-    const productName = req.body.productName;
-    const category = req.body.category;
-    const description = req.body.description;
-    const price = req.body.price;
-    const status = req.body.status;
-    const quantity = req.body.quantity;
-    const brand = req.body.brand;
+    const productName = req.body.productName
+    const category = req.body.category
+    const description = req.body.description
+    const price = req.body.price
+    const status = req.body.status
+    const quantity = req.body.quantity
+    const brand = req.body.brand
 
-    const image = [];
+    const image = []
 
     for (i = 0; i < req.files.length; i++) {
-      image[i] = req.files[i].filename;
-     
+      image[i] = req.files[i].filename
     }
 
     const newProduct = new productDb({
@@ -87,187 +84,184 @@ const addProduct = async (req, res) => {
       status: status,
       quantity: quantity,
       brand: brand,
-      image: image,
-    });
+      image: image
+    })
 
-    const result = await newProduct.save();
-    // console.log('result'+result);
-    // console.log(result);
-    res.redirect("/admin/Product");
+    const result = await newProduct.save()
+    res.redirect('/admin/Product')
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.render('500')
   }
-};
+}
 
-
-
-
-
-
+// ==========================================================load edit product page admin side===============================================================
 
 const loadEditProduct = async (req, res) => {
   try {
-    const id = req.query.id;
-    const cartData = await categoryDb.find();
+    const id = req.query.id
+    const cartData = await categoryDb.find()
 
-    const product = await productDb.findById({ _id: id });
-    // console.log(product);
+    const product = await productDb.findById({ _id: id })
 
-    res.render("editProduct", { product, cartData });
+    res.render('editProduct', { product, cartData })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.render('500')
   }
-};
+}
+
+// ==========================================================post edit product from admin side===============================================================
 
 const editProduct = async (req, res) => {
   try {
-    //  console.log(req.body);
-    const id = req.body.id;
-    //  console.log(id);
+    const id = req.body.id
 
-    const productName = req.body.productName;
-    const category = req.body.category;
-    const description = req.body.description;
-    const price = req.body.price;
-    const status = req.body.status;
-    const quantity = req.body.quantity;
-    const brand = req.body.brand;
+    const productName = req.body.productName
+    const category = req.body.category
+    const description = req.body.description
+    const price = req.body.price
+    const status = req.body.status
+    const quantity = req.body.quantity
+    const brand = req.body.brand
 
-    const image = [];
+    const image = []
 
-    
     if (req.files && req.files.length > 0) {
       for (let i = 0; i < req.files.length; i++) {
-        image.push(req.files[i].filename);
+        image.push(req.files[i].filename)
       }
     }
 
-    const existingProduct = await productDb.findById(id);
+    const existingProduct = await productDb.findById(id)
 
-    if(existingProduct){
-      existingProduct.productName = productName;
-      existingProduct.category = category;
-      existingProduct.description = description;
-      existingProduct.price = price;
-      existingProduct.status = status;
-      existingProduct.quantity = quantity;
-      existingProduct.brand = brand;
+    if (existingProduct) {
+      existingProduct.productName = productName
+      existingProduct.category = category
+      existingProduct.description = description
+      existingProduct.price = price
+      existingProduct.status = status
+      existingProduct.quantity = quantity
+      existingProduct.brand = brand
 
       if (image.length > 0) {
-        existingProduct.image = existingProduct.image.concat(image);
+        existingProduct.image = existingProduct.image.concat(image)
       }
 
-      const updatedProduct = await existingProduct.save();
+      const updatedProduct = await existingProduct.save()
 
-      if(updatedProduct){
-        res.redirect("/admin/Product");
-      }else{
-        res.render("editProduct", { data: existingProduct, message: "something went Wrong" });
+      if (updatedProduct) {
+        res.redirect('/admin/Product')
+      } else {
+        res.render('editProduct', {
+          data: existingProduct,
+          message: 'something went Wrong'
+        })
       }
-    }else{
+    } else {
       res.render('admin/product')
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.render('500')
   }
-};
+}
+
+// ==========================================================product soft delete functions===============================================================
 
 const productListorUnlist = async (req, res) => {
   try {
-    // console.log("hallo");
-    const id = req.query.id;
+    const id = req.query.id
 
-    // console.log(id);
-
-    const productData = await productDb.findById({ _id: id });
-    // console.log(productData);
+    const productData = await productDb.findById({ _id: id })
 
     if (productData.is_active === true) {
       const List = await productDb.updateOne(
         { _id: id },
         { $set: { is_active: false } }
-      );
+      )
 
       if (List) {
-        req.session.product_id = false;
+        req.session.product_id = false
       }
-      res.redirect("/admin/Product");
+      res.redirect('/admin/Product')
     }
     if (productData.is_active === false) {
-      await productDb.updateOne({ _id: id }, { $set: { is_active: true } });
-      res.redirect("/admin/Product");
+      await productDb.updateOne({ _id: id }, { $set: { is_active: true } })
+      res.redirect('/admin/Product')
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.render('500')
   }
-};
+}
 
-
+// ==========================================================apply the product offer===============================================================
 
 const applyProductOffer = async (req, res) => {
   try {
-    const productId = req.body.productId;
-    const offerId = req.body.offerId;
+    const productId = req.body.productId
+    const offerId = req.body.offerId
 
-    // Assuming you have an Offer model with fields: discountPercentage
-    const offer = await offerDb.findOne({ _id: offerId });
+    const offer = await offerDb.findOne({ _id: offerId })
 
     if (!offer) {
-      return res.json({ success: false, message: 'Offer not found' });
+      return res.json({ success: false, message: 'Offer not found' })
     }
 
-    const product = await productDb.findOne({ _id: productId }).populate('category')
+    const product = await productDb
+      .findOne({ _id: productId })
+      .populate('category')
 
     if (!product) {
-      return res.json({ success: false, message: 'Product not found' });
+      return res.json({ success: false, message: 'Product not found' })
     }
 
     // Get the category discount, if available
-    const categoryDiscount = product.category && product.category.offer
-      ? await offerDb.findOne({ _id: product.category.offer })
-      : 0;
-      // console.log("categoryDiscount",categoryDiscount)
+    const categoryDiscount =
+      product.category && product.category.offer
+        ? await offerDb.findOne({ _id: product.category.offer })
+        : 0
 
     // Calculate real price and discounted price for the product
-    const discountPercentage = offer.percentage;
-    const originalPrice = parseFloat(product.price);
-    const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
+    const discountPercentage = offer.percentage
+    const originalPrice = parseFloat(product.price)
+    const discountedPrice =
+      originalPrice - (originalPrice * discountPercentage) / 100
 
-    // console.log("categoryDiscount.percentage :",categoryDiscount.percentage )
     // Check if category offer is available and its discount is greater than product offer
     if (categoryDiscount && categoryDiscount.percentage > discountPercentage) {
-      // console.log("Category offer has greater discount");
-      // You can handle this case as needed, e.g., not applying the product offer
-      return res.json({ success: false, message: 'Category offer has greater discount' });
+      return res.json({
+        success: false,
+        message: 'Category offer has greater discount'
+      })
     }
 
-    // Update product with offer details
     await productDb.updateOne(
       { _id: productId },
       {
         $set: {
           offer: offerId,
-          discountedPrice: discountedPrice,
-        },
+          discountedPrice: discountedPrice
+        }
       }
-    );
+    )
 
-    const updatedProduct = await productDb.findOne({ _id: productId }).populate('offer');
-    res.json({ success: true, data: updatedProduct });
+    const updatedProduct = await productDb
+      .findOne({ _id: productId })
+      .populate('offer')
+    res.json({ success: true, data: updatedProduct })
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
     res.render('500')
   }
-};
+}
 
+// ==========================================================remove the product offer admin side===============================================================
 
 const removeProductOffer = async (req, res) => {
   try {
-    const { productId } = req.body;
+    const { productId } = req.body
 
     const remove = await productDb.updateOne(
       { _id: productId },
@@ -275,17 +269,17 @@ const removeProductOffer = async (req, res) => {
         $unset: {
           offer: '',
           discountedPrice: '',
-          realPrice: '',
-        },
+          realPrice: ''
+        }
       }
-    );
+    )
 
-    res.json({ success: true ,data:remove });
+    res.json({ success: true, data: remove })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.render('500')
   }
-};
+}
 
 module.exports = {
   loadProducts,
@@ -297,4 +291,4 @@ module.exports = {
   loadAdminProductDetails,
   applyProductOffer,
   removeProductOffer
-};
+}
