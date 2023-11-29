@@ -11,7 +11,8 @@ const loadOffer = async( req, res ) => {
         })
     } catch (error) {
         console.log(error.message)
-        res.redirect('/500')
+        res.render("admin500")
+
 
     }
 }
@@ -25,7 +26,7 @@ const loadaddOffer = async( req, res ) => {
     res.render('addOffer')
     } catch (error) {
         console.log(error.message)
-        res.redirect('/500')
+        res.render("admin500")
 
     }
 }
@@ -41,7 +42,7 @@ const loadEditOffer = async ( req, res ) => {
         })
     } catch (error) {
         console.log(error.message)
-        res.redirect('/500')
+        res.render("admin500")
 
     }
 }
@@ -50,7 +51,7 @@ const loadEditOffer = async ( req, res ) => {
 const AddOffer = async ( req, res ) => {
     try {
 
-        console.log("entered offer")
+        // console.log("entered offer")
         const { search, page } = req.query
         const { startingDate, expiryDate, percentage } = req.body
         const name = req.body.name.toUpperCase()
@@ -71,7 +72,7 @@ const AddOffer = async ( req, res ) => {
         }
     } catch (error) {
         console.log(error.message)
-        res.redirect('/500')
+        res.render("admin500")
     }
 }
 
@@ -80,8 +81,8 @@ const AddOffer = async ( req, res ) => {
 
 const postEditOffer = async ( req, res ) => {
     try {
-        console.log('enterd')
-        console.log(req.body.id)
+        // console.log('enterd')
+        // console.log(req.body.id)
 
         const { id, name, startingDate, expiryDate, percentage } = req.body
 
@@ -96,7 +97,7 @@ const postEditOffer = async ( req, res ) => {
         res.redirect('/admin/offer')
     } catch (error) {
         console.log(error.message)
-        res.redirect('/500')
+        res.render("admin500")
 
     }
 }
@@ -114,7 +115,7 @@ const cancelOffer = async ( req, res ) => {
         res.json({ cancelled : true})
     } catch (error) {
         res.json({cancelled: false,message:'Cant cancel some errors'})
-        res.redirect('/500')
+        res.render("admin500")
 
     }
 }

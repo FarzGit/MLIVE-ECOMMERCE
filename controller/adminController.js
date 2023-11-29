@@ -64,7 +64,7 @@ if(req.query.month){
         })
 
 
-        console.log("displayYears",displayYears);
+        // console.log("displayYears",displayYears);
 
 
 
@@ -73,7 +73,7 @@ if(req.query.month){
         
         if(req.query.year && req.query.month){
           orderData = await findSalesDataOfMonth(salesYear, req.query.month)
-          console.log("///\\\\ :",orderData);
+          // console.log("///\\\\ :",orderData);
         }else if(req.query.year && !req.query.month){
           orderData = await findSalesDataOfYear(salesYear)
         }else{
@@ -105,9 +105,9 @@ if(req.query.month){
         
 
 
-      console.log("orderData:", orderData);
-      console.log("sales is:", sales);
-      console.log("months is:", months);
+      // console.log("orderData:", orderData);
+      // console.log("sales is:", sales);
+      // console.log("months is:", months);
       let totalSales = sales.reduce((acc,curr) => acc += curr , 0)
       // console.log("totalSale is:",totalSales)
 
@@ -164,22 +164,43 @@ if(req.query.month){
     // console.log("categories:", categories)
 
 
-    let paymentData = await orderDb.aggregate([
-      { 
-          $unwind: "$products" }, // unwind the products array
-      { 
-          $match: { 
-              "products.OrderStatus": "Delivered", 
-              paymentMethod: { $exists: true } 
-          }
-      },
-      { 
-          $group: { 
-              _id: '$paymentMethod', 
-              count: { $sum: 1 }
-          }
-      }
-  ]);
+  //   let paymentData = await orderDb.aggregate([
+  //     { 
+  //         $unwind: "$products" }, // unwind the products array
+  //     { 
+  //         $match: { 
+  //             "products.OrderStatus": "Delivered", 
+  //             paymentMethod: { $exists: true } 
+  //         }
+  //     },
+  //     { 
+  //         $group: { 
+  //             _id: '$paymentMethod', 
+  //             count: { $sum: 1 }
+  //         }
+  //     }
+  // ]);
+
+  let paymentData = await orderDb.aggregate([
+    { 
+        $unwind: "$products" }, // unwind the products array
+    { 
+        $match: { 
+            $or: [
+                { "products.OrderStatus": "Delivered" },
+                { "paymentStatus": "success" }
+            ],
+            "paymentMethod": { $exists: true } 
+        }
+    },
+    { 
+        $group: { 
+            _id: '$paymentMethod', 
+            count: { $sum: 1 }
+        }
+    }
+]);
+
 
   // console.log("paymentData:",paymentData);
 
@@ -309,7 +330,7 @@ const loadCategoryPage = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.render("admin500")
-    res.render("admin500")
+    
   }
 };
 
@@ -346,8 +367,8 @@ const addCategory = async (req, res) => {
       } else {
         const categoryData = new categoryDb({ name: name });
         const addData = await categoryData.save();
-        console.log(categoryData);
-        console.log(addData);
+        // console.log(categoryData);
+        // console.log(addData);
 
         if (addData) {
           res.redirect("/admin/category");
@@ -368,7 +389,7 @@ const addCategory = async (req, res) => {
 const loadEditCategory = async (req, res) => {
   try {
     const id = req.query.id;
-    console.log(id);
+    // console.log(id);
 
     const details = await categoryDb.findById({ _id: id });
 
@@ -426,6 +447,8 @@ const listOrNot = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.render("admin500")
+
   }
 };
 
@@ -450,7 +473,7 @@ const blockUnblock = async (req, res) => {
   try {
     const id = req.query.id;
     const user = await User.findById(id);
-    console.log("user id is : ", user);
+    // console.log("user id is : ", user);
 
     const userData = await User.findById({ _id: id });
 
@@ -592,14 +615,14 @@ const changeOrderStatus = async (req, res) => {
     const productInfo = order.products.find(
       (product) => product.productId.toString() === productId
     );
-    console.log(productInfo);
+    // console.log(productInfo);
     productInfo.OrderStatus = status;
     productInfo.statusLevel = statusLevel;
     productInfo.updatedAt = Date.now();
 
     const result = await order.save();
 
-    console.log(result);
+    // console.log(result);
 
     res.redirect(
       `/admin/orderFullDetails?orderId=${orderId}&productId=${productId}`

@@ -1,0 +1,129 @@
+*{
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+body{
+   
+
+    display: grid;
+    place-items: center;
+    background-color: rgb(255, 255, 255);
+    padding-top: 35px;
+}
+
+.main{
+    border: 5px solid rgb(255, 255, 255);
+    border-radius: 20px;
+    overflow: hidden;
+    
+
+}
+
+.name{
+    display: flex;
+    font-size: 24px;
+    font-weight: 700px;
+    padding: 8px 16px;
+    color: aliceblue;
+    background-color: aliceblue;
+}
+
+.name-input{
+    font-size: 24px;
+    font-weight: 700;
+    flex-grow: 1;
+    border: none;
+    margin: 0px 12px;
+    outline: none;
+    background-color: aliceblue;
+}
+
+.message-container{
+    display: flex;
+    flex-direction: column;
+    width: 1320px;
+    height: 550px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: antiquewhite;
+   
+}
+
+.message-left, .message-right{
+    list-style: none;
+    padding: 8px 12px;
+    max-width: 300px;
+    font-size: 18px;
+    word-wrap: break-word;
+}
+
+.message-left{
+    border-radius: 20px 0px 20px 0;
+    align-self: flex-start;
+    background-color: #fff;
+    box-shadow: -2px 2px 4px #dcdcdc;
+    margin-top: 21px;
+    margin-bottom: 21px;
+    margin-left: 6px;
+
+}
+
+
+.message-right{
+    border-radius: 20px 20px 0px 20px;
+    align-self: flex-end;
+    background-color: #b0b0b0;
+    box-shadow: 2px 2px 4px #dcdcdc;
+    margin-top: 21px;
+    margin-bottom: 21px;
+    margin-right: 6px;
+}
+
+.message-left > p > span, .message-right > p > span{
+
+    display: block;
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 4px;
+
+}
+
+.feedback{
+    font-style: italic;
+    font-size: 14px;
+    padding: 0px 16px 16px 16px;
+    text-align: center;
+}
+
+.message-form{
+    display: flex;
+    justify-content: space-between;
+
+    width: auto;
+}
+
+.message-input{
+    flex-grow: 1;
+    height: 48px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 0px 12px;
+    background-color: #fff;
+}
+
+.send-button{
+    height: 48px;
+    font-size: 16px;
+    border: none;
+    padding: 0px 20px;
+    outline: none;
+    background-color: #ffffff;
+    cursor: pointer;
+    
+}
+
+

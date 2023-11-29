@@ -8,7 +8,6 @@
 import Page = require('../../../../../base/Page');
 import Response = require('../../../../../http/response');
 import V1 = require('../../../V1');
-import serialize = require('../../../../../base/serialize');
 import { SerializableClass } from '../../../../../interfaces';
 
 /**
@@ -83,6 +82,12 @@ declare class TaskQueueStatisticsContext {
   /**
    * fetch a TaskQueueStatisticsInstance
    *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: TaskQueueStatisticsInstance) => any): Promise<TaskQueueStatisticsInstance>;
+  /**
+   * fetch a TaskQueueStatisticsInstance
+   *
    * @param opts - Options for request
    * @param callback - Callback to handle processed record
    */
@@ -107,7 +112,13 @@ declare class TaskQueueStatisticsInstance extends SerializableClass {
 
   private _proxy: TaskQueueStatisticsContext;
   accountSid: string;
-  cumulative: object;
+  cumulative: any;
+  /**
+   * fetch a TaskQueueStatisticsInstance
+   *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: TaskQueueStatisticsInstance) => any): Promise<TaskQueueStatisticsInstance>;
   /**
    * fetch a TaskQueueStatisticsInstance
    *
@@ -115,7 +126,7 @@ declare class TaskQueueStatisticsInstance extends SerializableClass {
    * @param callback - Callback to handle processed record
    */
   fetch(opts?: TaskQueueStatisticsInstanceFetchOptions, callback?: (error: Error | null, items: TaskQueueStatisticsInstance) => any): Promise<TaskQueueStatisticsInstance>;
-  realtime: object;
+  realtime: any;
   taskQueueSid: string;
   /**
    * Provide a user-friendly representation

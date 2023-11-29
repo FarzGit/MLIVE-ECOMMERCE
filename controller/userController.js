@@ -31,6 +31,7 @@ const securePassword = async (password) => {
     return passwordHash;
   } catch (error) {
     console.log(error.message);
+    res.render('500')
     
   }
 };
@@ -52,7 +53,7 @@ const otpSend = async (Fname, email, otp) => {
         pass: process.env.SMPT_PASS,
       },
     });
-    console.log("hahah");
+    // console.log("hahah");
     // Email message
     const mailOptions = {
       from: "farzinahammedabc@gmail.com",
@@ -105,8 +106,7 @@ const otpSend = async (Fname, email, otp) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).render('500');
-    res.render("500")
+    res.render('500')
   }
 };
 
@@ -131,8 +131,8 @@ const verifyOtp = async (req, res) => {
       req.body.otp === req.session.otp.code &&
       currentTime <= req.session.otp.expire
     ) {
-      console.log(req.session.otp.code);
-      console.log("verify otp");
+      // console.log(req.session.otp.code);
+      // console.log("verify otp");
       const user = await User({
         firstName: req.session.Fname,
         lastName: req.session.Lname,
@@ -162,11 +162,11 @@ const verifyOtp = async (req, res) => {
 const resendOtp = (req, res) => {
   try {
     const currentTime = Date.now() / 1000;
-    console.log("current", currentTime);
+    // console.log("current", currentTime);
     if (req.session.otp.expire != null) {
-      console.log("hai");
+      // console.log("hai");
       if (currentTime > req.session.otp.expire) {
-        console.log("expire", req.session.otp.expire);
+        // console.log("expire", req.session.otp.expire);
         const newDigit = otpGenerator.generate(6, {
           digits: true,
           alphabets: false,
@@ -176,7 +176,7 @@ const resendOtp = (req, res) => {
         });
         req.session.otp.code = newDigit;
         const newExpiry = currentTime + 30;
-        console.log(newExpiry);
+        // console.log(newExpiry);
         req.session.otp.expire = newExpiry;
         otpSend(req.session.Fname, req.session.email, req.session.otp.code);
         res.render("userOtp", { message: `New OTP send into your mail` });
@@ -227,7 +227,7 @@ const insertUser = async (req, res) => {
       req.session.Lname = req.body.Lname;
       req.session.email = req.body.email;
       req.session.mobile = req.body.mobile;
-      if (req.body.Fname && req.body.email) {
+      if (req.body.Fname && req.body.email && req.body.Lname  && req.body.password) {
         if (req.body.password === req.body.Cpassword) {
           req.session.password = spassword;
           req.session.otp = {
@@ -236,13 +236,14 @@ const insertUser = async (req, res) => {
           };
           otpSend(req.session.name, req.session.email, req.session.otp.code);
 
-          res.json({ message: "Success" });
         } else {
           res.json({ message: "Password doesn't match" });
         }
       } else {
         res.json({ message: "Please enter all details" });
       }
+      res.json({ message: "Success" });
+
     }
   } catch (error) {
     console.log(error);
@@ -271,6 +272,7 @@ const loadlogin = async (req, res) => {
     res.render("login");
   } catch (error) {
     console.log(error.message);
+    res.render('500')
   }
 };
 
@@ -289,6 +291,7 @@ const verifyLogin = async (req, res) => {
         if (passwordMatch) {
           if (userData.isVerified == false) {
             req.session.user_id = userData._id;
+            // console.log('userid',req.session.user_id);
             res.json({message:"please verify your mail"})
           } else {
             req.session.user_id = userData._id;
@@ -322,7 +325,7 @@ const userLogout = async (req, res) => {
     req.session.user_id = false;
     res.redirect("/login");
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     res.render("500")
 
   }
@@ -363,7 +366,7 @@ const sendResetPasswordMail = async (name, email, token) => {
       }
     });
   } catch (error) {
-    console.log("error", error.message);
+    console.log( error);
     res.render("500")
   }
 };
@@ -397,7 +400,7 @@ const ForgotPassword = async (req, res) => {
           { email: email },
           { $set: { token: randomString } }
         );
-        console.log(updatedData);
+        // console.log(updatedData);
         sendResetPasswordMail(userData.name, userData.email, randomString);
         res.render("forgotPassword", {
           messages: "Please check your mail to reset your password",
@@ -408,7 +411,7 @@ const ForgotPassword = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.redirect('/error-500')
+    res.render('500')
 
   }
 };
@@ -418,7 +421,7 @@ const ForgotPassword = async (req, res) => {
 const resetLoad = async (req, res) => {
   try {
     const token = req.query.token;
-    console.log(token);
+    // console.log(token);
     const tokenData = await User.findOne({ token: token });
     if (tokenData) {
       res.render("resetPassword", { user_id: tokenData._id });
@@ -427,7 +430,7 @@ const resetLoad = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.redirect('/error-500')
+    res.render('500')
 
   }
 };
@@ -444,7 +447,7 @@ const resetPassword = async (req, res) => {
       { _id: user_id },
       { $set: { password: spassword, token: "" } }
     );
-    console.log(updatedData);
+    // console.log(updatedData);
 
     res.redirect("/login");
   } catch (error) {
@@ -474,7 +477,7 @@ const loadHome = async (req, res) => {
       const banners = await BannerDB.find({status:true})
       const userData = await User.findById({_id:userId})
       const product = await productDb.find({is_active:true}).limit(8).populate('category').populate('offer')
-      console.log(product)
+      // console.log(product)
       res.render('home',{user:userData,banners,product,category})
     }else{
       const banners = await BannerDB.find({status:true})
@@ -531,17 +534,17 @@ const loadShop = async (req, res) => {
         maxPrice = req.query.maxPrice;
     }
 
-    console.log("4444444",req.query.maxPrice, req.query.minPrice)
+    // console.log("4444444",req.query.maxPrice, req.query.minPrice)
 
       let search = ''
 
       if(req.query.search){
         search = req.query.search
       }
-      console.log('Query parameters:', req.query);
+      // console.log('Query parameters:', req.query);
 
       
-      console.log("above search");
+      // console.log("above search");
       async function getCategoryIds(search) {
         
         const categories = await categoryDb.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } });
@@ -562,7 +565,7 @@ const loadShop = async (req, res) => {
     }
 
     if (req.query.search) {
-      console.log("entered into the search");
+      // console.log("entered into the search");
       search = req.query.search;
       query.$or.push({
         'Category': { $in: await getCategoryIds(search) }
@@ -628,13 +631,13 @@ const loadShop = async (req, res) => {
 
 const loadProductDetails = async(req,res)=>{
   try{
-      console.log("haloo");
+      // console.log("haloo");
     const id = req.query.id
-    console.log(id);
+    // console.log(id);
     const products = await productDb.findById({_id:id}).populate('offer')
     
 
-    console.log(products);
+    // console.log(products);
     res.render('productDetails',{product:products})
     
 
@@ -747,13 +750,16 @@ const loadEditAddress = async(req,res)=>{
   try{
     const id = req.query.id
     const userId = req.session.user_id
+    
     const userData = await User.findById({_id:userId})
+
+   
 
     let userAddress = await addressDb.findOne({ userId: userId  },{addresses:{$elemMatch:{_id:id}}})
 
     const address= userAddress.addresses
 
-    res.render('editAddress',{user:userId,addresses:address[0]})
+    res.render('editAddress',{user:userData,addresses:address[0]})
 
     
 
@@ -785,14 +791,14 @@ const changePassword = async (req, res) => {
               if (newpd === confirmpd) {
                   const secure = await securePassword(newpd);
                   const store = await User.updateOne({ _id: user }, { $set: { password: secure } });
-                  console.log('all matched');
+                  // console.log('all matched');
                   res.json({ success: true });
               } else {
-                  console.log('new and confirm not matched');
+                  // console.log('new and confirm not matched');
                   res.json({ success: false, message: 'New and Confirm Password do not match.' });
               }
           } else {
-              console.log('old and current not matched');
+              // console.log('old and current not matched');
               res.json({ success: false, message: 'Current Password is incorrect.' });
           }
       }
@@ -995,8 +1001,9 @@ const getWallet = async(req,res)=>{
 
     const user = req.session.user_id
     const userData = await User.find({_id:user})
+    console.log("userdata:", userData)
 
-    res.render('wallet',{user:userData})
+    res.render('wallet',{user:userData}) 
 
   }catch(error){
     console.log(error);

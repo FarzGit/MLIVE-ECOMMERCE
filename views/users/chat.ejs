@@ -3,76 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Chat Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+    <title>Chat Box with Card Design</title>
 
-        #chat-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #chat-messages {
-            max-height: 300px;
-            overflow-y: scroll;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-
-        #user-input {
-            display: flex;
-        }
-
-        #message-input {
-            flex-grow: 2;
-            padding: 8px;
-        }
-
-        #send-button {
-            padding: 8px;
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/chatStyle.css">
+    
 </head>
 <body>
-    <div id="chat-container">
-        <div id="chat-messages">
-            <!-- Chat messages will appear here -->
+    <div class="main">
+        <!-- <div class="name">
+            <input type="text" id="name-input" class="name-input" value="anonymous">
         </div>
-        <div id="user-input">
-            <input type="text" id="message-input" placeholder="Type your message...">
-            <button id="send-button" onclick="sendMessage()">Send</button>
-        </div>
+        <ul class="message-container" id="message-container">
+            
+
+        </ul>
+
+        <form action="" class="message-form" id="message-form">
+            <input type="text" name="message" class="message-input" id="message-input">
+            <div class="v-divider">
+             <button type="submit" class="send-button" >Send</button>
+            </div>
+        </form> -->
+
+        <img src="/static/extraImages/under-maintenance-sign-500x500.webp">
+
     </div>
-
-    <script>
-        function sendMessage() {
-            var messageInput = document.getElementById("message-input");
-            var messageText = messageInput.value;
-
-            if (messageText.trim() !== "") {
-                var chatMessages = document.getElementById("chat-messages");
-                var newMessage = document.createElement("div");
-                newMessage.textContent = "You: " + messageText;
-                chatMessages.appendChild(newMessage);
-
-                // Clear the input field after sending the message
-                messageInput.value = "";
-            }
-        }
-    </script>
+    
+    <script src="/socket.io/socket.io.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" 
+    integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+</script> -->
+    <script src="/static/chat.js" ></script>
 </body>
 </html>

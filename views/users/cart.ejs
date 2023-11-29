@@ -35,18 +35,21 @@
         <div class="row">
           <div class="col-lg-9">
             <table class="table table-cart table-mobile">
+              <%if(cart && cart.length > 0){%>
               <thead>
-                <% if (cart && cart.length > 0) { %> <% cart.forEach((data) => {
-                  %>
+
                 <tr>
                   <th class="d-flex align-items-center justify-content-center">Product</th>
                   <th >Price</th>
                   <th class="d-flex align-items-center justify-content-center">Quantity</th>
-                  <th>Total</th>
+                  <!-- <th>Total</th> -->
                   <th></th>
                 </tr>
+               
               </thead>
-
+              <%}%>
+              <% if (cart && cart.length > 0) { %> <% cart.forEach((data) => {
+                %>
               <tbody>
                
                 <tr>
@@ -90,7 +93,7 @@
                     <p class="text-danger text-center">Out of Stock </p>
                   <%}%>
                   </td>
-                  <td class="total-col"><%= data.totalPrice %></td>
+                  <!-- <td class="total-col"><%= data.totalPrice %></td> -->
                   <td class="remove-col">
                     <button
                       class="btn-remove"

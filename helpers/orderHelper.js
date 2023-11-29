@@ -2,36 +2,70 @@ const Orders = require('../models/orderModel')
 
 
 
+// const findIncome = async(startDate = new Date('1990-01-01'), endDate = new Date()) => {
+//     try {
+//         console.log(startDate, endDate);
+
+//         const ordersData = await Orders.find(
+//             {
+//                 "products.OrderStatus": "Delivered",
+//                 createdAt: {
+//                     $gte: startDate,
+//                     $lt: endDate 
+//                 }
+//             }
+//         );
+//         // console.log("ordersData", ordersData);
+
+//         let totalIncome = 0;
+//         for( const order of ordersData){
+//             for(const pdt of order.products){
+//                 if(pdt.OrderStatus === 'Delivered'){
+//                     totalIncome += parseInt(order.totalAmount)
+//                 }
+//             }
+//         }
+        
+//         return formatNum(totalIncome)
+
+//     } catch (error) {
+//         throw error
+//     }
+// }
+
+
+
+
 const findIncome = async(startDate = new Date('1990-01-01'), endDate = new Date()) => {
     try {
         console.log(startDate, endDate);
 
         const ordersData = await Orders.find(
             {
-                "products.OrderStatus": "Delivered",
-                createdAt: {
-                    $gte: startDate,
-                    $lt: endDate 
-                }
+                $or: [
+                    { "products.OrderStatus": "Delivered" },
+                    { "createdAt": { $gte: startDate, $lt: endDate } },
+                    { "paymentStatus": "success" }
+                ]
             }
         );
-        // console.log("ordersData", ordersData);
-
+        
         let totalIncome = 0;
-        for( const order of ordersData){
-            for(const pdt of order.products){
-                if(pdt.OrderStatus === 'Delivered'){
-                    totalIncome += parseInt(order.totalAmount)
+        for (const order of ordersData) {
+            for (const pdt of order.products) {
+                if (pdt.OrderStatus === 'Delivered'|| pdt.paymentStatus === 'success') {
+                    totalIncome += parseInt(order.totalAmount);
                 }
             }
         }
         
-        return formatNum(totalIncome)
+        return formatNum(totalIncome);
 
     } catch (error) {
-        throw error
+        throw error;
     }
 }
+
 
 
 const countSales = async(startDate = new Date('1990-01-01'), endDate = new Date()) => {

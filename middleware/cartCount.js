@@ -7,7 +7,7 @@ const cartMiddleware = async (req, res, next) => {
       const user = req.session.user_id;
       const userData = await User.findById({ _id: user });
 
-      console.log("userData :", userData);
+      // console.log("userData :", userData);
 
       if (!userData) {
         return res.redirect("/login");

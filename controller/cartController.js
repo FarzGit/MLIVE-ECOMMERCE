@@ -58,7 +58,8 @@ const addToCart = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).res.render("admin500")
+
     }
 };
 
@@ -72,7 +73,7 @@ const addToCart = async (req, res) => {
             const userId = userData._id
             
             const cartData = await cartDb.findOne({user:userId}).populate("products.productId")
-            console.log("cartData :", cartData);
+            // console.log("cartData :", cartData);
             if (req.session.user_id) {
                 if(cartData){
                     let Total;
@@ -103,7 +104,7 @@ const addToCart = async (req, res) => {
                         ])
                         Total = total[0].total
 
-                        console.log(Total);
+                        // console.log(Total);
 
         
                        
@@ -122,6 +123,8 @@ const addToCart = async (req, res) => {
 
         }catch(error){
             console.log(error);
+            res.render("admin500")
+
         }
     }
 
@@ -166,7 +169,7 @@ const addToCart = async (req, res) => {
             const  productPrice = stockAvailale.price;
 
             const productTotal = productPrice * updateQuantity
-            console.log("product total is :", productTotal);
+            // console.log("product total is :", productTotal);
 
             await cartDb.updateOne(
                 { user: userId, "products.productId": productId },
@@ -178,6 +181,8 @@ const addToCart = async (req, res) => {
 
         }catch(error){
             console.log(error);
+            res.render("admin500")
+
         }
     }
 
@@ -199,6 +204,8 @@ const addToCart = async (req, res) => {
     
         } catch (error) {
             console.log(error);
+            res.render("admin500")
+
         }
     }
 

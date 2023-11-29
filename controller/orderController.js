@@ -38,11 +38,11 @@ const loadCheckOut = async(req,res)=>{
 
     for (const item of cartData.products) {
       const productId =item.productId
-      console.log('Constructed Product ID:',typeof productId);
+      // console.log('Constructed Product ID:',typeof productId);
       const product = await productDb.findById(productId);
-     console.log('pr',product);
-     console.log('item quantity',item.quantity);
-     console.log('stocj',product.quantity);
+    
+
+
       if (!product || item.quantity > product.quantity) {
         res.json({quantity:true})
         return
@@ -143,6 +143,7 @@ const loadCheckOut = async(req,res)=>{
 
     }catch(error){
         console.log(error);
+        res.render('500')
     }
 }
 
@@ -151,16 +152,16 @@ const loadCheckOut = async(req,res)=>{
 
 const removeAddress = async (req,res)=>{
   try{
-console.log("entered into remove address");
+// console.log("entered into remove address");
 
     const id = req.body.id;
-    console.log(id);
+    // console.log(id);
   
     const result = await addressDb.updateOne(
       { userId: req.session.user_id },
       { $pull: { address: { _id: id } } }
     );
-    console.log("result is: ",result);
+    // console.log("result is: ",result);
 
     
       res.json({ remove: false });
@@ -169,7 +170,7 @@ console.log("entered into remove address");
   }
   catch(error){
     console.log(error);
-    res.status(500).json({ error: "An error occurred" });
+    res.render('500')
   }
 }
 
@@ -208,7 +209,7 @@ if(cartData.length===0){
     const deliveryDate = new Date(today);
       deliveryDate.setDate(today.getDate() + 7);
 
-      console.log(deliveryDate);
+      // console.log(deliveryDate);
 
 
       const cartProducts = cartData.products.map((productItem) => ({
@@ -247,16 +248,18 @@ if(cartData.length===0){
 
         const dec = await couponDb.updateOne({couponCode:req.session.code},{$inc:{usersLimit: -1}})
         const userUsed = await couponDb.updateOne({couponCode:req.session.code},{$push:{usedUsers:userId}})
-        console.log("entered into cod");
+        // console.log("entered into cod");
         await cartDb.deleteOne({ user: req.session.user_id });
         for (const item of cartData.products) {
           const productId = item.productId._id;
-          console.log("pro :",productId);
+          // console.log("pro :",productId);
           const quantity = parseInt(item.quantity, 10);
-          console.log("the count is :",quantity);
+          // console.log("the count is :",quantity);
        const result= await productDb.updateOne({ _id: productId },{$inc:{quantity:-quantity}})
       //  console.log(result)
         }
+        
+        
         res.json({ success: true ,orderid });
 
         if(req.session.code){
@@ -269,11 +272,11 @@ if(cartData.length===0){
         const orderId = orderData._id;
         // console.log("orderId id :", orderId);
     const totalAmount = orderData.totalAmount;
-    console.log("totalAmount is:",totalAmount);
+    // console.log("totalAmount is:",totalAmount);
 
     if(paymentMethod === 'onlinePayment'){
 
-      console.log("entered onlinePayment");
+      // console.log("entered onlinePayment");
 
       var options ={
         amount : totalAmount *100,
@@ -355,6 +358,7 @@ if(cartData.length===0){
       
   }catch(error){
     console.log(error);
+    res.render('500')
   }
 }
 
@@ -374,7 +378,7 @@ const verifyPayment = async(req,res)=>{
         details.payment.razorpay_payment_id
     );
     const hmacValue = hmac.digest("hex");
-    console.log("hmacValue",hmacValue);
+    // console.log("hmacValue",hmacValue);
 
     if (hmacValue === details.payment.razorpay_signature) {
       // console.log('jjj',hmacValue === details.payment.razorpay_signature);
@@ -392,7 +396,7 @@ const verifyPayment = async(req,res)=>{
       );
       const dec = await couponDb.updateOne({couponCode:req.session.code},{$inc:{usersLimit: -1}})
         const userUsed = await couponDb.updateOne({couponCode:req.session.code},{$push:{usedUsers:req.session.user_id}})
-      console.log("result is :",result);
+      // console.log("result is :",result);
 
       await orderDb.findByIdAndUpdate(
         { _id: details.order.receipt },
@@ -411,12 +415,14 @@ const verifyPayment = async(req,res)=>{
       res.json({ codsuccess: true, orderid });
 
     }else {
+      console.log("details.order.receipt :",details.order.receipt)
       await orderDb.findByIdAndRemove({ _id: details.order.receipt });
       res.json({ success: false });
     }
 
   }catch(error){
     console.log(error);
+    res.render('500')
   }
 }
 
@@ -425,7 +431,7 @@ const verifyPayment = async(req,res)=>{
 const orderPlacedPageLoad = async(req,res)=>{
   try{
 
-          console.log("successfully ordered");
+          // console.log("successfully ordered");
 
     // const orderId = req.params.orderid
     // const order = await orderDb.findById(orderId);
@@ -447,6 +453,7 @@ const orderPlacedPageLoad = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render('500')
   }
 }
 
@@ -486,7 +493,7 @@ const orderDetails = async(req,res)=>{
     const userData = await userDb.findById({_id:userId})
     const id = req.query.id;
 
-    console.log(id);
+    // console.log(id);
     const orderedProduct = await orderDb.findOne({ _id: id }).populate(
       "products.productId"
     );
@@ -514,6 +521,7 @@ const orderDetails = async(req,res)=>{
     });
   } catch (error) {
     console.log(error.message);
+    res.render('500')
   }
 }
 
@@ -522,11 +530,11 @@ const orderDetails = async(req,res)=>{
 const addCheckoutAddress = async(req,res)=>{
   try{
 
-    console.log("entered in to add address")
+    // console.log("entered in to add address")
 
     const user = req.session.user_id;
     const addressData = await addressDb.findOne({ userId: user });
-    console.log("address data :",addressData);
+    // console.log("address data :",addressData);
     if (addressData) {
       const updated = await addressDb.updateOne(
         { userId: user },
@@ -543,12 +551,12 @@ const addCheckoutAddress = async(req,res)=>{
           },
         }
       );
-      console.log(updated)
+      // console.log(updated)
       if (updated) {
         res.redirect("/checkout");
       } else {
         res.redirect("/checkout");
-        console.log("not added");
+        // console.log("not added");
       }
     } else {
       res.redirect("/checkout");
@@ -556,15 +564,16 @@ const addCheckoutAddress = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render('500')
   }
 }
 
  const loadCheckoutEditAddress =async(req,res)=>{
   try{
 
-    console.log("hai");
+    // console.log("hai");
     const id = req.query.id
-    console.log(id);
+    // console.log(id);
     const userId = req.session.user_id
     const userData = await userDb.findById({_id:userId})
 
@@ -572,7 +581,7 @@ const addCheckoutAddress = async(req,res)=>{
 
     const address= userAddress.addresses
 
-    console.log(address);
+    // console.log(address);
 
     
 
@@ -580,6 +589,7 @@ const addCheckoutAddress = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render('500')
   }
 
 }
@@ -588,12 +598,12 @@ const addCheckoutAddress = async(req,res)=>{
 
 const editCheckoutAddress = async(req,res)=>{
   try{
-     console.log("entere address edit");
+    //  console.log("entere address edit");
     const addressId =req.body.id
-    console.log("addressId :",addressId);
+    // console.log("addressId :",addressId);
     
     const userId = req.session.user_id
-    console.log(userId);
+    // console.log(userId);
     
 
 
@@ -612,12 +622,13 @@ const editCheckoutAddress = async(req,res)=>{
         },
       }
     );
-    console.log(pushAddress);
+    // console.log(pushAddress);
     res.redirect("/checkout");
     
 
   }catch(error){
     console.log(error);
+    res.render('500')
   }
 
 }
@@ -625,10 +636,10 @@ const editCheckoutAddress = async(req,res)=>{
 const cancelOrder = async (req,res)=>{
   try {
     
-console.log("entered into cancelOrder")
+// console.log("entered into cancelOrder")
     const orderId = req.query.orderid
     const productIdToCancel = req.query.productId;
-    console.log('ftgdtgddfy',productIdToCancel);
+    // console.log('ftgdtgddfy',productIdToCancel);
     const userId = req.session.user_id
     const cancelReason = req.body.reason
     const cancelAmount = req.body.totalPrice
@@ -641,7 +652,7 @@ console.log("entered into cancelOrder")
     
 
     log("userId is :",userId)
-    console.log("orderData is :",orderData)
+    // console.log("orderData is :",orderData)
 
     if(orderData.paymentMethod !== 'COD'){
       const refundOption = "" + req.body.refundOption;
@@ -663,7 +674,7 @@ console.log("entered into cancelOrder")
             },
             {new:true}
           )
-          console.log("result is :",result)
+          // console.log("result is :",result)
           if(result){
             console.log('amount ',totalWalletBalance);
           }else{
@@ -694,7 +705,7 @@ console.log("entered into cancelOrder")
       
 
     }else if (orderData.paymentMethod === 'COD'){
-        console.log("entere cod :") 
+        // console.log("entere cod :") 
         const productInfo = orderData.products.find(
           (product) => String(product.productId) === String(productIdToCancel)
         );
@@ -722,13 +733,14 @@ console.log("entered into cancelOrder")
     
   } catch (error) {
     console.log(error.message);
+    res.render('500')
   }
 }
 
 
 const productReturn = async(req,res)=>{
   try{
-    console.log('entered in product return');
+    // console.log('entered in product return');
     const orderId = req.query.orderid
    
     const returnAmout = req.body.totalPrice
@@ -809,6 +821,7 @@ const productReturn = async(req,res)=>{
 
   }catch(error){
     console.log(error);
+    res.render('500')
   }
 }
 
@@ -817,9 +830,9 @@ const invoice = async (req, res, next) => {
   try {
       const orderId = req.query.id;
       const order = await orderDb.findOne({ _id: orderId }).populate('products.productId')
-      console.log("order is:",order);
+      // console.log("order is:",order);
             order.products.forEach(product => {
-        console.log("productId is:", product.productId);
+        // console.log("productId is:", product.productId);
       });
 
 

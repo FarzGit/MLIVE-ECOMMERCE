@@ -19,6 +19,7 @@ const userController = require("../controller/userController");
 const cartController = require("../controller/cartController");
 const orderController = require("../controller/orderController");
 const couponController = require("../controller/couponController");
+const chatController = require("../controller/chatController");
 userRoute.set("view engine", "ejs");
 userRoute.set("views", "./views/users");
 
@@ -42,6 +43,9 @@ userRoute.get("/logout", userController.userLogout);
 userRoute.get('/about',userAuth.isLogin,userController.loadAbout)
 userRoute.get('/contact',userAuth.isLogin,userController.loadContact)
 userRoute.post('/contact',userAuth.isLogin,userController.postContact)
+
+
+
 
 
 
@@ -88,6 +92,12 @@ userRoute.get("/wallet", userAuth.isLogin, userController.getWallet);
 userRoute.get("/coupon",userAuth.isLogin,couponController.couponUserPageLoad)
 userRoute.post("/couponApply",userAuth.isLogin, couponController.ApplyCoupon);
 userRoute.post("/deleteCoupon",userAuth.isLogin, couponController.deleteAppliedCoupon);
+
+
+
+
+
+userRoute.get("/chat",userAuth.isLogin, chatController.chatPageLoad)
 
 
 

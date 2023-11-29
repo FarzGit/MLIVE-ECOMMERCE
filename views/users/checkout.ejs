@@ -28,12 +28,16 @@
     <div class="page-content">
       <div class="checkout">
         <div class="container">
+          <!-- <a class="btn  rounded " style="color: #fff; background-color: #0978df; height: 25px; ">Available Coupons</a> -->
           <div class="">
             <label for="checkout-discount-input" class="text-truncate"
               >Have a coupon? <span>Enter your code below.</span></label
             >
           </div>
+          
           <div class="cart-discount">
+
+            
   
             <div class="input-group mb-5">
               <input
@@ -70,6 +74,7 @@
               
             </div>
         </div>
+        
   
           <form id="checkout-form" >
             <div class="row">
@@ -116,7 +121,7 @@
             <% } %>
                 
 
-
+              
 
               </div>
               <!-- End .col-md-6 -->
@@ -402,27 +407,31 @@
   function verifyPayment(payment, order) {
     const amount2 = document.getElementById("total2").innerHTML;
     $.ajax({
-      url: "/verifyPayment",
-      method: "post",
-      data: {
-        payment: payment,
-        amount2: amount2,
-        order: order,
-      },
-      success: (response) => {
-        if (response.codsuccess == true) {
-          location.href = `/orderPlaced/${response.orderid}`;
-        } else {
-          swal.fire({
-            positon: "center",
-            icon: "error",
-            title: "Payment failed",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      },
-    });
+  url: "/verifyPayment",
+  method: "post",
+  data: {
+    payment: payment,
+    amount2: amount2,
+    order: order,
+  },
+  success: (response) => {
+    if (response.codsuccess == true) {
+      location.href = `/orderPlaced/${response.orderid}`;
+    } else {
+      swal.fire({
+        positon: "center",
+        icon: "error",
+        title: "Payment failed",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  },
+  error: (xhr, status, error) => {
+    console.error("AJAX request failed:", status, error);
+    // Handle the error appropriately (e.g., show an error message to the user).
+  },
+});
   }
 
   </script>

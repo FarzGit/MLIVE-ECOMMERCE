@@ -8,7 +8,6 @@
 import Page = require('../../../../../base/Page');
 import Response = require('../../../../../http/response');
 import V1 = require('../../../V1');
-import serialize = require('../../../../../base/serialize');
 import { SerializableClass } from '../../../../../interfaces';
 
 /**
@@ -84,6 +83,12 @@ declare class WorkersCumulativeStatisticsContext {
   /**
    * fetch a WorkersCumulativeStatisticsInstance
    *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: WorkersCumulativeStatisticsInstance) => any): Promise<WorkersCumulativeStatisticsInstance>;
+  /**
+   * fetch a WorkersCumulativeStatisticsInstance
+   *
    * @param opts - Options for request
    * @param callback - Callback to handle processed record
    */
@@ -109,6 +114,12 @@ declare class WorkersCumulativeStatisticsInstance extends SerializableClass {
   accountSid: string;
   activityDurations: object[];
   endTime: Date;
+  /**
+   * fetch a WorkersCumulativeStatisticsInstance
+   *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: WorkersCumulativeStatisticsInstance) => any): Promise<WorkersCumulativeStatisticsInstance>;
   /**
    * fetch a WorkersCumulativeStatisticsInstance
    *

@@ -8,14 +8,10 @@
 import Page = require('../../../../../base/Page');
 import Response = require('../../../../../http/response');
 import V1 = require('../../../V1');
-import serialize = require('../../../../../base/serialize');
 import { SerializableClass } from '../../../../../interfaces';
 
 /**
  * Initialize the SubscribeRulesList
- *
- * PLEASE NOTE that this class contains beta products that are subject to change.
- * Use them with caution.
  *
  * @param version - Version of the resource
  * @param roomSid - The SID of the Room resource for the Subscribe Rules
@@ -34,6 +30,12 @@ interface SubscribeRulesListInstance {
    * Provide a user-friendly representation
    */
   toJSON(): any;
+  /**
+   * update a SubscribeRulesInstance
+   *
+   * @param callback - Callback to handle processed record
+   */
+  update(callback?: (error: Error | null, items: SubscribeRulesListInstance) => any): Promise<SubscribeRulesInstance>;
   /**
    * update a SubscribeRulesInstance
    *
@@ -73,9 +75,6 @@ declare class SubscribeRulesInstance extends SerializableClass {
   /**
    * Initialize the SubscribeRulesContext
    *
-   * PLEASE NOTE that this class contains beta products that are subject to change.
-   * Use them with caution.
-   *
    * @param version - Version of the resource
    * @param payload - The instance payload
    * @param roomSid - The SID of the Room resource for the Subscribe Rules
@@ -98,9 +97,6 @@ declare class SubscribeRulesInstance extends SerializableClass {
 declare class SubscribeRulesPage extends Page<V1, SubscribeRulesPayload, SubscribeRulesResource, SubscribeRulesInstance> {
   /**
    * Initialize the SubscribeRulesPage
-   *
-   * PLEASE NOTE that this class contains beta products that are subject to change.
-   * Use them with caution.
    *
    * @param version - Version of the resource
    * @param response - Response from the API

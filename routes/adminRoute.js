@@ -9,6 +9,7 @@ const offerController = require("../controller/offerController");
 const bannerController = require("../controller/bannerController");
 const adminAuth = require('../middleware/adminAuth')
 const fileUpload = require('../middleware/fileUpload')
+const chatController = require('../controller/chatController')
 const path = require("path");
 const multer = require("multer");
 
@@ -128,6 +129,11 @@ adminRoute.get('/banners',adminAuth.isLogin,bannerController.loadBanners)
 adminRoute.get('/editBanner',adminAuth.isLogin,bannerController.loadeditBanner)
 adminRoute.post('/editBanner',fileUpload.uploadBanner.single('image'),adminAuth.isLogin,bannerController.editBanner)
 adminRoute.get('/listUnlist',adminAuth.isLogin,bannerController.listAndUnList)
+
+
+
+
+adminRoute.get('/adminChat',adminAuth.isLogin,chatController.adminChatPageLoad)
 
 
 

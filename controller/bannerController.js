@@ -7,6 +7,8 @@ const loadAddbanner = async(req,res)=>{
         res.render('addbanner')
     }catch(error){
         console.log(error.message)
+        res.render("admin500")
+
     }
 }
 
@@ -35,7 +37,8 @@ const addBanners = async (req, res) => {
       res.redirect('/admin/banners');
     } catch (error) {
       console.error(error);
-      res.redirect('/500'); // Redirect to an error page or handle errors appropriately
+      res.render("admin500")
+
     }
   };
 
@@ -67,7 +70,8 @@ const addBanners = async (req, res) => {
             
         })
     }catch(error){
-        res.status(500).render('500error')
+      res.render("admin500")
+
     }
 }
 
@@ -77,7 +81,7 @@ const loadeditBanner = async(req,res)=>{
     const id=req.query.id
 
 
-    console.log(id)
+    // console.log(id)
 
     const bannerData = await Banner.findById({_id:id})
 
@@ -85,6 +89,8 @@ const loadeditBanner = async(req,res)=>{
 
   }catch(error){
     console.log(error)
+    res.render("admin500")
+
 
   }
 }
@@ -122,7 +128,7 @@ const editBanner = async(req,res)=>{
     .toFile("public/products/banner/mobile/" + req.file.filename);
 
 
-    console.log("result is :",result)
+    // console.log("result is :",result)
 
     if(result){
       res.redirect('/admin/banners')
@@ -133,6 +139,8 @@ const editBanner = async(req,res)=>{
 
   }catch(error){
     console.log(error)
+    res.render("admin500")
+
     
   }
 }
@@ -171,6 +179,8 @@ const listAndUnList =async (req, res) =>{
 
   }catch(error){
     console.log(error)
+    res.render("admin500")
+
   }
 
 }

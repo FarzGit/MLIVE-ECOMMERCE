@@ -8,7 +8,6 @@
 import Page = require('../../../../../base/Page');
 import Response = require('../../../../../http/response');
 import V1 = require('../../../V1');
-import serialize = require('../../../../../base/serialize');
 import { SerializableClass } from '../../../../../interfaces';
 
 /**
@@ -83,6 +82,12 @@ declare class WorkflowStatisticsContext {
   /**
    * fetch a WorkflowStatisticsInstance
    *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: WorkflowStatisticsInstance) => any): Promise<WorkflowStatisticsInstance>;
+  /**
+   * fetch a WorkflowStatisticsInstance
+   *
    * @param opts - Options for request
    * @param callback - Callback to handle processed record
    */
@@ -107,7 +112,13 @@ declare class WorkflowStatisticsInstance extends SerializableClass {
 
   private _proxy: WorkflowStatisticsContext;
   accountSid: string;
-  cumulative: object;
+  cumulative: any;
+  /**
+   * fetch a WorkflowStatisticsInstance
+   *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: WorkflowStatisticsInstance) => any): Promise<WorkflowStatisticsInstance>;
   /**
    * fetch a WorkflowStatisticsInstance
    *
@@ -115,7 +126,7 @@ declare class WorkflowStatisticsInstance extends SerializableClass {
    * @param callback - Callback to handle processed record
    */
   fetch(opts?: WorkflowStatisticsInstanceFetchOptions, callback?: (error: Error | null, items: WorkflowStatisticsInstance) => any): Promise<WorkflowStatisticsInstance>;
-  realtime: object;
+  realtime: any;
   /**
    * Provide a user-friendly representation
    */

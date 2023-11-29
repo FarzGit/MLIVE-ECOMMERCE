@@ -41,6 +41,8 @@ const loadCouponMangements = async (req,res)=>{
 
     }catch(error){
         console.log(error)
+       res.render("admin500")
+
     }
 }
 
@@ -49,20 +51,24 @@ const loadAddCouponMangements = async (req,res)=>{
         res.render('addCoupon')
     }catch(error){
         console.log(error)
+        res.render("admin500")
+
     }
 }
 
 
 const loadEditCouponMangements = async (req,res)=>{
     try{
-        console.log("entered")
+        // console.log("entered")
 
-        console.log(req.query.id)
+        // console.log(req.query.id)
      
         const coupon = await couponDb.findOne({_id:req.query.id})
         res.render('editCoupon',{coupon:coupon})
     }catch(error){
         console.log(error)
+       res.render("admin500")
+
     }
 }
 
@@ -81,7 +87,7 @@ const addNewCoupon = async (req,res)=>{
         }=req.body
 
         const couponValidation = await couponDb.findOne({couponCode:couponName})
-        console.log("couponValidation :",couponValidation)
+        // console.log("couponValidation :",couponValidation)
 
         if(!couponValidation){
             const coupon = new couponDb({
@@ -106,13 +112,15 @@ const addNewCoupon = async (req,res)=>{
 
     }catch(error){
         console.log(error)
+        res.render("admin500")
+
     }
 }
 
 
 const editCoupon = async(req, res)=>{
     try{
-        console.log("ID to update:", req.query.id);
+        // console.log("ID to update:", req.query.id);
         const{
             couponName,
             couponCode,
@@ -144,34 +152,40 @@ const editCoupon = async(req, res)=>{
                 description:description
             },
     })
-    console.log("updateCoupon :",updateCoupon)
+    // console.log("updateCoupon :",updateCoupon)
     // req.session.couponAdded =2
     return res.redirect("/admin/couponManagement");
 
     }catch(error){
         console.log(error)
+        res.render("admin500")
+
     }
         
 }
 
 const deleteCoupon = async(req,res)=>{
     try{
-        console.log("ID to delete:", req.query.id);
+        // console.log("ID to delete:", req.query.id);
         const deleteCoupon = await couponDb.deleteOne({_id:req.query.id})
-        console.log("deleteCoupon :",deleteCoupon)
+        // console.log("deleteCoupon :",deleteCoupon)
         return res.redirect("/admin/couponManagement");
     }catch(error){
         console.log(error)
+        res.render("admin500")
+
     }
 }
 
 const couponUserPageLoad = async (req, res) => {
     try {
       const coupons = await couponDb.find();
-      console.log(coupons);
+      // console.log(coupons);
       res.render("coupon", { user: req.session.user_id, coupons });
     } catch (error) {
       console.log(error.message);
+       res.render("admin500") 
+
     }
   };
 
@@ -180,15 +194,15 @@ const couponUserPageLoad = async (req, res) => {
   const ApplyCoupon = async (req, res) => {
     try {
       const userId=req.session.user_id
-      console.log("userId ",userId)
+      // console.log("userId ",userId)
     //   const userData=await User.findOne({name:name})
     //   const userId=userData._id
       const code = req.body.code;
-      console.log("code is : ", code)
+      // console.log("code is : ", code)
 
       req.session.code = code;
       const amount = Number(req.body.amount);
-      console.log("amount is : ",amount)
+      // console.log("amount is : ",amount)
 
       const cartData = await cartDb.findOne({ user: userId }).populate('products.productId')
     //   console.log("cartData is : ",cartData)
@@ -198,7 +212,7 @@ const couponUserPageLoad = async (req, res) => {
         couponCode: code,
         usedUsers: { $in: [userId] },
       });
-      console.log("userExist is : ",userExist)
+      // console.log("userExist is : ",userExist)
 
 
       if (cartData) {
@@ -217,7 +231,7 @@ const couponUserPageLoad = async (req, res) => {
       } else {
         const couponData = await couponDb.findOne({ couponCode: code });
 
-      console.log("couponData is : ", couponData)
+      // console.log("couponData is : ", couponData)
         
         
         if (couponData) {
@@ -240,10 +254,10 @@ const couponUserPageLoad = async (req, res) => {
                     const disAmount = couponData.discountAmount;
                     const disTotal = Math.round(totalPrice - disAmount);
                     req.session.Amount=disTotal
-                      console.log('dissss',disTotal);
+                      // console.log('dissss',disTotal);
                    const aplleid= await cartDb.updateOne({user:userId},{$set:{applied:"applied"}})
 
-                   console.log("applleid is : ",aplleid)
+                  //  console.log("applleid is : ",aplleid)
                                   
                     return res.json({ amountOkey: true, disAmount, disTotal });
                  
@@ -257,6 +271,8 @@ const couponUserPageLoad = async (req, res) => {
       }
     } catch (error) {
       console.log(error.message);
+       res.render("admin500")
+
     }
   };
 
@@ -278,6 +294,8 @@ const couponUserPageLoad = async (req, res) => {
       }
     } catch (error) {
       console.log(error.message);
+     res.render("admin500")
+
     }
   }
   

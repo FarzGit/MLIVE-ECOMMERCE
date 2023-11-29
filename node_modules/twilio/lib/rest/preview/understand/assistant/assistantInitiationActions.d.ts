@@ -8,7 +8,6 @@
 import Page = require('../../../../base/Page');
 import Response = require('../../../../http/response');
 import Understand = require('../../Understand');
-import serialize = require('../../../../base/serialize');
 import { SerializableClass } from '../../../../interfaces';
 
 /**
@@ -88,6 +87,12 @@ declare class AssistantInitiationActionsContext {
   /**
    * update a AssistantInitiationActionsInstance
    *
+   * @param callback - Callback to handle processed record
+   */
+  update(callback?: (error: Error | null, items: AssistantInitiationActionsInstance) => any): Promise<AssistantInitiationActionsInstance>;
+  /**
+   * update a AssistantInitiationActionsInstance
+   *
    * @param opts - Options for request
    * @param callback - Callback to handle processed record
    */
@@ -112,7 +117,7 @@ declare class AssistantInitiationActionsInstance extends SerializableClass {
   private _proxy: AssistantInitiationActionsContext;
   accountSid: string;
   assistantSid: string;
-  data: object;
+  data: any;
   /**
    * fetch a AssistantInitiationActionsInstance
    *
@@ -123,6 +128,12 @@ declare class AssistantInitiationActionsInstance extends SerializableClass {
    * Provide a user-friendly representation
    */
   toJSON(): any;
+  /**
+   * update a AssistantInitiationActionsInstance
+   *
+   * @param callback - Callback to handle processed record
+   */
+  update(callback?: (error: Error | null, items: AssistantInitiationActionsInstance) => any): Promise<AssistantInitiationActionsInstance>;
   /**
    * update a AssistantInitiationActionsInstance
    *

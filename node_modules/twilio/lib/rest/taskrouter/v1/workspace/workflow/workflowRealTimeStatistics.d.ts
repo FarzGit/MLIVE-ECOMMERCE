@@ -77,6 +77,12 @@ declare class WorkflowRealTimeStatisticsContext {
   /**
    * fetch a WorkflowRealTimeStatisticsInstance
    *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: WorkflowRealTimeStatisticsInstance) => any): Promise<WorkflowRealTimeStatisticsInstance>;
+  /**
+   * fetch a WorkflowRealTimeStatisticsInstance
+   *
    * @param opts - Options for request
    * @param callback - Callback to handle processed record
    */
@@ -104,14 +110,20 @@ declare class WorkflowRealTimeStatisticsInstance extends SerializableClass {
   /**
    * fetch a WorkflowRealTimeStatisticsInstance
    *
+   * @param callback - Callback to handle processed record
+   */
+  fetch(callback?: (error: Error | null, items: WorkflowRealTimeStatisticsInstance) => any): Promise<WorkflowRealTimeStatisticsInstance>;
+  /**
+   * fetch a WorkflowRealTimeStatisticsInstance
+   *
    * @param opts - Options for request
    * @param callback - Callback to handle processed record
    */
   fetch(opts?: WorkflowRealTimeStatisticsInstanceFetchOptions, callback?: (error: Error | null, items: WorkflowRealTimeStatisticsInstance) => any): Promise<WorkflowRealTimeStatisticsInstance>;
   longestTaskWaitingAge: number;
   longestTaskWaitingSid: string;
-  tasksByPriority: object;
-  tasksByStatus: object;
+  tasksByPriority: any;
+  tasksByStatus: any;
   /**
    * Provide a user-friendly representation
    */

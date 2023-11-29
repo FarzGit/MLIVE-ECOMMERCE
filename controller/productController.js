@@ -12,17 +12,7 @@ const { ObjectId } = require("mongodb");
 
 const loadProducts = async (req, res) => {
   try {
-    // const perPage = 8; // Number of products per page
-    // let page = parseInt(req.query.page) || 1;
-    // const totalProducts = await productDb.countDocuments({});
-    // const totalPages = Math.ceil(totalProducts / perPage);
-
-    // if (page < 1) {
-    //   page = 1;
-    // } else if (page > totalPages) {
-    //   page = totalPages;
-    // }
-
+    
     const products = await productDb.find().populate('offer');
     
     const availableOffers = await offerDb.find({ status : true, expiryDate : { $gte : new Date() }})
@@ -44,15 +34,16 @@ const loadAdminProductDetails = async (req, res) => {
 
     const id = req.query.id;
 
-    console.log("id is :", id);
+    // console.log("id is :", id);
 
     const product = await productDb.findById({ _id: id }).populate("category");
 
-    console.log("catgyrt:", product.category.name);
+    // console.log("catgyrt:", product.category.name);
 
     res.render("adminViewProductDetails", { product: product });
   } catch (error) {
     console.log(error);
+    res.render('500')
   }
 };
 
@@ -63,6 +54,7 @@ const loadAddProducts = async (req, res) => {
     res.render("addProducts", { cartData: categoryData });
   } catch (error) {
     console.log(error);
+    res.render('500')
   }
 };
 
@@ -104,6 +96,7 @@ const addProduct = async (req, res) => {
     res.redirect("/admin/Product");
   } catch (error) {
     console.log(error);
+    res.render('500')
   }
 };
 
@@ -124,6 +117,7 @@ const loadEditProduct = async (req, res) => {
     res.render("editProduct", { product, cartData });
   } catch (error) {
     console.log(error);
+    res.render('500')
   }
 };
 
@@ -177,18 +171,19 @@ const editProduct = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.render('500')
   }
 };
 
 const productListorUnlist = async (req, res) => {
   try {
-    console.log("hallo");
+    // console.log("hallo");
     const id = req.query.id;
 
-    console.log(id);
+    // console.log(id);
 
     const productData = await productDb.findById({ _id: id });
-    console.log(productData);
+    // console.log(productData);
 
     if (productData.is_active === true) {
       const List = await productDb.updateOne(
@@ -207,6 +202,7 @@ const productListorUnlist = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.render('500')
   }
 };
 
@@ -234,17 +230,17 @@ const applyProductOffer = async (req, res) => {
     const categoryDiscount = product.category && product.category.offer
       ? await offerDb.findOne({ _id: product.category.offer })
       : 0;
-      console.log("categoryDiscount",categoryDiscount)
+      // console.log("categoryDiscount",categoryDiscount)
 
     // Calculate real price and discounted price for the product
     const discountPercentage = offer.percentage;
     const originalPrice = parseFloat(product.price);
     const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
 
-    console.log("categoryDiscount.percentage :",categoryDiscount.percentage )
+    // console.log("categoryDiscount.percentage :",categoryDiscount.percentage )
     // Check if category offer is available and its discount is greater than product offer
     if (categoryDiscount && categoryDiscount.percentage > discountPercentage) {
-      console.log("Category offer has greater discount");
+      // console.log("Category offer has greater discount");
       // You can handle this case as needed, e.g., not applying the product offer
       return res.json({ success: false, message: 'Category offer has greater discount' });
     }
@@ -264,7 +260,7 @@ const applyProductOffer = async (req, res) => {
     res.json({ success: true, data: updatedProduct });
   } catch (error) {
     console.log(error.message);
-    res.redirect('/500');
+    res.render('500')
   }
 };
 
@@ -287,7 +283,7 @@ const removeProductOffer = async (req, res) => {
     res.json({ success: true ,data:remove });
   } catch (error) {
     console.log(error);
-    res.redirect('/500');
+    res.render('500')
   }
 };
 

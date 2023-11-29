@@ -198,7 +198,11 @@ a {
                             <a id="kkkk" class="login_botten_tag">
                                 <button  type="submit" class="btn btn-block mt-4 bg-dark buttensignup text-white">Sign Up</button>
                             </a>
+
                         </div>
+                        <div id="credentials" style="color: red; font-size: 12px; font-weight: 300; display: flex; padding-left: 8px; padding-top: 2px;"></div>
+                      
+
                         <p class="text-center text-dark small">Already have an account? <a class="text-dark" href="/login">Login here!</a></p>
                     </form>
                 </div>
@@ -326,6 +330,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (response.mobileError) {
           $("#mobileErrorMessage").text(response.mobileError);
         }
+
+        // if (response.message) {
+        //   $("#credentials").text(response.message);
+        // }
 
         // Check if the form is valid before redirecting
         if (response.message === "Success") {

@@ -8,7 +8,6 @@
 import Page = require('../../../../base/Page');
 import Response = require('../../../../http/response');
 import V1 = require('../../V1');
-import serialize = require('../../../../base/serialize');
 import { SerializableClass } from '../../../../interfaces';
 
 /**
@@ -88,6 +87,12 @@ declare class DefaultsContext {
   /**
    * update a DefaultsInstance
    *
+   * @param callback - Callback to handle processed record
+   */
+  update(callback?: (error: Error | null, items: DefaultsInstance) => any): Promise<DefaultsInstance>;
+  /**
+   * update a DefaultsInstance
+   *
    * @param opts - Options for request
    * @param callback - Callback to handle processed record
    */
@@ -112,7 +117,7 @@ declare class DefaultsInstance extends SerializableClass {
   private _proxy: DefaultsContext;
   accountSid: string;
   assistantSid: string;
-  data: object;
+  data: any;
   /**
    * fetch a DefaultsInstance
    *
@@ -123,6 +128,12 @@ declare class DefaultsInstance extends SerializableClass {
    * Provide a user-friendly representation
    */
   toJSON(): any;
+  /**
+   * update a DefaultsInstance
+   *
+   * @param callback - Callback to handle processed record
+   */
+  update(callback?: (error: Error | null, items: DefaultsInstance) => any): Promise<DefaultsInstance>;
   /**
    * update a DefaultsInstance
    *
