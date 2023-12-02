@@ -112,42 +112,43 @@
                 <div id="errorContainer" class="alert alert-danger" style="display: none;"></div> <!-- Error container -->
   
                 <form action="/admin/add_banner" method="post" class="p-4" enctype="multipart/form-data">
-    
-                    <div class="form-outline mb-3 row input-group input-group-outline  ">
-                        <div class=" col-md-6 col-12 mb-3">
-                            <label for="name">>Banner Head</label>
-                            <input type="text"  class="form-control form-control-md rounded-0" id="mainHead" name="mainHead" placeholder="Banner Head" required/>
-                            <small id="nameErr" class="error"></small>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <label for="discount">Type</label>
-                            <input type="text"  class="form-control form-control-md rounded-0" id="type" name="type" placeholder="Type" required/>
-                            <small id="discountErr" class="error"></small>
-                        </div>
-                    </div>
-                    <div class="form-outline mb-3 row input-group input-group-outline ">
-                        <div class=" col-md-6 col-12 mb-3">
-                            <label for="startingDate">Banner URL</label>
-                            <input type="text"  class="form-control form-control-md rounded-0" id="bannerURL" name="bannerURL" placeholder="https://example.com" required/>
-                            <small id="startingDateErr" class="error"></small>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <label for="expiryDate">Image</label>
-                            <div class="input-group col-xs-12">
-                                <input id="images" type="file" name="image" class="upload__inputfile " placeholder="Upload Image" required>
-                                <span class="input-group-append"></span>
-                              </div>
-                              <div id="selectedImagesContainer" class="selected-images-container"></div>
-                            <small id="expiryDateErr" class="error"></small>                                     
-                        </div>
-                    </div>
-                    <div id="openImagePopupDiv"></div>
-                
-                    <div class="text-center my-2">
-                        <button class="btn btn-dark btn-md rounded-pill px-5 py-2 login-btn" type="submit" onclick="return validateOffer()">SUBMIT</button>
-                    </div>
-                
-                </form>
+
+                  <div class="form-outline mb-3 row input-group input-group-outline  ">
+                      <div class=" col-md-6 col-12 mb-3">
+                          <label for="name">Banner Head</label>
+                          <input type="text" class="form-control form-control-md rounded-0" id="mainHead" name="mainHead" placeholder="Banner Head"  />
+                          <div id="nameErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                          <label for="discount">Type</label>
+                          <input type="text" class="form-control form-control-md rounded-0" id="type" name="type" placeholder="Type"  />
+                          <div id="discountErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></div>
+                      </div>
+                  </div>
+                  <div class="form-outline mb-3 row input-group input-group-outline ">
+                      <div class=" col-md-6 col-12 mb-3">
+                          <label for="startingDate">Banner URL</label>
+                          <input type="text" class="form-control form-control-md rounded-0" id="bannerURL" name="bannerURL" placeholder="https://example.com"  />
+                          <div id="startingDateErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                          <label for="expiryDate">Image</label>
+                          <div class="input-group col-xs-12">
+                              <input id="images" type="file" name="image" class="upload__inputfile " placeholder="Upload Image" >
+                              <span class="input-group-append"></span>
+                          </div>
+                          <div id="selectedImagesContainer" class="selected-images-container"></div>
+                          <div id="expiryDateErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></div>
+                      </div>
+                  </div>
+                  <div id="openImagePopupDiv"></div>
+              
+                  <div class="text-center my-2">
+                      <button class="btn btn-dark btn-md rounded-pill px-5 py-2 login-btn" type="submit" onclick="return validateOffer()">SUBMIT</button>
+                  </div>
+              
+              </form>
+              
               </div>
 
 
@@ -274,6 +275,50 @@
   const fileInput = document.getElementById('images');
   fileInput.addEventListener('change', handleImageSelect);
  </script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function (e) {
+                e.preventDefault(); // Prevent the form from submitting by default
+
+                // Validate each field
+                var mainHead = $('#mainHead').val();
+                var type = $('#type').val();
+                var bannerURL = $('#bannerURL').val();
+                var image = $('#images').val();
+
+                // Reset error messages
+                $('.error').text('');
+
+                // Check if fields are not empty
+                if (!mainHead) {
+                    $('#nameErr').text('Please enter Banner Head.');
+                }
+
+                if (!type) {
+                    $('#discountErr').text('Please enter Type.');
+                }
+
+                if (!bannerURL) {
+                    $('#startingDateErr').text('Please enter Banner URL.');
+                }
+
+                if (!image) {
+                    $('#expiryDateErr').text('Please select an Image.');
+                }
+
+                // If all fields are filled, submit the form
+                if (mainHead && type && bannerURL && image) {
+                    this.submit();
+                }
+            });
+        });
+    </script>
+
+
+
 
   <%- include("../admin/layouts/adminFooter.ejs") %>
 </body>

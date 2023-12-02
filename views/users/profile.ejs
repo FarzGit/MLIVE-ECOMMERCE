@@ -1,10 +1,6 @@
 <%- include('../users/mainLayout/mainHeader.ejs')%>
 
-<!-- <style>
-    .modal {
-      z-index: ; 
-    }
-  </style> -->
+
   
 <main class="main"  >
     <div class="page-header text-center " style="background-image: url('/user/images/page-header-bg.jpg')">
@@ -347,60 +343,6 @@
         });
     }
 </script>
-
-
-
-
-
-
-
-<!-- <script>
-    function changePassword() {
-        // Reset error messages
-        document.getElementById('error-currentpassword').textContent = '';
-        document.getElementById('error-newpassword').textContent = '';
-        document.getElementById('error-confirmpassword').textContent = '';
-
-        // Get input values
-        var currentPassword = document.getElementById('changePasswordForm').elements['currentpassword'].value;
-        var newPassword = document.getElementById('changePasswordForm').elements['newpassword'].value;
-        var confirmPassword = document.getElementById('changePasswordForm').elements['confirmpassword'].value;
-
-        // Validate new password and confirm password
-        var passwordRegex = /^(?=.*[A-Za-z])(?=.*[@#$%^&+=])(?!.*\s).{5,}$/;
-
-        if (!passwordRegex.test(newPassword)) {
-            document.getElementById('error-newpassword').textContent = 'Password must contain 5 characters. eg:Example@123';
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            document.getElementById('error-confirmpassword').textContent = 'Passwords do not match.';
-            return;
-        }
-
-        // Your other logic for changing password if needed
-        // ...
-
-        // If everything is valid, submit the form or perform the desired action
-        document.getElementById('changePasswordForm').submit();
-    }
-</script> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

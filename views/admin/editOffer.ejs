@@ -91,111 +91,109 @@
             <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
                     
-                        <form action="/admin/editOffer" method="post" class="p-4">
-    
-                            <div class="form-outline mb-3 row input-group input-group-outline  ">
-                                <div class=" col-md-6 col-12 mb-3">
-                                    <label for="name">Offer Name</label>
-                                    <input type="text" id="name" class="form-control form-control-md rounded-0"
-                                    placeholder="Enter Offer Name" name="name" value="<%= offer.name %>" required/>
-                                    <small id="nameErr" class="error"></small>
-                                </div>
-                                <div class="col-md-6 col-12">
-                                    <label for="discount">Discount %</label>
-                                    <input type="number" id="percentage" class="form-control form-control-md rounded-0" value="<%= offer.percentage %>" placeholder="Enter Discount" name="percentage" required/>
-                                    <small id="discountErr" class="error"></small>
-                                </div>
-                            </div>
-                            <div class="form-outline mb-3 row input-group input-group-outline ">
-                                <div class=" col-md-6 col-12 mb-3">
-                                    <label for="startingDate">Select Starting Date</label>
-                                    <input type="date" id="startingDate"
-                                        class="form-control form-control-md rounded-0" name="startingDate" value="<%= sdate %>" required/>
-                                    <small id="startingDateErr" class="error"></small>
-                                </div>
-                                <div class="col-md-6 col-12">
-                                    <label for="expiryDate">Select Expiry Date</label>
-                                    <input type="date" id="expiryDate" class="form-control form-control-md rounded-0" name="expiryDate" value="<%= edate %>" required/>
-                                    <small id="expiryDateErr" class="error"></small>                                     
-                                </div>
-                            </div>
-                            <div class="text-center my-2">
-                                <button class="btn btn-dark btn-md rounded-pill px-5 py-2 login-btn" type="submit" onclick="return validateOffer()">ADD</button>
-                            </div>
-                            <input type="hidden" name="id" value="<%= offer._id %>" id="">
-    
-                        </form>
-                </div>
-              </div>
+                          <form action="/admin/editOffer" method="post" class="p-4">
+      
+                              <div class="form-outline mb-3 row input-group input-group-outline  ">
+                                  <div class=" col-md-6 col-12 mb-3">
+                                      <label for="name">Offer Name</label>
+                                      <input type="text" id="name" class="form-control form-control-md rounded-0"
+                                      placeholder="Enter Offer Name" name="name" value="<%= offer.name %>" required/>
+                                      <small id="nameErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></small>
 
+                                  </div>
+                                  <div class="col-md-6 col-12">
+                                      <label for="discount">Discount %</label>
+                                      <input type="number" id="percentage" class="form-control form-control-md rounded-0" value="<%= offer.percentage %>" placeholder="Enter Discount" name="percentage" required/>
+                                      <small id="discountErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></small>
+
+                                  </div>
+                              </div>
+                              <div class="form-outline mb-3 row input-group input-group-outline ">
+                                  <div class=" col-md-6 col-12 mb-3">
+                                      <label for="startingDate">Select Starting Date</label>
+                                      <input type="date" id="startingDate"
+                                          class="form-control form-control-md rounded-0" name="startingDate" value="<%= sdate %>" required/>
+                                          <small id="startingDateErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></small>
+
+                                  </div>
+                                  <div class="col-md-6 col-12">
+                                      <label for="expiryDate">Select Expiry Date</label>
+                                      <input type="date" id="expiryDate" class="form-control form-control-md rounded-0" name="expiryDate" value="<%= edate %>" required/>
+                                      <small id="expiryDateErr" class="error" style="color: red; padding-left: 7px; font-size: 12px;"></small>
+                                      
+                                  </div>
+                              </div>
+                              <div class="text-center my-2">
+                                  <button class="btn btn-dark btn-md rounded-pill px-5 py-2 login-btn" type="submit" onclick="return validateOffer()">ADD</button>
+                              </div>
+                              <input type="hidden" name="id" value="<%= offer._id %>" id="">
+      
+                          </form>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+          <div class="col-12 col-md-4 col-lg-3 elemDesign">
+            <!-- Sidebar content for medium and large screens -->
           </div>
         </div>
-        <div class="col-12 col-md-4 col-lg-3 elemDesign">
-          <!-- Sidebar content for medium and large screens -->
-        </div>
       </div>
-    </div>
-  </main>
+    </main>
 
 
 
-  <script>
-    const formOffer = document.getElementById('offer-form')
-    formOffer.addEventListener('submit', ( event ) => {
-    const errorContainer = document.getElementById('errorContainer')
-    const name = document.getElementById('offer-name').value.trim()
-    const startingDate = document.getElementById('Starting-date').value.trim()
-    const expiryDate = document.getElementById('expiry-date').value.trim()
-    const percentage= document.getElementById('percentage').value.trim()
-    errorContainer.innerHTML = ""
-    errorContainer.style.display = 'none'
-    console.log(name);
-    const now = new Date()
-    if( !name || !startingDate || !expiryDate || !percentage ) {
-      console.log(1);
-      event.preventDefault()
-      errorContainer.innerHTML = "All fields should be filled"
-      errorContainer.style.display = 'block'
-    }
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Function to clear error messages when the corresponding input fields gain focus or change
+        $('input').on('focus input', function () {
+            var errorId = $(this).attr('id') + 'Err';
+            $('#' + errorId).text('');
+        });
+
+        $('form').submit(function (e) {
+            e.preventDefault(); // Prevent the form from submitting by default
+
+            // Validate each field
+            var name = $('#name').val();
+            var discount = $('#percentage').val(); // Fix: use the correct id
+            var startingDate = $('#startingDate').val();
+            var expiryDate = $('#expiryDate').val();
+
+            // Reset error messages
+            $('.error').text('');
+
+            // Check if fields are not empty
+            if (!name) {
+                $('#nameErr').text('Please enter Offer Name.');
+            }
+
+            if (!discount) {
+                $('#discountErr').text('Please enter Discount.');
+            } else if (discount <= 0 || discount >= 90) {
+                $('#discountErr').text('Discount should be greater than zero and less than 90.');
+            }
+
+            if (!startingDate) {
+                $('#startingDateErr').text('Please select Starting Date.');
+            }
+
+            if (!expiryDate) {
+                $('#expiryDateErr').text('Please select Expiry Date.');
+            }
+
+            // If all fields are filled, submit the form
+            if (name && discount && startingDate && expiryDate) {
+                this.submit();
+            }
+        });
+    });
+</script>
+
     
-    if( name.length < 5 ) {
-      console.log(2);
-      event.preventDefault()
-      errorContainer.innerHTML = "Name should contains atleast 4 letters"
-      errorContainer.style.display = 'block'
-    }
-    
-    const pattern = /^[a-zA-Z0-9]+$/
-    if( !pattern.test(name)){
-      console.log(3);
-      event.preventDefault()
-      errorContainer.innerHTML = "Name should not contains symbols or spaces"
-      errorContainer.style.display = 'block'
-    }
-    
-    if( startingDate > expiryDate || expiryDate < now  ) {
-      console.log(4);
-      event.preventDefault()
-      errorContainer.innerHTML = "Enter a valid date"
-      errorContainer.style.display = 'block'
-    }
-   
-    
-    if(  percentage > 100 || percentage < 0 )   {
-      console.log(6);
-      event.preventDefault()
-      errorContainer.innerHTML = "Percentage cannot be greater than 100 or less than zero"
-      errorContainer.style.display = 'block'
-    }
-    console.log(7);
-    
-    
-  })
-  
-  
-  
-  
-  </script>
 
   <%- include("../admin/layouts/adminFooter.ejs") %>
 </body>

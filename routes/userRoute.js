@@ -6,13 +6,13 @@ const userAuth = require("../middleware/userAuth");
 const Count = require("../middleware/cartCount");
 
 
-userRoute.use(
-  session({
-    secret: config.sessionSecret,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+// userRoute.use(
+//   session({
+//     secret: config.sessionSecret,
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// );
 userRoute.use(Count);
 
 const userController = require("../controller/userController");

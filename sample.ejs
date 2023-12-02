@@ -1,146 +1,229 @@
+<%- include('../users/layouts/header.ejs')%>
+
+<style>
+    body {
+    color: #F7F7F7;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.form-control {
+    min-height: 41px;
+    background: #f2f2f2;
+    box-shadow: none !important;
+    border: transparent;
+}
+
+.form-control:focus {
+    background: #e2e2e2;
+}
+
+.form-control,
+.btn {
+    border-radius: 5px;
+}
+
+.signup-form {
+    width: 350px;
+    text-align: center;
+    padding: 30px;
+}
+
+.signup-form h2 {
+    margin: 10px 0 25px;
+}
+
+.signup-form .btn {
+    font-size: 16px;
+    font-weight: bold;
+    background: #0e1111;
+    border: none;
+    outline: none !important;
+}
+
+.signup-form .btn:hover,
+.signup-form .btn:focus {
+    background: #000000;
+}
+
+.signup-form a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.signup-form a:hover {
+    text-decoration: none;
+}
+
+.signup-form form a {
+    color: #000;
+    text-decoration: none;
+}
+
+.signup-form form a:hover {
+    text-decoration: underline;
+}
+
+.login_botten_tag {
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+@media (max-width: 600px) {
+    .signup-form {
+        width: 80%;
+    }
+}
+
+.hai {
+    padding-left: 10% !important;
+    padding-bottom: 5% !important;
+}
+.signup-form {
+    margin-left: 20px; 
+}
+.form-control {
+    border-radius: 10px; 
+    margin-bottom: 10px; 
+}
+@media (max-width: 1000px) {
+    .hihi {
+        display: none !important; 
+    }
+}
+.input-with-border {
+    border: 1px solid rgb(148, 148, 148);
+}
+.sizeForImage{
+    width: 75vh;
+}
+.hihii{
+    width: 100vh;
+}
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6 d-none d-md-block hihi">
+            <img  src="/static/extraImages/loginPage.jpg" alt="Your Photo" class="img-fluid" style="width:75vh; padding-top: 113px;">
+        </div>
+        <div class="col-md-6 col-12 mt-4 hai ml2- pt-5">
+            <div class="signup-form mt-3">
+                <div class="logoimg pb-1 d-flex justify-content-start">
+                    
+                        <p style="color: #000; font-weight:bold ; font-size: 38px;">Admin Login</p>
+
+                        <% if (typeof message !== 'undefined') { %>
+                          <p id="errorMessage" style="color: red; font-size: large; font-weight: 300; text-align: center; display: block; margin: 0 auto;">
+                              <%= message %>
+                          </p>
+                      <% } %>
+                        
+                        
+                </div>
+<!-- 
+                <div class="logoimg pb-4 ">
+                    
+                  <p style="color: #a9a9a9; padding-right: 71px; margin: 0;">Welcome to mlive shoping cart </p>
+                  <p style="color: #a9a9a9; padding-right: 35px; display: flex;">Please login to your account</p>
+          </div> -->
+
+          <form action="/admin" method="post">
+
+                  <label for="email" style="color: #a9a9a9;  display: flex; font-size: small;">Enter email</label>
+                  <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Enter email" >
+                  <span id="email-error" style="color: red;"></span>
+                  <label for="password"  style="color: #a9a9a9;  display: flex; font-size: small;">Enter password</label>
+
+                  <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter password" >
+                        <div id="errorMessage" style="color: red; font-size: 12px; font-weight: 300;" class="d-flex"></div>
+                        <span id="password-error" style="color: red;"></span>
+
+                    <!-- <div class="forgot-password d-flex justify-content-end">
+                        <a href="/forgot-password" class="text-center  small" style="color: #a9a9a9;  ">Forgot Password?</a>
+                    </div> -->
+                    <div class="form-group">
+                        
+                            <button type="submit" class="btn btn-block mt-4 bg-dark buttensignup text-white">Login</button>
+                    
+                    </div>
+                  
+                    <div class="text-danger mt-3">
+                        
+                    </div>
+                  
+
+                    <!-- <p class="text-center text-dark small">Dont't Have An account? <a class="text-primary"
+                            href="/register">
+                        Signup Here!</a></p> -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="">
-    <label for="checkout-discount-input" class="text-truncate"
-      >Have a coupon? <span>Enter your code below.</span></label
-    >
-  </div>
-  <div class="cart-discount">
-    
-      <div class="input-group mb-5">
-        <input
-          type="text"
-          class="form-control"
-          
-          name="code"
-          id="code"
-          placeholder="coupon code"
-          style="
-            height: 40px;
-            border: 1px dotted #000;
-            padding-left: 10px;
-          "
-        />
+   
         
-        <button
-        id="unApply"
-          class="btn btn-outline-dark"
-          style="margin: 0; width: 70px; height: 40px; display: none;"
-          onclick="unApplycoupon($('#code').val())"
-        >
-        <i class="fa-solid fa-trash"></i>
-        </button>
-        
-          <button
-          id="apply"
-          class="btn btn-outline-dark"
-          style="margin: 0; width: 70px; height: 40px; "
-          onclick="applycoupon($('#code').val())"
-        >
-          <i class="icon-long-arrow-right"></i>
-        </button>
-        
-      </div>
-  </div>
 
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- =========================================================================input field valiation========================================================== -->
 
+<script>
+   
+  let errorMessage = document.getElementById('errorMessage');
+  if (errorMessage) {
+      
+      setTimeout(function () {
+          errorMessage.style.display = 'none'; 
+      }, 5000); 
+  }
+</script>
 
-                                                    <script>
-                                                        //=========delete applied coupon=========
-                                                        function unApplycoupon(code) {
-                                                         const amount = document.getElementById('total1').innerHTML;
-                                                         $.ajax({
-                                                           url: "/deleteAppliedCoupon",
-                                                           data:{
-                                                             code:code,
-                                                             amount: amount
-                                                           },
-                                                           method: "post",
-                                                           success: (response)=>{
-                                                             if(response.success){
-                                                               document.getElementById('total1').innerHTML = response.disTotal
-                                                               
-                                                               document.getElementById('apply').style.display = "block"
-                                                               document.getElementById('unApply').style.display = "none"
-                                                               Swal.fire({
-                                                                 icon: 'warning',
-                                                                 title: 'Deleted !!',
-                                                                 text: 'Applied coupon is deleted.'
-                                                               })
-                                                             }
-                                                           }
-                                                         })
-                                                       }
-                                                     
-                                                     
-                                                       function applycoupon(code) {
-                                                         
-                                                         const amount = document.getElementById('total1').innerHTML;
-                                                        
-                                                         
-                                                         $.ajax({
-                                                           url: "/applyCoupon",   
-                                                           data: {
-                                                             code: code,
-                                                             amount: amount
-                                                           },
-                                                           method: "post",
-                                                           success: (response) => {
-                                                             if (response.user) {
-                                                               Swal.fire({
-                                                                 icon: 'error',
-                                                                 title: 'Oops !!',
-                                                                 text: 'This coupon already used!'
-                                                               })
-                                                             }else if (response.cartAmount) {
-                                                               Swal.fire({
-                                                                 icon: 'warning',
-                                                                 title: 'Oops !!',
-                                                                 text: 'You cant use the coupon...Buy more'
-                                                               })
-                                                             } else if (response.amountOkey) {
-                                                              console.log(response);
-                                                               document.getElementById('total1').innerHTML = response.disTotal
-                                                               
-                                                               document.getElementById('apply').style.display = "none"
-                                                               document.getElementById('unApply').style.display = ""
-                                                               Swal.fire({
-                                                                 position: 'center',
-                                                                 icon: 'success',
-                                                                 title: 'Discount redeemed',
-                                                                 showConfirmButton: false,
-                                                                 timer: 1500
-                                                               })
-                                                               
-                                                             } else {
-                                                               Swal.fire({
-                                                                 icon: 'error',
-                                                                 title: 'Oops !!!',
-                                                                 text: 'Invalid Coupon!!!'
-                                                               })
-                                                             }
-                                                           }
-                                                         })
-                                                       }
-                                                     
-                                                     </script>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+      let email = document.getElementById('email').value;
+      let password = document.getElementById('password').value;
+      let emailError = document.getElementById('email-error');
+      let passwordError = document.getElementById('password-error');
+
+     
+      emailError.textContent = '';
+      passwordError.textContent = '';
+
+      
+      if (!isValidEmail(email)) {
+          emailError.textContent = 'Please enter a valid email address.';
+          event.preventDefault();
+      }
+
+      
+      if (password.length < 8) {
+          passwordError.textContent = 'Password must be at least 8 characters long.';
+          event.preventDefault();
+      }
+  });
+
+  function isValidEmail(email) {
+      
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+</script>
 
 
 
@@ -148,6 +231,6 @@
 
 
 
+    <%- include('../users/layouts/footer.ejs')%>
 
 
-                                                     

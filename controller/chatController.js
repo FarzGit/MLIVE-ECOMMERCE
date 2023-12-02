@@ -4,6 +4,10 @@ const userDb = require('../models/userModel')
 const chatPageLoad = async (req, res) => {
   try {
 
+  
+
+    
+
     res.render('chat')
   } catch (error) {
     console.log(error.message)

@@ -1,43 +1,173 @@
-<%- include("../admin/layouts/adminHeader.ejs") %>
+
+
+
+ 
+<%- include('../users/layouts/header.ejs')%>
 
 <style>
-    .custom-input {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
+    body {
+    color: #F7F7F7;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.form-control {
+    min-height: 41px;
+    background: #f2f2f2;
+    box-shadow: none !important;
+    border: transparent;
+}
+
+.form-control:focus {
+    background: #e2e2e2;
+}
+
+.form-control,
+.btn {
+    border-radius: 5px;
+}
+
+.signup-form {
+    width: 350px;
+    text-align: center;
+    padding: 30px;
+}
+
+.signup-form h2 {
+    margin: 10px 0 25px;
+}
+
+.signup-form .btn {
+    font-size: 16px;
+    font-weight: bold;
+    background: #0e1111;
+    border: none;
+    outline: none !important;
+}
+
+.signup-form .btn:hover,
+.signup-form .btn:focus {
+    background: #000000;
+}
+
+.signup-form a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.signup-form a:hover {
+    text-decoration: none;
+}
+
+.signup-form form a {
+    color: #000;
+    text-decoration: none;
+}
+
+.signup-form form a:hover {
+    text-decoration: underline;
+}
+
+.login_botten_tag {
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+@media (max-width: 600px) {
+    .signup-form {
+        width: 80%;
     }
-</style>
+}
 
+.hai {
+    padding-left: 10% !important;
+    padding-bottom: 5% !important;
+}
+.signup-form {
+    margin-left: 20px; 
+}
+.form-control {
+    border-radius: 10px; 
+    margin-bottom: 10px; 
+}
+@media (max-width: 1000px) {
+    .hihi {
+        display: none !important; 
+    }
+}
+.input-with-border {
+    border: 1px solid rgb(148, 148, 148);
+}
+.sizeForImage{
+    width: 75vh;
+}
+.hihii{
+    width: 100vh;
+}
+  </style>
+</head>
+<body>
 
-<div class="container-fluid">
-    <div class="row justify-content-center align-items-center min-vh-100">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Admin Login</h3>
-                    <!-- <div id="error" style="color: red;"></div> -->
-                    <% if (typeof message !== 'undefined') { %>
-                        <p id="errorMessage" style="color: red; font-size: large; font-weight: 300; text-align: center; display: block; margin: 0 auto;">
-                            <%= message %>
-                        </p>
-                    <% } %>
-                <!-- </div> -->
-                <div class="card-body">
-                    <form action="/admin" method="post">
-                        <div class="form-group">
-                            <label for="email" style="color: black;">Email</label>
-                            <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Enter email" >
-                            <span id="email-error" style="color: red;"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" style="color: black;">Password</label>
-                            <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter password" >
-                            <span id="password-error" style="color: red;"></span>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Login</button>
-                    </form>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6 d-none d-md-block hihi">
+            <img  src="/static/extraImages/loginPage.jpg" alt="Your Photo" class="img-fluid" style="width:75vh; padding-top: 113px;">
+        </div>
+        <div class="col-md-6 col-12 mt-4 hai ml2- pt-5">
+            <div class="signup-form mt-3">
+                <div class="logoimg pb-1 d-flex justify-content-start">
                     
+                        <p style="color: #000; font-weight:bold ; font-size: 38px;">Admin Login</p>
+
+                        <% if (typeof message !== 'undefined') { %>
+                          <p id="errorMessage" style="color: red; font-size: large; font-weight: 300; text-align: center; display: block; margin: 0 auto;">
+                              <%= message %>
+                          </p>
+                      <% } %>
+                        
+                        
                 </div>
+<!-- 
+                <div class="logoimg pb-4 ">
+                    
+                  <p style="color: #a9a9a9; padding-right: 71px; margin: 0;">Welcome to mlive shoping cart </p>
+                  <p style="color: #a9a9a9; padding-right: 35px; display: flex;">Please login to your account</p>
+          </div> -->
+
+          <form action="/admin" method="post">
+
+                  <label for="email" style="color: #a9a9a9;  display: flex; font-size: small;">Enter email</label>
+                  <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Enter email" >
+                  <span id="email-error" style="color: red; font-size: 12px;"></span>
+                  <label for="password"  style="color: #a9a9a9;  display: flex; font-size: small;">Enter password</label>
+
+                  <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter password" >
+                        <div id="errorMessage" style="color: red; font-size: 12px; font-weight: 300;" class="d-flex"></div>
+                        <span id="password-error" style="color: red; font-size: 12px;"></span>
+
+                    <!-- <div class="forgot-password d-flex justify-content-end">
+                        <a href="/forgot-password" class="text-center  small" style="color: #a9a9a9;  ">Forgot Password?</a>
+                    </div> -->
+                    <div class="form-group">
+                        
+                            <button type="submit" class="btn btn-block mt-4 bg-dark buttensignup text-white">Login</button>
+                    
+                    </div>
+                  
+                    <div class="text-danger mt-3">
+                        
+                    </div>
+                  
+
+                </form>
             </div>
         </div>
     </div>
@@ -45,47 +175,63 @@
 
 
 
+
+
+   
+        
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- =========================================================================input field valiation========================================================== -->
+
 <script>
    
-    let errorMessage = document.getElementById('errorMessage');
-    if (errorMessage) {
-        
-        setTimeout(function () {
-            errorMessage.style.display = 'none'; 
-        }, 5000); 
-    }
+  let errorMessage = document.getElementById('errorMessage');
+  if (errorMessage) {
+      
+      setTimeout(function () {
+          errorMessage.style.display = 'none'; 
+      }, 5000); 
+  }
 </script>
 
 <script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        let email = document.getElementById('email').value;
-        let password = document.getElementById('password').value;
-        let emailError = document.getElementById('email-error');
-        let passwordError = document.getElementById('password-error');
+  document.querySelector('form').addEventListener('submit', function(event) {
+      let email = document.getElementById('email').value;
+      let password = document.getElementById('password').value;
+      let emailError = document.getElementById('email-error');
+      let passwordError = document.getElementById('password-error');
 
-       
-        emailError.textContent = '';
-        passwordError.textContent = '';
+     
+      emailError.textContent = '';
+      passwordError.textContent = '';
 
-        
-        if (!isValidEmail(email)) {
-            emailError.textContent = 'Please enter a valid email address.';
-            event.preventDefault();
-        }
+      
+      if (!isValidEmail(email)) {
+          emailError.textContent = 'Please enter a valid email address.';
+          event.preventDefault();
+      }
 
-        
-        if (password.length < 8) {
-            passwordError.textContent = 'Password must be at least 8 characters long.';
-            event.preventDefault();
-        }
-    });
+      
+      if (password.length < 8) {
+          passwordError.textContent = 'Password must be at least 8 characters long.';
+          event.preventDefault();
+      }
+  });
 
-    function isValidEmail(email) {
-        
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+  function isValidEmail(email) {
+      
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
 </script>
 
 
 
-<%- include("../admin/layouts/adminFooter.ejs") %>
+
+
+
+
+    <%- include('../users/layouts/footer.ejs')%>
+
+

@@ -55,13 +55,13 @@ const upload = multer({
 adminRoute.use(express.json());
 adminRoute.use(express.urlencoded({ extended: true }));
 
-adminRoute.use(
-  session({
-    secret: config.sessionSecret,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+// adminRoute.use(
+//   session({
+//     secret: config.sessionSecret,
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// );
 
 
 
