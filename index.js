@@ -19,7 +19,9 @@ const io = require('socket.io')(server)
 // app.use(express.urlencoded({ extended: true }));
 
 dotenv.config()
-mongoose.connect(process.env.MONGO_DB)
+mongoose.connect(process.env.MONGO_DB).then(()=>{
+  console.log("database connected... ")
+})
 
 app.use(
   session({

@@ -5,7 +5,7 @@ const sharp = require('sharp')
 
 const loadAddbanner = async (req, res) => {
   try {
-    res.render('addbanner')
+    res.render('addBanner')
   } catch (error) {
     console.log(error.message)
     res.render('admin500')

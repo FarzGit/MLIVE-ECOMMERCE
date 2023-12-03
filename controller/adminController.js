@@ -1,7 +1,7 @@
 const adminDb = require("../models/adminModel");
 const categoryDb = require("../models/categoryModel");
 const User = require("../models/userModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const orderDb = require("../models/orderModel");
 const productDb = require("../models/productModel");
 const {
