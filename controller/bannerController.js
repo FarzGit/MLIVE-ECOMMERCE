@@ -161,11 +161,32 @@ const listAndUnList = async (req, res) => {
   }
 }
 
+const deleteBanner = async(req,res)=>{
+  try{
+
+    const id = req.query.id
+
+    console.log(id);
+
+    const result =await Banner.deleteOne({_id:id})
+
+    if(result){
+      res.redirect('/admin/banners')
+      // res.json({success:true})
+    }
+
+
+  }catch(error){
+    console.log(error)
+  }
+}
+
 module.exports = {
   loadAddbanner,
   addBanners,
   loadBanners,
   loadeditBanner,
   editBanner,
-  listAndUnList
+  listAndUnList,
+  deleteBanner
 }

@@ -60,7 +60,6 @@ userRoute.post("/addTocart", userAuth.isLogin, cartController.addToCart);
 userRoute.post("/cart-quantity", userAuth.isLogin, cartController.cartQuantity);
 userRoute.post("/remove-product",userAuth.isLogin,cartController.removeProduct);
 
-// userRoute.get('/address',userAuth.isLogin,userController.loadAddress)
 userRoute.post("/profile", userAuth.isLogin, userController.addAddress);
 
 userRoute.get("/editAddress", userAuth.isLogin, userController.loadEditAddress);
@@ -69,7 +68,6 @@ userRoute.post("/deleteAddress",userAuth.isLogin,userController.deleteUserAddres
 userRoute.post("/changepassword",userAuth.isLogin,userController.changePassword);
 
 userRoute.get("/checkout", userAuth.isLogin, orderController.loadCheckOut);
-// userRoute.post('/removeAddress', userAuth.isLogin, orderController.removeAddress)
 userRoute.post("/placeOrder", userAuth.isLogin, orderController.placeOrder);
 userRoute.get("/orderPlaced/:id", orderController.orderPlacedPageLoad);
 userRoute.get("/orders", userAuth.isLogin, orderController.loadOrderPage);

@@ -98,7 +98,7 @@ const loadCheckOut = async (req, res) => {
     if (userId) {
       if (inStock === true) {
         if (addressData) {
-          if (addressData.addresses.length > 0) {
+          if (addressData.addresses.length >= 0) {
             const address = addressData.addresses
             const Total = total.length > 0 ? total[0].total : 0
             const totalamount = Total
@@ -276,7 +276,7 @@ const placeOrder = async (req, res) => {
               },
               { new: true }
             )
-            log('oderid :', orderId)
+            // log('oderid :', orderId)
             const orderUpdate = await orderDb.findByIdAndUpdate(
               { _id: orderId },
               { $set: { 'products.$[].paymentStatus': 'success' } }

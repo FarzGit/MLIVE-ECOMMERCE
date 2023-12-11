@@ -2,6 +2,9 @@
 
 
 
+
+
+
 <main class="main" id="reloadDiv">
   
 
@@ -134,7 +137,7 @@
                 </tbody>
               </table>
               
-              <a href="/checkout" id="checkoutButton" class="btn btn-outline-primary-2 btn-order btn-block" onclick="checkout()" >PROCEED TO CHECKOUT</a>
+              <a href="/checkout" id="checkoutButton" class="btn btn-outline-primary-2 btn-order btn-block" onclick="checkout()"  >PROCEED TO CHECKOUT</a>
             
 
             </div>
@@ -157,6 +160,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
   function removeProduct(productId) {
@@ -245,6 +250,21 @@
 </script>
 
 <script>
+
+
+toastr.options = {
+  closeButton: true, // Show close button
+  positionClass: 'toast-top-left', // Change the position of the toast
+  preventDuplicates: true, // Prevent duplicate toasts
+  showDuration: '300', // Duration of the slide down/up animation
+  hideDuration: '1000', // Duration of the slide up animation
+  timeOut: '5000', // Time before the toast disappears (in milliseconds)
+  extendedTimeOut: '1000', // Time to close after a user hovers over the toast (in milliseconds)
+  // Customize size
+  width: '400px', // Set the width of the toast
+  height: '100px' // Set the height of the toast
+};
+
   // Function to handle the checkout process
   function checkout() {
     $.ajax({
@@ -253,16 +273,16 @@
       dataType: "json",
       success: function (response) {
         // Handle the response from the server
-        if (response.quantity) {
-         
-          swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "products have insufficient stock.",
-          });
-        } else {
+
+        if (response.quantity === true) {
+        // Handle the case where products have insufficient stock
+        
+        toastr.error("Some products have insufficient stock.Please remove the product and add again.");
+      } else {
           // Redirect to the checkout page or handle success as needed
-          window.location.href = "/checkout";
+          if (!response.quantity) {
+            window.location.href = "/checkout";
+          }
         }
       },
       error: function (error) {
@@ -274,7 +294,7 @@
   // Attach the checkout function to the click event of the checkout button
   $("#checkoutButton").on("click", function (e) {
     e.preventDefault();
-    checkout();
+    
   });
 </script>
 

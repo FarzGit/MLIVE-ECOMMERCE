@@ -128,6 +128,7 @@ adminRoute.post('/add_banner',fileUpload.uploadBanner.single('image'),adminAuth.
 adminRoute.get('/banners',adminAuth.isLogin,bannerController.loadBanners)
 adminRoute.get('/editBanner',adminAuth.isLogin,bannerController.loadeditBanner)
 adminRoute.post('/editBanner',fileUpload.uploadBanner.single('image'),adminAuth.isLogin,bannerController.editBanner)
+adminRoute.get('/deleteBanner',adminAuth.isLogin,bannerController.deleteBanner)
 adminRoute.get('/listUnlist',adminAuth.isLogin,bannerController.listAndUnList)
 
 
