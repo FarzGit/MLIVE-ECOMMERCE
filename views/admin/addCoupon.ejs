@@ -134,7 +134,7 @@
                   <div class="col-6">
                     <div class="form-group">
                       <label for="couponName" class="font-weight-bold pl-3" style="color: #000000;">Coupon Name</label>
-                      <input type="text" class="form-control form-style" name="couponName" id="couponName" placeholder="Coupon Name"  >
+                      <input type="text" class="form-control form-style" name="couponName" id="couponName" placeholder="Coupon Name" required >
                       <div id="couponNameError" class="error" style="color: red; margin-left: 15px; font-size: 10px;"></div>
                     </div>
                   </div>
@@ -300,9 +300,15 @@ if (validTo === "") {
     $("#couponValidToError").text("Valid To date is required");
     event.preventDefault();
 } else {
-    // Check if validTo is not less than validFrom
-    if (new Date(validTo) < new Date(validFrom)) {
-        $("#couponValidToError").text("Valid To date must be equal or later than Valid From date");
+
+        var currentDate = new Date();
+        var enteredValidToDate = new Date(validTo);
+
+        if (enteredValidToDate < currentDate) {
+          $("#couponValidToError").text("ValidTo date cannot be in the past (expired),  Please enter a valid date");
+          event.preventDefault();
+        } else if (new Date(validTo) < new Date(validFrom)) {
+        $("#couponValidToError").text("Valid To date must be equal or greater than Valid From date");
         event.preventDefault();
     }
 }

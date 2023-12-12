@@ -79,7 +79,7 @@
                                   <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice">
                                   <div class="mb-3">
                                     <label for="message-text" class="col-form-label">Give reason for order returning:</label>
-                                    <textarea name="reason" class="form-control" id="message-text" placeholder="eg: Not in good condition."></textarea>
+                                    <textarea name="reason" class="form-control" id="message-text" placeholder="eg: Not in good condition." required></textarea>
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -119,7 +119,7 @@
             
                                   <div class="mb-3">
                                     <label for="message-text" class="col-form-label">Give reason for order cancelling:</label>
-                                    <textarea name="reason" class="form-control" id="message-text" placeholder="eg: I changed my mind"></textarea>
+                                    <textarea name="reason" class="form-control" id="message-text" placeholder="eg: I changed my mind" required></textarea>
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>

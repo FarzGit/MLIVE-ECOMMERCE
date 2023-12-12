@@ -35,6 +35,8 @@
                           <% } %>
                       <% } %>
 
+                      <% if (dateTo >= new Date()) { %>
+
                     <div class="card  m-2 col-md-5 col-10 p-4 pt-3" style="background: #F3F3F9; border-radius: 10px;">
                         <div class="card-body ">
                             <h5 class="text-danger"><%if(redeemed!==null){%><i class="fa-solid fa-medal"></i> Redeemed<%}%></h5>
@@ -64,6 +66,7 @@
                             </div>
                         </div>
                     </div>
+                    <%}%>
                     <%}%>
                    
                     

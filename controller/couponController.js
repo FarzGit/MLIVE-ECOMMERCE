@@ -136,8 +136,10 @@ const deleteCoupon = async (req, res) => {
 
 const couponUserPageLoad = async (req, res) => {
   try {
+    const userId = req.session.user_id
+    const userData = await userDb.findOne({ _id: userId })
     const coupons = await couponDb.find()
-    res.render('coupon', { user: req.session.user_id, coupons })
+    res.render('coupon', { user: userData, coupons })
   } catch (error) {
     console.log(error.message)
     res.render('admin500')

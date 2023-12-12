@@ -212,6 +212,12 @@ const placeOrder = async (req, res) => {
           { couponCode: req.session.code },
           { $push: { usedUsers: userId } }
         )
+
+        const orderUpdate = await orderDb.findByIdAndUpdate(
+          { _id: orderData._id, OrderStatus: 'Delivered' },
+          { $set: { 'products.$[].paymentStatus': 'success' } }
+        );
+
         await cartDb.deleteOne({ user: req.session.user_id })
         for (const item of cartData.products) {
           const productId = item.productId._id

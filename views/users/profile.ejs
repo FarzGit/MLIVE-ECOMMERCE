@@ -176,23 +176,23 @@
                                         <div class="col-sm-6">
                                             <label>First Name</label>
                                             <input type="text" class="form-control" value="<%=user.firstName %>"
-                                                >
+                                                disabled>
                                         </div><!-- End .col-sm-6 -->
                                         <div class="col-sm-6">
                                             <label>Last Name</label>
                                             <input type="text" class="form-control" value="<%=user.lastName %>"
-                                                >
+                                            disabled>
                                         </div>
                                     </div><!-- End .row -->
                                     <label>Full Name</label>
-                                    <input type="text" class="form-control" value="<%= user.firstName + " " + user.lastName %>">
+                                    <input type="text" class="form-control" value="<%= user.firstName + " " + user.lastName %>" disabled>
                                     <label>Email address</label>
                                     <input type="email" class="form-control" value="<%= user.email %>" disabled>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label>Mobile Number</label>
                                             <input type="number" class="form-control" value="<%= user.mobile %>"
-                                                name="pincode" >
+                                                name="pincode" disabled>
                                         </div><!-- End .col-sm-6 -->
                                     </div>
                                     <button type="submit" class="btn btn-outline-primary-login">
@@ -209,12 +209,12 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <label>Current Password</label>
-                                                    <input type="password" name="currentpassword" class="form-control" required>
+                                                    <input type="password" name="currentpassword" class="form-control" >
                                                     <span id="error-currentpassword" style="color: red;"></span>
                                                 </div><!-- End .col-sm-6 -->
                                                 <div class="col-sm-6">
                                                     <label>New Password</label>
-                                                    <input type="password" name="newpassword" class="form-control" required>
+                                                    <input type="password" name="newpassword" class="form-control" >
                                                     <span id="error-newpassword" style="color: red; font-size: 10px;"></span>
                                                 </div><!-- End .col-sm-6 -->
                                                 <div class="col-sm-6">
@@ -386,7 +386,42 @@ function deleteAddress(addressId) {
 
 
 
-    
+<script>
+    function validateForm() {
+        var currentPassword = document.getElementById('changePasswordForm').elements['currentpassword'].value;
+        var newPassword = document.getElementById('changePasswordForm').elements['newpassword'].value;
+        var confirmPassword = document.getElementById('changePasswordForm').elements['confirmpassword'].value;
+
+        // Reset error messages
+        document.getElementById('error-currentpassword').innerHTML = '';
+        document.getElementById('error-newpassword').innerHTML = '';
+        document.getElementById('error-confirmpassword').innerHTML = '';
+
+        // Validate each field
+        if (currentPassword === '') {
+            document.getElementById('error-currentpassword').innerHTML = 'Please enter the current password';
+            return false;
+        }
+
+        if (newPassword === '') {
+            document.getElementById('error-newpassword').innerHTML = 'Please enter a new password';
+            return false;
+        }
+
+        if (confirmPassword === '') {
+            document.getElementById('error-confirmpassword').innerHTML = 'Please confirm the new password';
+            return false;
+        }
+
+        if (newPassword !== confirmPassword) {
+            document.getElementById('error-confirmpassword').innerHTML = 'Passwords do not match';
+            return false;
+        }
+
+        // If all validations pass, submit the form
+        return true;
+    }
+</script>
     
 
 
